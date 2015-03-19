@@ -143,10 +143,10 @@
 % - penguji : isi dengan para penguji anda, lihat daftar dosen di file dosen.tex
 %				(e.g. \penguji{\JHD}{\JCD} )
 %=============================================================================
-\namanpm{Lionov}{1997730020}
-\tanggal{1}{7}{2002}
-\pembimbing{\OSS}{\TAB}     %Lihat singkatan pembimbing anda di file dosen.tex
-\penguji{\NIS}{\CEN} 		%Lihat singkatan penguji anda di file dosen.tex
+\namanpm{Pascal Alfadian Nugroho}{2003730013}
+\tanggal{19}{3}{2015}
+\pembimbing{\LNV}{}     %Lihat singkatan pembimbing anda di file dosen.tex
+\penguji{\TAB}{\CEN} 		%Lihat singkatan penguji anda di file dosen.tex
 %=============================================================================
 
 %_____________________________________________________________________________
@@ -162,9 +162,9 @@
 %			 - Judul TIDAK ditulis dengan menggunakan huruf besar seluruhnya !!
 %=============================================================================
 
-\judulINA{Mengikuti Mayoritas: \texorpdfstring{\\}{} Sebuah Algoritma Baru Untuk Menghitung \texorpdfstring{\\}{} Median Trajectory}
+\judulINA{Integrasi Situs Navigasi dengan Situs \textit{Crowdsourcing} Rute Angkot}
 
-\judulENG{Following The Majority: \texorpdfstring{\\}{} a New Algorithm for Computing \texorpdfstring{\\}{} a Median Trajectory}
+\judulENG{Integration of \textit{Angkot} Navigation and Route Crowdsourcing Website}
 
 %_____________________________________________________________________________
 %=============================================================================
@@ -177,40 +177,24 @@
 %			 bawahnya
 %=============================================================================
 
-\abstrakINA{Kami mengembangkan dua algoritma baru untuk menghitung lintasan dari median set lintasan.
-	Algoritma pertama adalah $O(1.2108^{m} + m^{5}n^{5})$ terburuk waktu algoritma, dengan menggunakan konsep Jarak Fr\'{e}chet.
-	Algoritma kedua menggunakan metode penyangga.
-	Dalam situasi praktis, algoritma ini dapat menghitung median lintasan di $O((mn)^{2} \log mn)$ waktu.
-	Untuk kedua algoritma, $m$ adalah jumlah lintasan dalam mengatur dan lintasan masing-masing memiliki segmen $n$.
-	Kami membandingkan algoritma buffer dengan dua algoritma lain, salah satu dari mereka menggunakan konsep homotopy.
-	Hasil kami menunjukkan bahwa algoritma penyangga melakukan agak lebih baik.
+\abstrakINA{Penelitian ini mengintegrasikan situs navigasi rute angkot
+	\url{http://kiri.travel} dengan situs \textit{crowdsourcing} rute angkot 
+	\url{https://angkot.web.id}, di mana pengguna dapat berkontribusi memperbaiki
+	rute angkot yang salah. Integrasi yang dimaksud adalah sinkronisasi data secara
+	berkala dan otomatis, sehingga hasil navigasi yang diberikan mendekati ketepatan
+	sesuai di lapangan.
 
-	Kami mengembangkan dua algoritma baru untuk menghitung lintasan dari median set lintasan.
-	Algoritma pertama adalah $O(1.2108^{m} + m^{5}n^{5})$ terburuk waktu algoritma, dengan menggunakan konsep Jarak Fr\'{e}chet.
-	Algoritma kedua menggunakan metode penyangga.
-	Dalam situasi praktis, algoritma ini dapat menghitung median lintasan di $O((mn)^{2} \log mn)$ waktu.
-	Untuk kedua algoritma, $m$ adalah jumlah lintasan dalam mengatur dan lintasan masing-masing memiliki segmen $n$.
-	Kami membandingkan algoritma buffer dengan dua algoritma lain, salah satu dari mereka menggunakan konsep homotopy.
-	Hasil kami menunjukkan bahwa algoritma penyangga melakukan agak lebih baik.
+	TODO Sisa abstrak akan dilengkapi saat penelitian berakhir.
 }
 
-\abstrakENG{We develop two new algorithms to compute a median trajectory from a
-	set of trajectories.
-	The first algorithm is an $O(1.2108^{m} + m^{5}n^{5})$ worst-case time algorithm, using the concept of Fr\'{e}chet Distance.
-	The second algorithm uses a buffer method.
-	In practical situations, this algorithm can compute the median trajectory in $O((mn)^{2} \log mn)$ time. 
-	For both algorithms, $m$ is the number of trajectories in the set and each trajectory has $n$ segments.
-	We compare the buffer algorithm with two other algorithms, one of them using the homotopy concept.
-	Our results suggest that the buffer algorithm performs somewhat better.
-	
-	We develop two new algorithms to compute a median trajectory from a
-	set of trajectories.
-	The first algorithm is an $O(1.2108^{m} + m^{5}n^{5})$ worst-case time algorithm, using the concept of Fr\'{e}chet Distance.
-	The second algorithm uses a buffer method.
-	In practical situations, this algorithm can compute the median trajectory in $O((mn)^{2} \log mn)$ time. 
-	For both algorithms, $m$ is the number of trajectories in the set and each trajectory has $n$ segments.
-	We compare the buffer algorithm with two other algorithms, one of them using the homotopy concept.
-	Our results suggest that the buffer algorithm performs somewhat better.
+\abstrakENG{This research integrates \textit{angkot} (public bus) navigation website
+	\url{http://kiri.travel} with \textit{angkot} route crowdsourcing website,
+	where public user can contribute by fixing erroneus \textit{angkot} routes.
+	The aforementioned integration is defined as automatic synchronization of
+	both parties' data, such that the result accuracy of navigation is close to
+	what found on the field.
+
+	TODO The rest of abstract will be completed at end of research.
 } 
 
 %=============================================================================
@@ -223,9 +207,9 @@
 % - kunciINA: kata-kata kunci dalam bahasa indonesia
 % - kunciENG: keywords in english
 %=============================================================================
-\kunciINA{Lintasan, Homotopy, Fr\'{e}chet, Lintasan Median, Penyangga}
+\kunciINA{\textit{crowdsourcing}, angkot, rute, navigasi, \textit{REST}, \textit{JSON}}
 
-\kunciENG{Trajectory, Homotopy, Fr\'{e}chet, Median Trajectory, Buffer}
+\kunciENG{crowdsourcing, route, navigation, REST, JSON}
 %=============================================================================
 
 %_____________________________________________________________________________
@@ -234,7 +218,9 @@
 %=============================================================================
 % Persembahan : kepada siapa anda mempersembahkan skripsi ini ...
 %=============================================================================
-\untuk{Dipersembahkan untuk diri sendiri }
+\untuk{Dipersembahkan untuk seluruh warga Indonesia yang selalu setia menggunakan
+	transportasi umum dan mahasiswa FTIS UNPAR yang akan menyelesaikan skripsinya.
+}
 %=============================================================================
 
 %_____________________________________________________________________________
