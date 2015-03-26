@@ -15,6 +15,7 @@ kode sumber internal KIRI.
 \centering
 \includegraphics[scale=1]{Gambar/2_arsitektur_saat_ini}
 \caption{Arsitektur Saat Ini} 
+\label{fig:2_arsitektur_saat_ini}
 \end{figure}
 
 Seperti dapat dilihat pada gambar \ref{fig:2_arsitektur_saat_ini}, elemen
@@ -29,7 +30,7 @@ arsitektur yang mendukung navigasi KIRI dibagi menjadi tiga, yaitu:
 		(\verb/transferNodes/), dan parameter ekstra untuk pembelian
 		tiket (\verb/extraParameters/).
 	\item \textbf{Berkas tracks.conf} adalah hasil ekstraksi dari basis data
-		kiri, yang menyimpan informasi penting saja yang dibutuhkan oleh algoritma
+		KIRI, yang menyimpan informasi penting saja yang dibutuhkan oleh algoritma
 		mesin navigasi KIRI, yakni: \verb/trackId/, \verb/trackTypeId/,
 		\verb/penalty/, \verb/geodata/, \verb/pathloop/, dan
 		\verb/transferNodes/.
@@ -41,13 +42,15 @@ arsitektur yang mendukung navigasi KIRI dibagi menjadi tiga, yaitu:
 \end{itemize}
 
 \subsection{Basis Data KIRI}
-Basis data KIRI disimpan dalam sistem basis data MySQL. Salah satu dari
-tabel yang digunakan adalah tabel \verb/tracks/, yang menyimpan informasi
+Basis data KIRI disimpan dalam sistem manajemen basis data MySQL. Salah satu
+dari tabel yang digunakan adalah tabel \verb/tracks/, yang menyimpan informasi
 rute trayek. Struktur dari tabel ini dijelaskan pada tabel
-\ref{tab:2_struktur_table_tracks} berikut.
+\ref{tab:2_struktur_tabel_tracks}.
 
 \begin{table}
-	\begin{tabular}{|p{2.5cm}|p{2.5cm}|p{10cm}|}
+	\caption{Struktur Tabel tracks}
+	\label{tab:2_struktur_tabel_tracks}
+	\begin{tabular}{|p{3cm}|p{2.5cm}|p{9.5cm}|}
 		\hline
 		Nama kolom & Tipe & Keterangan \\
 		\hline
@@ -71,13 +74,95 @@ rute trayek. Struktur dari tabel ini dijelaskan pada tabel
 		melakukan pembelian tiket (tidak terkait dengan penelitian ini). \\
 		\hline
 	\end{tabular}
-	\caption{Struktur Tabel tracks}
-	\label{tab:2_struktur_tabel_tracks}
 \end{table}
 
 \subsection{Berkas tracks.conf}
+Karena alasan historis\footnote{Pada awalnya mesin navigasi KIRI dibangun
+menggunakan bahasa C++, sehingga menyulitkan dalam mengakses basis data MySQL},
+mesin navigasi KIRI tidak mengakses langsung ke basis data MySQL, melainkan
+membaca sebuah berkas yang bernama \verb/tracks.conf/.
+
+Berkas \verb/tracks.conf/ ini merupakan sebuah berkas teks yang menyimpan basis
+data trayek yang telah dibersihkan untuk dapat dibaca dengan mudah, satu
+\textit{record} per baris. Setiap baris berisi 6 \textit{field} yang dipisahkan
+dengan \textit{tab} (\verb/\t/). Penjelasan dari keenam \textit{field} tersebut
+dapat dilihat pada tabel \ref{tab:2_struktur_tracks_conf}.
+
+\begin{table}
+	\caption{Struktur berkas tracks.conf}
+	\label{tab:2_struktur_tracks_conf}
+	\begin{tabular}{|p{0.5cm}|p{3.5cm}|p{11cm}|}
+		\hline
+		No. & Nama \textit{field} & Keterangan \\
+		\hline
+		1. & trackTypeId.trackId & Berisi \verb/trackTypeId/ dan \verb/trackId/
+			dipisahkan dengan titik. \\
+		2. & penalty & Berisi nilai \verb/penalty/. \\
+		3. & numberOfNodes & Berisi jumlah \textit{node} (titik) dari rute
+			trayek ini. \\
+		4. & nodes & Berisi daftar koordinat \textit{node} dari rute trayek
+			ini dipisahkan dengan \textit{tab}. Setiap koordinat node terdiri
+			dari \textit{latitude} dan \textit{longitude} yang dipisahkan
+			dengan spasi. \\
+		5. & pathLoop & Berisi nilai \verb/pathloop/ yang menunjukkan apakah
+			rute ini merupakan rute pulang pergi atau searah. \\
+		6. & transferNodes & Berisi nilai \verb/transferNodes/ yang menunjukkan
+			titik-titik di mana penumpang diperbolehkan untuk naik / turun. \\
+		\hline
+	\end{tabular}
+\end{table}
 
 \subsection{Mesin Navigasi KIRI}
+
+Mesin navigasi KIRI merupakan sebuah program yang mendengarkan dan menjawab
+permintaan navigasi dalam bentuk \textit{HTTP request} di \textit{port} 8000.
+Program ini dibangun di atas bahasa Java, yang terdiri dari beberapa kelas yang
+ditunjukkan pada gambar \ref{fig:2_diagram_kelas_sistem_kini}.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{Gambar/2_diagram_kelas_sistem_kini}
+\caption{Diagram Kelas Sistem Kini} 
+\label{fig:2_diagram_kelas_sistem_kini}
+\end{figure}
+
+Penjelasan untuk setiap kelas dapat dilihat pada tabel
+\ref{tab:2_penjelasan_kelas_kelas_sistem_kini}.
+
+\begin{table}
+	\caption{Penjelasan Kelas-Kelas Sistem Kini}
+	\label{tab:2_penjelasan_kelas_kelas_sistem_kini}
+	\begin{tabular}{|p{4cm}|p{11cm}|}
+		\hline
+		Kelas & Keterangan \\
+		\hline
+		Main & Kelas yang berfungsi sebagai antarmuka program, untuk dijalankan
+			dari \textit{console}. \\
+		NewMenjanganServer & Kelas yang bertugas menjalankan program sebagai
+			server, yakni menyiapkan servis-servis untuk dijalankan. \\
+		AdminListener & Kelas yang berfungsi untuk mendengarkan dan merespon
+			perintah administrasi, seperti \textit{ping}, \textit{shutdown},
+			dll. \\
+		ServiceListener & Kelas yang berfungsi untuk mendengarkan dan merespon
+			permintaan untuk navigasi. Servis ini menerima masukan berupa
+			koordinat asal dan tujuan, dan mengembalikan rute angkot yang harus
+			dinaiki. \\
+		Worker & Kelas ini berfungsi untuk melakukan pekerjaan yang telah
+			diterima oleh ServiceListener. Selain itu, di awal kelas ini juga
+			menyiapkan bahan-bahan yang diperlukan untuk melakukan perhitungan
+			rute, yakni mengkonversi data trayek ke dalam bentuk graf. \\
+		Track & Kelas ini berfungsi untuk menyimpan informasi sebuah trayek
+			angkot beserta rutenya. \\
+		Graph & Kelas ini merepresentasikan sebuah graf. \\
+		GraphNode & Kelas ini merepresentasikan setiap \textit{node} yang
+			dimiliki oleh graf. \\
+		GraphEdge & Kelas ini merepresentasikan sebuah \textit{edge} dari
+			GraphNode. \\
+		Dijkstra & Kelas ini merepresentasikan algoritma \textit{Dijkstra's
+			shortest path}\cite{Cormen:2001}, untuk digunakan dalam pencarian rute. \\
+		\hline
+	\end{tabular}
+\end{table}
 
 \section{Protokol angkot.web.id}
 \label{sec:mesin_navigasi_kiri}
