@@ -159,10 +159,150 @@ Penjelasan untuk setiap kelas dapat dilihat pada tabel
 		GraphEdge & Kelas ini merepresentasikan sebuah \textit{edge} dari
 			GraphNode. \\
 		Dijkstra & Kelas ini merepresentasikan algoritma \textit{Dijkstra's
-			shortest path}\cite{Cormen:2001}, untuk digunakan dalam pencarian rute. \\
+			shortest path}\cite{Cormen:2001}, untuk digunakan dalam pencarian
+			rute. \\
 		\hline
 	\end{tabular}
 \end{table}
 
 \section{Protokol angkot.web.id}
 \label{sec:mesin_navigasi_kiri}
+Berdasarkan kode sumber angkot.web.id \cite{angkotwebid}, situs angkot.web.id
+memanfaatkan \textit{HTTP request} \cite{rfc7231} untuk menerima
+perintah-perintah dan mengembalikan respon berupa data dalam sintaks JSON
+\cite{rfc7159}. Beberapa dari perintah tersebut dijelaskan pada subbab-subbab
+berikut.
+
+\subsection{Transportation List}
+Perintah ini digunakan untuk mendapatkan daftar semua daftar transportasi umum,
+dan dapat diakses pada dengan melakukan \textit{HTTP request GET}
+pada path \verb|/route/transportation-list.json|, tanpa parameter apapun. Adapun
+kembalian dari perintah ini adalah:
+
+\begin{itemize}
+	\item \verb/status/: Status kembalian dari perintah yang dikirimkan
+	\item \verb/provinces/: \textit{Array} provinsi yang terdaftar, masing-
+		masing elemen merupakan \textit{array} lain yang berisi:
+		\begin{itemize}
+			\item Kode provinsi
+			\item Nama provinsi
+		\end{itemize}
+	\item \verb/transportations/: \textit{Array} provinsi yang terdaftar,
+		masing-masing berisi:
+		\begin{itemize}
+			\item \verb/hasroute/: Menyatakan apakah trayek ini memiliki data
+				rute
+			\item \verb/company/: Perusahaan pengelola trayek ini
+			\item \verb/id/: Indeks trayek ini dalam basis data
+			\item \verb/origin/: Awal rute trayek
+			\item \verb/destination/: Akhir rute trayek
+			\item \verb/province/: Provinsi tempat trayek ini beroperasi
+			\item \verb/city/: Kota tempat trayek ini beroperasi
+			\item \verb/number/: Nomer trayek
+			\item \verb/created/: \textit{UNIX time} trayek ini dibuat
+			\item \verb/updated/: \textit{UNIX time} trayek ini terakhir diperbaharui
+		\end{itemize}
+\end{itemize}
+
+Contoh kembalian dari perintah transportation list dapat dilihat pada kode
+di bawah ini:
+
+\begin{lstlisting}
+{
+	"status": "ok",
+	"provinces": [
+		[
+			"ID-AC",
+			"Aceh"
+		],
+		...
+	],
+	"transportations": [
+		{
+			"hasRoute": true,
+			"company": "KWK",
+			"id": 21,
+			"origin": null,
+			"destination": null,
+			"province": "ID-JK",
+			"city": "Jakarta",
+			"number": "S15A",
+			"created": "1379952348",
+			"updated": "1379952379"
+		},
+		...
+	]
+}
+\end{lstlisting}
+
+\subsection{Transportation Detail}
+Perintah ini digunakan untuk mendapatkan detail dari sebuah trayek transportasi,
+dan diakses dengan melakukan \textit{HTTP request GET} pada path
+\verb|/route/transportation/nnn.json| (di mana \textit{nnn} adalah nomer kode
+trayek dalam basis data). Adapun kembalian dari perintah ini adalah:
+
+\begin{itemize}
+	\item \verb/id/: Nomer kode trayek.
+	\item \verb/geojson/: Data rute dan atributnya dalam format
+		GeoJSON\cite{geojson}, terdiri dari:
+		\begin{itemize}
+			\item \verb/type/: Tipe GeoJSON yang digunakan
+			\item \verb/properties/: Properti-properti data GeoJSON, terdiri dari:
+				\begin{itemize}
+					\item \verb/number/: Nomer trayek
+					\item \verb/accept/: \textit{tidak diketahui}
+					\item \verb/company/: Perusahaan pengelola trayek ini
+					\item \verb/destination/: Akhir rute trayek
+					\item \verb/province/: Provisi tempat trayek ini beroperasi
+					\item \verb/origin/: Awal rute trayek
+					\item \verb/city/: Kote tempat trayek ini beroperasi
+				\end{itemize}
+			\item \verb/properties/: Data geometri rute trayek ini, mengikuti
+				standar GeoJSON untuk tipe data \verb/MultiLineString/.
+		\end{itemize}
+	\item \verb/created/: \textit{UNIX time} trayek ini dibuat
+	\item \verb/status/: Status kembalian dari perintah yang dikirimkan
+	\item \verb/submission_id/: Kode submisi dari trayek yang dimaksud
+	\item \verb/updated/: \textit{UNIX time} trayek ini terakhir diperbaharui
+\end{itemize}
+
+Contoh kembalian dari perintah transportation dapat dilihat pada kode berikut:
+
+\begin{lstlisting}
+{
+	"id": 348,
+	"geojson": {
+		"type": "Feature",
+		"properties": {
+			"number": "M24v2",
+			"accept": [],
+			"company": "Mikrolet",
+			"destination": "Joglo",
+			"province": "ID-JK",
+			"origin": "Terminal Grogol",
+			"city": "Jakarta"
+		},
+		"geometry": {
+			"type": "MultiLineString",
+			"coordinates": [
+				[
+					[106.79068207740782, -6.166144969433212],
+					[106.79347157478333, -6.166107635752627],
+					[106.79707646369934, -6.165899633769797],
+					...
+				],
+				[
+					[106.7961323261261, -6.196021736671819],
+					[106.7957353591919, -6.196037735916297],
+					[106.79550468921661, -6.195936407359816],
+					...
+				]
+			]
+		}
+	},
+	"created": "1402504737",
+	"status": "ok",
+	"submission_id": "CaZVRi",
+	"updated": "1402506397"
+}
+\end{lstlisting}
