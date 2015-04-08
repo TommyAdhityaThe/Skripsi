@@ -4,48 +4,26 @@
 \section{Mesin Navigasi KIRI}
 \label{sec:mesin_navigasi_kiri}
 
-KIRI memiliki mesin navigasi yang dibangun pada bahasa Java. Mesin ini bertugas
-untuk menerima masukan berupa koordinat titik asal dan tujuan, kemudian
-menemukan angkot-angkot yang harus dinaiki untuk menuju titik tujuan dari
-titik asal. Karena alasan kerahasiaan, pembahasan mengenai mesin navigasi
-KIRI tidak mengacu pada referensi publik, melainkan dari survei terhadap
-kode sumber internal KIRI.
+KIRI memiliki mesin navigasi yang dibangun pada bahasa Java. Mesin ini bertugas untuk menerima masukan berupa koordinat titik asal dan tujuan, kemudian menemukan angkot-angkot yang harus dinaiki untuk menuju titik tujuan dari titik asal. Karena alasan kerahasiaan, pembahasan mengenai mesin navigasi KIRI tidak mengacu pada referensi publik, melainkan dari survei terhadap kode sumber internal KIRI.
 
 \begin{figure}
-\centering
-\includegraphics[scale=1]{Gambar/2_arsitektur_saat_ini}
-\caption{Arsitektur Saat Ini} 
-\label{fig:2_arsitektur_saat_ini}
+	\centering
+	\includegraphics[scale=1]{Gambar/2_arsitektur_saat_ini}
+	\caption{Arsitektur Saat Ini} 
+	\label{fig:2_arsitektur_saat_ini}
 \end{figure}
 
 Seperti dapat dilihat pada gambar \ref{fig:2_arsitektur_saat_ini}, elemen
 arsitektur yang mendukung navigasi KIRI dibagi menjadi tiga, yaitu:
+
 \begin{itemize}
-	\item \textbf{Basis Data KIRI} menyimpan informasi rute 33 trayek angkot,
-		yang masing-masing mencakup identifikasi trayek (\verb/trackId/ dan
-		\verb/trackTypeId/), nama trayek (\verb/trackName/), daftar koordinat
-		yang dilewati (\verb/geodata/), informasi pulang-pergi
-		(\verb/pathloop/), catatan internal (\verb/internalInfo/), prioritas
-		untuk dipilih (\verb/penalty/), informasi naik/turun penumpang
-		(\verb/transferNodes/), dan parameter ekstra untuk pembelian
-		tiket (\verb/extraParameters/).
-	\item \textbf{Berkas tracks.conf} adalah hasil ekstraksi dari basis data
-		KIRI, yang menyimpan informasi penting saja yang dibutuhkan oleh algoritma
-		mesin navigasi KIRI, yakni: \verb/trackId/, \verb/trackTypeId/,
-		\verb/penalty/, \verb/geodata/, \verb/pathloop/, dan
-		\verb/transferNodes/.
-	\item \textbf{Mesin Navigasi KIRI} adalah program yang bertugas mengolah
-		data yang ada pada berkas tracks.conf, sehingga dapat menjawab
-		pertanyaan navigasi dari titik asal ke titik tujuan. Karena alasan
-		historis, mesin navigasi tidak membaca data langsung dari basis data,
-		melainkan dari berkas tracks.conf.
+	\item \textbf{Basis Data KIRI} menyimpan informasi rute 33 trayek angkot, yang masing-masing mencakup identifikasi trayek (\verb/trackId/ dan \verb/trackTypeId/), nama trayek (\verb/trackName/), daftar koordinat yang dilewati (\verb/geodata/), informasi pulang-pergi (\verb/pathloop/), catatan internal (\verb/internalInfo/), prioritas untuk dipilih (\verb/penalty/), informasi naik/turun penumpang (\verb/transferNodes/), dan parameter ekstra untuk pembelian tiket (\verb/extraParameters/).
+	\item \textbf{Berkas tracks.conf} adalah hasil ekstraksi dari basis data KIRI, yang menyimpan informasi penting saja yang dibutuhkan oleh algoritma mesin navigasi KIRI, yakni: \verb/trackId/, \verb/trackTypeId/, \verb/penalty/, \verb/geodata/, \verb/pathloop/, dan \verb/transferNodes/.
+	\item \textbf{Mesin Navigasi KIRI} adalah program yang bertugas mengolah data yang ada pada berkas tracks.conf, sehingga dapat menjawab pertanyaan navigasi dari titik asal ke titik tujuan. Karena alasan historis, mesin navigasi tidak membaca data langsung dari basis data, melainkan dari berkas tracks.conf.
 \end{itemize}
 
 \subsection{Basis Data KIRI}
-Basis data KIRI disimpan dalam sistem manajemen basis data MySQL. Salah satu
-dari tabel yang digunakan adalah tabel \verb/tracks/, yang menyimpan informasi
-rute trayek. Struktur dari tabel ini dijelaskan pada tabel
-\ref{tab:2_struktur_tabel_tracks}.
+Basis data KIRI disimpan dalam sistem manajemen basis data MySQL. Salah satu dari tabel yang digunakan adalah tabel \verb/tracks/, yang menyimpan informasi rute trayek. Struktur dari tabel ini dijelaskan pada tabel \ref{tab:2_struktur_tabel_tracks}.
 
 \begin{table}
 	\caption{Struktur Tabel tracks}
@@ -54,39 +32,23 @@ rute trayek. Struktur dari tabel ini dijelaskan pada tabel
 		\hline
 		Nama kolom & Tipe & Keterangan \\
 		\hline
-		trackId & varchar(32) & Kode trayek angkot (misal: "sthallciumbuleuitlurus").
-			Menjadi PRIMARY KEY tabel bersama trackTypeId. \\
-		trackTypeId & varchar(32) & Kode tipe trayek (untuk angkot bandung,
-			selalu berisi "bdo\_angkot"). Menjadi PRIMARY KEY bersama trackId. \\
-		trackName & varchar(32) & Nama trayek yang dapat dibaca secara umum
-			(misal: "St. Hall - Ciumbuleuit (lurus)"). \\
-		internalInfo & varchar(1024) & Informasi internal yang dapat
-			ditambahkan dan tidak akan ditampilkan pada hasil pencarian. \\
+		trackId & varchar(32) & Kode trayek angkot (misal: "sthallciumbuleuitlurus"). Menjadi PRIMARY KEY tabel bersama trackTypeId. \\
+		trackTypeId & varchar(32) & Kode tipe trayek (untuk angkot bandung, selalu berisi "bdo\_angkot"). Menjadi PRIMARY KEY bersama trackId. \\
+		trackName & varchar(32) & Nama trayek yang dapat dibaca secara umum (misal: "St. Hall - Ciumbuleuit (lurus)"). \\
+		internalInfo & varchar(1024) & Informasi internal yang dapat ditambahkan dan tidak akan ditampilkan pada hasil pencarian. \\
 		geodata & linestring & Daftar koordinat dari rute trayek ini. \\
-		pathloop & tinyint(1) & Menandakan apakah trayek ini adalah trayek
-			pulang pergi atau satu arah. \\
-		penalty & decimal(4,2) & Bobot dari trayek ini. Semakin besar nilainya,
-			semakin kecil kemungkinan akan muncul pada hasil navigasi. \\
-		transferNodes & varchar(1024) & Daftar indeks titik di mana penumpang
-			dapat turun maupun naik, dipisahkan dengan koma. Untuk angkot
-			Bandung, penumpang dapat turun dan naik di semua titik. \\
-		extraParameters & varchar(256) & Informasi yang ditambahkan saat
-		melakukan pembelian tiket (tidak terkait dengan penelitian ini). \\
+		pathloop & tinyint(1) & Menandakan apakah trayek ini adalah trayek pulang pergi atau satu arah. \\
+		penalty & decimal(4,2) & Bobot dari trayek ini. Semakin besar nilainya, semakin kecil kemungkinan akan muncul pada hasil navigasi. \\
+		transferNodes & varchar(1024) & Daftar indeks titik di mana penumpang dapat turun maupun naik, dipisahkan dengan koma. Untuk angkot Bandung, penumpang dapat turun dan naik di semua titik. \\
+		extraParameters & varchar(256) & Informasi yang ditambahkan saat melakukan pembelian tiket (tidak terkait dengan penelitian ini). \\
 		\hline
 	\end{tabular}
 \end{table}
 
 \subsection{Berkas tracks.conf}
-Karena alasan historis\footnote{Pada awalnya mesin navigasi KIRI dibangun
-menggunakan bahasa C++, sehingga menyulitkan dalam mengakses basis data MySQL},
-mesin navigasi KIRI tidak mengakses langsung ke basis data MySQL, melainkan
-membaca sebuah berkas yang bernama \verb/tracks.conf/.
+Karena alasan historis\footnote{Pada awalnya mesin navigasi KIRI dibangun menggunakan bahasa C++, sehingga menyulitkan dalam mengakses basis data MySQL}, mesin navigasi KIRI tidak mengakses langsung ke basis data MySQL, melainkan membaca sebuah berkas yang bernama \verb/tracks.conf/.
 
-Berkas \verb/tracks.conf/ ini merupakan sebuah berkas teks yang menyimpan basis
-data trayek yang telah dibersihkan untuk dapat dibaca dengan mudah, satu
-\textit{record} per baris. Setiap baris berisi 6 \textit{field} yang dipisahkan
-dengan \textit{tab} (\verb/\t/). Penjelasan dari keenam \textit{field} tersebut
-dapat dilihat pada tabel \ref{tab:2_struktur_tracks_conf}.
+Berkas \verb/tracks.conf/ ini merupakan sebuah berkas teks yang menyimpan basis data trayek yang telah dibersihkan untuk dapat dibaca dengan mudah, satu \textit{record} per baris. Setiap baris berisi 6 \textit{field} yang dipisahkan dengan \textit{tab} (\verb/\t/). Penjelasan dari keenam \textit{field} tersebut dapat dilihat pada tabel \ref{tab:2_struktur_tracks_conf}.
 
 \begin{table}
 	\caption{Struktur berkas tracks.conf}
@@ -95,39 +57,28 @@ dapat dilihat pada tabel \ref{tab:2_struktur_tracks_conf}.
 		\hline
 		No. & Nama \textit{field} & Keterangan \\
 		\hline
-		1. & trackTypeId.trackId & Berisi \verb/trackTypeId/ dan \verb/trackId/
-			dipisahkan dengan titik. \\
+		1. & trackTypeId.trackId & Berisi \verb/trackTypeId/ dan \verb/trackId/ dipisahkan dengan titik. \\
 		2. & penalty & Berisi nilai \verb/penalty/. \\
-		3. & numberOfNodes & Berisi jumlah \textit{node} (titik) dari rute
-			trayek ini. \\
-		4. & nodes & Berisi daftar koordinat \textit{node} dari rute trayek
-			ini dipisahkan dengan \textit{tab}. Setiap koordinat node terdiri
-			dari \textit{latitude} dan \textit{longitude} yang dipisahkan
-			dengan spasi. \\
-		5. & pathLoop & Berisi nilai \verb/pathloop/ yang menunjukkan apakah
-			rute ini merupakan rute pulang pergi atau searah. \\
-		6. & transferNodes & Berisi nilai \verb/transferNodes/ yang menunjukkan
-			titik-titik di mana penumpang diperbolehkan untuk naik / turun. \\
+		3. & numberOfNodes & Berisi jumlah \textit{node} (titik) dari rute trayek ini. \\
+		4. & nodes & Berisi daftar koordinat \textit{node} dari rute trayek ini dipisahkan dengan \textit{tab}. Setiap koordinat node terdiri dari \textit{latitude} dan \textit{longitude} yang dipisahkan dengan spasi. \\
+		5. & pathLoop & Berisi nilai \verb/pathloop/ yang menunjukkan apakah rute ini merupakan rute pulang pergi atau searah. \\
+		6. & transferNodes & Berisi nilai \verb/transferNodes/ yang menunjukkan titik-titik di mana penumpang diperbolehkan untuk naik / turun. \\
 		\hline
 	\end{tabular}
 \end{table}
 
 \subsection{Mesin Navigasi KIRI}
 
-Mesin navigasi KIRI merupakan sebuah program yang mendengarkan dan menjawab
-permintaan navigasi dalam bentuk \textit{HTTP request} di \textit{port} 8000.
-Program ini dibangun di atas bahasa Java, yang terdiri dari beberapa kelas yang
-ditunjukkan pada gambar \ref{fig:2_diagram_kelas_sistem_kini}.
+Mesin navigasi KIRI merupakan sebuah program yang mendengarkan dan menjawab permintaan navigasi dalam bentuk \textit{HTTP request} di \textit{port} 8000. Program ini dibangun di atas bahasa Java, yang terdiri dari beberapa kelas yang ditunjukkan pada gambar \ref{fig:2_diagram_kelas_sistem_kini}.
 
 \begin{figure}
-\centering
-\includegraphics[scale=0.5]{Gambar/2_diagram_kelas_sistem_kini}
-\caption{Diagram Kelas Sistem Kini} 
-\label{fig:2_diagram_kelas_sistem_kini}
+	\centering
+	\includegraphics[scale=0.5]{Gambar/2_diagram_kelas_sistem_kini}
+	\caption{Diagram Kelas Sistem Kini} 
+	\label{fig:2_diagram_kelas_sistem_kini}
 \end{figure}
 
-Penjelasan untuk setiap kelas dapat dilihat pada tabel
-\ref{tab:2_penjelasan_kelas_kelas_sistem_kini}.
+Penjelasan untuk setiap kelas dapat dilihat pada tabel \ref{tab:2_penjelasan_kelas_kelas_sistem_kini}.
 
 \begin{table}
 	\caption{Penjelasan Kelas-Kelas Sistem Kini}
@@ -136,31 +87,16 @@ Penjelasan untuk setiap kelas dapat dilihat pada tabel
 		\hline
 		Kelas & Keterangan \\
 		\hline
-		Main & Kelas yang berfungsi sebagai antarmuka program, untuk dijalankan
-			dari \textit{console}. \\
-		NewMenjanganServer & Kelas yang bertugas menjalankan program sebagai
-			server, yakni menyiapkan servis-servis untuk dijalankan. \\
-		AdminListener & Kelas yang berfungsi untuk mendengarkan dan merespon
-			perintah administrasi, seperti \textit{ping}, \textit{shutdown},
-			dll. \\
-		ServiceListener & Kelas yang berfungsi untuk mendengarkan dan merespon
-			permintaan untuk navigasi. Servis ini menerima masukan berupa
-			koordinat asal dan tujuan, dan mengembalikan rute angkot yang harus
-			dinaiki. \\
-		Worker & Kelas ini berfungsi untuk melakukan pekerjaan yang telah
-			diterima oleh ServiceListener. Selain itu, di awal kelas ini juga
-			menyiapkan bahan-bahan yang diperlukan untuk melakukan perhitungan
-			rute, yakni mengkonversi data trayek ke dalam bentuk graf. \\
-		Track & Kelas ini berfungsi untuk menyimpan informasi sebuah trayek
-			angkot beserta rutenya. \\
+		Main & Kelas yang berfungsi sebagai antarmuka program, untuk dijalankan dari \textit{console}. \\
+		NewMenjanganServer & Kelas yang bertugas menjalankan program sebagai server, yakni menyiapkan servis-servis untuk dijalankan. \\
+		AdminListener & Kelas yang berfungsi untuk mendengarkan dan merespon perintah administrasi, seperti \textit{ping}, \textit{shutdown}, dll. \\
+		ServiceListener & Kelas yang berfungsi untuk mendengarkan dan merespon permintaan untuk navigasi. Servis ini menerima masukan berupa koordinat asal dan tujuan, dan mengembalikan rute angkot yang harus dinaiki. \\
+		Worker & Kelas ini berfungsi untuk melakukan pekerjaan yang telah diterima oleh ServiceListener. Selain itu, di awal kelas ini juga menyiapkan bahan-bahan yang diperlukan untuk melakukan perhitungan rute, yakni mengkonversi data trayek ke dalam bentuk graf. \\
+		Track & Kelas ini berfungsi untuk menyimpan informasi sebuah trayek angkot beserta rutenya. \\
 		Graph & Kelas ini merepresentasikan sebuah graf. \\
-		GraphNode & Kelas ini merepresentasikan setiap \textit{node} yang
-			dimiliki oleh graf. \\
-		GraphEdge & Kelas ini merepresentasikan sebuah \textit{edge} dari
-			GraphNode. \\
-		Dijkstra & Kelas ini merepresentasikan algoritma \textit{Dijkstra's
-			shortest path}\cite{Cormen:2001}, untuk digunakan dalam pencarian
-			rute. \\
+		GraphNode & Kelas ini merepresentasikan setiap \textit{node} yang dimiliki oleh graf. \\
+		GraphEdge & Kelas ini merepresentasikan sebuah \textit{edge} dari GraphNode. \\
+		Dijkstra & Kelas ini merepresentasikan algoritma \textit{Dijkstra's shortest path}\cite{Cormen:2001}, untuk digunakan dalam pencarian rute. \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -168,31 +104,21 @@ Penjelasan untuk setiap kelas dapat dilihat pada tabel
 \section{Protokol angkot.web.id}
 \label{sec:protokol_angkot_web_id}
 
-Berdasarkan kode sumber angkot.web.id \cite{angkotwebid}, situs angkot.web.id
-memanfaatkan \textit{HTTP request} \cite{rfc7231} untuk menerima
-perintah-perintah dan mengembalikan respon berupa data dalam sintaks JSON
-\cite{rfc7159}. Beberapa dari perintah tersebut dijelaskan pada subbab-subbab
-berikut.
+Berdasarkan kode sumber angkot.web.id \cite{angkotwebid}, situs angkot.web.id memanfaatkan \textit{HTTP request} \cite{rfc7231} untuk menerima perintah-perintah dan mengembalikan respon berupa data dalam sintaks JSON \cite{rfc7159}. Beberapa dari perintah tersebut dijelaskan pada subbab-subbab berikut.
 
 \subsection{Transportation List}
-Perintah ini digunakan untuk mendapatkan daftar semua daftar transportasi umum,
-dan dapat diakses pada dengan melakukan \textit{HTTP request GET}
-pada path \verb|/route/transportation-list.json|, tanpa parameter apapun. Adapun
-kembalian dari perintah ini adalah:
+Perintah ini digunakan untuk mendapatkan daftar semua daftar transportasi umum, dan dapat diakses pada dengan melakukan \textit{HTTP request GET} pada path \verb|/route/transportation-list.json|, tanpa parameter apapun. Adapun kembalian dari perintah ini adalah:
 
 \begin{itemize}
 	\item \verb/status/: Status kembalian dari perintah yang dikirimkan
-	\item \verb/provinces/: \textit{Array} provinsi yang terdaftar, masing-
-		masing elemen merupakan \textit{array} lain yang berisi:
+	\item \verb/provinces/: \textit{Array} provinsi yang terdaftar, masing-masing elemen merupakan \textit{array} lain yang berisi:
 		\begin{itemize}
 			\item Kode provinsi
 			\item Nama provinsi
 		\end{itemize}
-	\item \verb/transportations/: \textit{Array} provinsi yang terdaftar,
-		masing-masing berisi:
+	\item \verb/transportations/: \textit{Array} provinsi yang terdaftar, masing-masing berisi:
 		\begin{itemize}
-			\item \verb/hasroute/: Menyatakan apakah trayek ini memiliki data
-				rute
+			\item \verb/hasroute/: Menyatakan apakah trayek ini memiliki data rute
 			\item \verb/company/: Perusahaan pengelola trayek ini
 			\item \verb/id/: Indeks trayek ini dalam basis data
 			\item \verb/origin/: Awal rute trayek
@@ -205,8 +131,7 @@ kembalian dari perintah ini adalah:
 		\end{itemize}
 \end{itemize}
 
-Contoh kembalian dari perintah transportation list dapat dilihat pada kode
-di bawah ini:
+Contoh kembalian dari perintah transportation list dapat dilihat pada kode di bawah ini:
 
 \begin{lstlisting}
 {
@@ -237,10 +162,7 @@ di bawah ini:
 \end{lstlisting}
 
 \subsection{Transportation Detail}
-Perintah ini digunakan untuk mendapatkan detail dari sebuah trayek transportasi,
-dan diakses dengan melakukan \textit{HTTP request GET} pada path
-\verb|/route/transportation/nnn.json| (di mana \textit{nnn} adalah nomer kode
-trayek dalam basis data). Adapun kembalian dari perintah ini adalah:
+Perintah ini digunakan untuk mendapatkan detail dari sebuah trayek transportasi, dan diakses dengan melakukan \textit{HTTP request GET} pada path \verb|/route/transportation/nnn.json| (di mana \textit{nnn} adalah nomer kode trayek dalam basis data). Adapun kembalian dari perintah ini adalah:
 
 \begin{itemize}
 	\item \verb/id/: Nomer kode trayek.
@@ -258,8 +180,7 @@ trayek dalam basis data). Adapun kembalian dari perintah ini adalah:
 					\item \verb/origin/: Awal rute trayek
 					\item \verb/city/: Kote tempat trayek ini beroperasi
 				\end{itemize}
-			\item \verb/properties/: Data geometri rute trayek ini, mengikuti
-				standar GeoJSON untuk tipe data \verb/MultiLineString/.
+			\item \verb/properties/: Data geometri rute trayek ini, mengikuti standar GeoJSON untuk tipe data \verb/MultiLineString/.
 		\end{itemize}
 	\item \verb/created/: \textit{UNIX time} trayek ini dibuat
 	\item \verb/status/: Status kembalian dari perintah yang dikirimkan
