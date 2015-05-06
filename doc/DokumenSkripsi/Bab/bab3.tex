@@ -34,8 +34,33 @@ Pada basis data, tetap diusahakan untuk meminimalisir perubahan. Dari struktur t
 	\item Kode yang mengacu pada basis data angkot.web.id, dalam hal ini \verb/id/.
 \end{itemize}
 
-Peneliti memutuskan untuk menyimpan kedua informasi tersebut dalam kolom \verb/internalInfo/, dengan format "angkotwebid:\textit{id}". Dengan cara ini, trayek yang memiliki \verb/internalInfo/ diawali dengan "angkotwebid:" akan diproses lebih lanjut dengan menarik data dari angkot.web.id. Penarikan data dilakukan dengan mendapatkan \textit{id} yang berada setelah simbol ":", dan menariknya di angkot.web.id dengan perintah \textit{Transportation Detail}. Sebagai contoh, jika ditemukan data dengan \verb/internalInfo/ bernilai "angkotwebid:1", akan ditarik data rute dari alamat \url{https://angkot.web.id/route/transportation/1.json}. Rute yang didapat tersebut kemudian akan dimasukkan ke dalam basis data pada kolom \verb/geodata/.
+%Peneliti memutuskan untuk menyimpan kedua informasi tersebut dalam kolom \verb/internalInfo/, dengan format "angkotwebid:\textit{id}". Dengan cara ini, trayek yang memiliki \verb/internalInfo/ diawali dengan "angkotwebid:" akan diproses lebih lanjut dengan menarik data dari angkot.web.id. Penarikan data dilakukan dengan mendapatkan \textit{id} yang berada setelah simbol ":", dan menariknya di angkot.web.id dengan perintah \textit{Transportation Detail}. Sebagai contoh, jika ditemukan data dengan \verb/internalInfo/ bernilai "angkotwebid:1", akan ditarik data rute dari alamat \url{https://angkot.web.id/route/transportation/1.json}. Rute yang didapat tersebut kemudian akan dimasukkan ke dalam basis data pada kolom \verb/geodata/.
+
+\subsection{Analisis Aplikasi}
+
+Pada penelitian ini, mesin navigasi KIRI dimodifikasi dengan menambahkan dua kelas baru, yaitu kelas \verb/DataPuller/ yang difungsikan sebagai penarik data dari angkot.web.id, serta kelas \verb/DataPullerException/ untuk mencatat kesalahan pada saat menarik data dari angkot.web.id. Kelas-kelas yang baru serta yang lama digambarkan pada diagram kelas di gambar \ref{fig:3_diagram_kelas_sistem_usulan}.
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5]{Gambar/3_diagram_kelas_sistem_usulan}
+	\caption{Diagram Kelas Sistem Usulan (Tahap Analisis)} 
+	\label{fig:3_diagram_kelas_sistem_usulan}
+\end{figure}
 
 \section{Angkot.web.id}
 
+Pada dasarnya angkot.web.id tidak diperlukan adanya perubahan, karena KIRI dapat memanfaatkan protokol \textit{transportartion detail}. Namun, untuk keperluan optimasi, ada sedikit perubahan yang dijelaskan pada subbab berikutnya.
+
 \section{Optimasi}
+
+Dengan mekanisme yang sudah dijelaskan di subbab sebelumnya, data pada KIRI dapat tersinkronisasi dengan angkot.web.id. Namun, mekanisme tersebut dirasa tidak optimal. Setiap pukul 0.30, KIRI akan menarik ke-33 rute angkot yang dicatat pada angkot.web.id, terlepas dari apakah ada perubahan pada rute angkot atau tidak. Walaupun hanya menarik 33 rute dan dilakukan pada jam tidak sibuk, peneliti merasa optimasi tetap dibutuhkan sehingga solusi ini skalabel.
+
+Mekanisme \textit{Transportation List} maupun \textit{Transportation Detail} pada angkot.web.id memberikan informasi \textit{updated} yang menunjukkan waktu terakhir rute ini diperbaharui. Pada saat menarik data dari angkot.web.id, informasi ini dapat dicatat dan disimpan pada basis data, untuk dibandingkan pada kesempatan berikutnya. Jika informasi \textit{updated} yang terdapat pada basis data sama atau lebih baru dibandingan dengan yang didapat dari angkot.web.id, maka tidak diperlukan adanya penarikan rute dari angkot.web.id. Adapun informasi yang dicatat pada basis data KIRI menjadi sebagai berikut:
+
+\begin{itemize}
+	\item Penanda bahwa rute ini ditarik dari angkot.web.id
+	\item Kode yang mengacu pada basis data angkot.web.id, dalam hal ini \verb/id/.
+	\item \textbf{Waktu terakhir rute ini berubah pada angkot.web.id}
+\end{itemize}
+
+Perlu dicatat pula bahwa tidak semua data trayek di angkot.web.id akan diintegrasikan dengan KIRI. Oleh karena itu, dibutuhkan sedikit perubahan pada angkot.web.id, sehingga KIRI dapat menarik informasi untuk rute-rute yang dibutuhkan saja. Detail dari perubahan ini akan dijelaskan pada bab berikutnya.
