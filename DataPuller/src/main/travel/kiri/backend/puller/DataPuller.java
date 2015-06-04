@@ -55,7 +55,7 @@ public class DataPuller {
 			if (result.getString(4).startsWith("angkotwebid:")) {
 				String[] fields = result.getString(4).split(":");
 				int id = Integer.parseInt(fields[1]);
-				int lastUpdate = fields.length > 2 ? Integer.parseInt(fields[2]) : 0;
+				long lastUpdate = fields.length > 2 ? Long.parseLong(fields[2]) : 0;
 				obsoleteRoutesMap.put(id, new AngkotWebIdCacheInfo(result.getString(1), result.getString(2), lastUpdate, id, result.getString(3) != null));
 			}
 		}
@@ -363,11 +363,11 @@ public class DataPuller {
 	}
 	
 	private static class AngkotWebIdCacheInfo {
-		public final int lastUpdate;
+		public final long lastUpdate;
 		public final boolean pathAvailable;
 		
 		public AngkotWebIdCacheInfo(String trackTypeId, String trackId,
-				int lastUpdate, int id, boolean pathAvailable) {
+				long lastUpdate, int id, boolean pathAvailable) {
 			super();
 			this.lastUpdate = lastUpdate;
 			this.pathAvailable = pathAvailable;

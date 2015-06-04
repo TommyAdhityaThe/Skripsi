@@ -2,6 +2,9 @@
 \label{chap:implementasi_pengujian}
 
 \section{Implementasi}
+\label{chap:implementasi}
+
+\subsection{Lingkungan Implementasi}
 
 Implementasi dilakukan di dua buah mesin. Implementasi pertama dilakukan pada komputer peneliti untuk keperluan pengujian fungsional. Komputer tersebut memiliki spesifikasi seperti berikut:
 
@@ -9,18 +12,43 @@ Implementasi dilakukan di dua buah mesin. Implementasi pertama dilakukan pada ko
 	\item Prosesor: 1.80 GHz
 	\item RAM: 4.00 GB
 	\item Sistem Operasi: Windows 8.1 Pro (64-bit)
+	\item Versi Java: 1.7.0\_51 (Oracle)
 \end{itemize}
 
-Implementasi berikutnya dilakukan pada sebuah mesin virtual yang dibuat pada \textit{platform Windows Azure}. Mesin virtual ini terhubung ke internet serta beroperasi 24 jam sehingga dapat melayani permintaan tanpa henti. Adapun spesifikasi dari mesin virtual ini adalah sebagai berikut:
+Implementasi kedua dilakukan pada sebuah mesin virtual yang dibuat pada \textit{platform Windows Azure} untuk keperluan pengujian eksperimental. Mesin virtual ini terhubung ke internet serta beroperasi 24 jam sehingga dapat melayani permintaan tanpa henti. Adapun spesifikasi dari mesin virtual ini adalah sebagai berikut:
 
 \begin{itemize}
 	\item Prosesor: 1 core
 	\item RAM: 1.75 GB
 	\item Hard disk: 28.8 GB
 	\item Sistem Operasi: Ubuntu 14.04.2 LTS (64-bit)
+	\item Versi Java: 1.7.0\_79 (OpenJDK)
 \end{itemize}
 
-\section{Pengujian}
+\subsection{Basis Data}
+
+Aplikasi yang dibuat membutuhkan adanya implementasi tabel sesuai dengan yang dijabarkan di tabel \ref{tab:2_struktur_tabel_tracks}. Dalam penelitian ini, digunakan basis data MySQL\footnote{\url{https://www.mysql.com/}}. Dalam pengujian eksperimental, aplikasi menggunakan tabel yang sudah ada di basis data KIRI (bersifat rahasia). Untuk pengujian fungsional, tabel baru akan dibuat dengan beberapa data sampel untuk keperluan pengujian saja. Berikut adalah skrip SQL yang digunakan untuk membentuk dan mengisi tabel tersebut:
+
+\begin{lstlisting}
+DROP TABLE IF EXISTS `tracks`;
+CREATE TABLE IF NOT EXISTS `tracks` (
+	`trackId` varchar(32) NOT NULL,
+	`trackTypeId` varchar(32) NOT NULL DEFAULT 'bdo_angkot',
+	`trackName` varchar(64) NOT NULL,
+	`internalInfo` varchar(1024) NOT NULL,
+	`geodata` linestring DEFAULT NULL,
+	`pathloop` tinyint(1) NOT NULL DEFAULT '0',
+	`penalty` decimal(4,2) NOT NULL DEFAULT '1.00',
+	`transferNodes` varchar(1024) DEFAULT NULL,
+	`extraParameters` varchar(256) DEFAULT NULL,
+	`officialTrackNo` varchar(32) DEFAULT NULL,
+	`officialTrackName` varchar(256) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `tracks` VALUES ('testblank', 'bdo_angkot', 'Test Update from NULL', 'angkotwebid:642', GeomFromText(NULL), '0', '1.00', NULL, NULL, '1A', 'Abdul Muis - Cicaheum (via Binong)');
+\end{lstlisting}
+
+\section{Hasil Pengujian}
 
 \subsection{Pengujian Fungsional}
 
