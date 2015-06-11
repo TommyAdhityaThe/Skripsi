@@ -25,20 +25,20 @@ Penulis menetapkan penggunaan metode \textit{polling} selama 24 jam sekali, dan 
 
 \subsection{Penyimpanan Data}
 
-Penyimpanan data diusahakan untuk meminimalisir perubahan serta menjaga kompatibilitas dengan versi sebelumnya. Seperti yang telah dibahas pada bab 2, mesin navigasi KIRI menggunakan berkas \verb/tracks.conf/ sebagai jembatan dari basis data menuju mesin navigasi. Berkas inilah yang akan dikonstruksi menjadi graf oleh kelas \verb/Worker/. Peneliti memutuskan untuk tidak mengubah format dari berkas ini, melainkan melakukan modifikasi pada basis data.
+Penyimpanan data diusahakan untuk meminimalisir perubahan serta menjaga kompatibilitas dengan versi sebelumnya. Seperti yang telah dibahas pada bab 2, mesin navigasi KIRI menggunakan berkas \texttt{tracks.conf} sebagai jembatan dari basis data menuju mesin navigasi. Berkas inilah yang akan dikonstruksi menjadi graf oleh kelas \texttt{Worker}. Peneliti memutuskan untuk tidak mengubah format dari berkas ini, melainkan melakukan modifikasi pada basis data.
 
-Pada basis data, tetap diusahakan untuk meminimalisir perubahan. Dari struktur tabel \verb/tracks/ yang digunakan, diidentifikasi bahwa kolom `internalInfo` tidak digunakan dalam perhitungan (tidak berpengaruh pada konstruksi graf). Oleh sebab itu, kolom ini menjadi kandidat untuk disisipkan informasi terkait dengan penarikan data dari angkot.web.id. Adapun informasi yang harus disimpan adalah:
+Pada basis data, tetap diusahakan untuk meminimalisir perubahan. Dari struktur tabel \texttt{tracks} yang digunakan, diidentifikasi bahwa kolom `internalInfo` tidak digunakan dalam perhitungan (tidak berpengaruh pada konstruksi graf). Oleh sebab itu, kolom ini menjadi kandidat untuk disisipkan informasi terkait dengan penarikan data dari angkot.web.id. Adapun informasi yang harus disimpan adalah:
 
 \begin{itemize}
 	\item Penanda bahwa rute ini ditarik dari angkot.web.id
-	\item Kode yang mengacu pada basis data angkot.web.id, dalam hal ini \verb/id/.
+	\item Kode yang mengacu pada basis data angkot.web.id, dalam hal ini \texttt{id}.
 \end{itemize}
 
-%Peneliti memutuskan untuk menyimpan kedua informasi tersebut dalam kolom \verb/internalInfo/, dengan format "angkotwebid:\textit{id}". Dengan cara ini, trayek yang memiliki \verb/internalInfo/ diawali dengan "angkotwebid:" akan diproses lebih lanjut dengan menarik data dari angkot.web.id. Penarikan data dilakukan dengan mendapatkan \textit{id} yang berada setelah simbol ":", dan menariknya di angkot.web.id dengan perintah \textit{Transportation Detail}. Sebagai contoh, jika ditemukan data dengan \verb/internalInfo/ bernilai "angkotwebid:1", akan ditarik data rute dari alamat \url{https://angkot.web.id/route/transportation/1.json}. Rute yang didapat tersebut kemudian akan dimasukkan ke dalam basis data pada kolom \verb/geodata/.
+%Peneliti memutuskan untuk menyimpan kedua informasi tersebut dalam kolom \texttt{internalInfo}, dengan format "angkotwebid:\textit{id}". Dengan cara ini, trayek yang memiliki \texttt{internalInfo} diawali dengan "angkotwebid:" akan diproses lebih lanjut dengan menarik data dari angkot.web.id. Penarikan data dilakukan dengan mendapatkan \textit{id} yang berada setelah simbol ":", dan menariknya di angkot.web.id dengan perintah \textit{Transportation Detail}. Sebagai contoh, jika ditemukan data dengan \texttt{internalInfo} bernilai "angkotwebid:1", akan ditarik data rute dari alamat \url{https://angkot.web.id/route/transportation/1.json}. Rute yang didapat tersebut kemudian akan dimasukkan ke dalam basis data pada kolom \texttt{geodata}.
 
 \subsection{Analisis Aplikasi}
 
-Pada penelitian ini, mesin navigasi KIRI dimodifikasi dengan menambahkan dua kelas baru, yaitu kelas \verb/DataPuller/ yang difungsikan sebagai penarik data dari angkot.web.id, serta kelas \verb/DataPullerException/ untuk mencatat kesalahan pada saat menarik data dari angkot.web.id. Kelas-kelas yang baru serta yang lama digambarkan pada diagram kelas di gambar \ref{fig:3_diagram_kelas_sistem_usulan}.
+Pada penelitian ini, mesin navigasi KIRI dimodifikasi dengan menambahkan dua kelas baru, yaitu kelas \texttt{DataPuller} yang difungsikan sebagai penarik data dari angkot.web.id, serta kelas \texttt{DataPullerException} untuk mencatat kesalahan pada saat menarik data dari angkot.web.id. Kelas-kelas yang baru serta yang lama digambarkan pada diagram kelas di gambar \ref{fig:3_diagram_kelas_sistem_usulan}.
 
 \begin{figure}
 	\centering
@@ -59,7 +59,7 @@ Mekanisme \textit{Transportation List} maupun \textit{Transportation Detail} pad
 
 \begin{itemize}
 	\item Penanda bahwa rute ini ditarik dari angkot.web.id
-	\item Kode yang mengacu pada basis data angkot.web.id, dalam hal ini \verb/id/.
+	\item Kode yang mengacu pada basis data angkot.web.id, dalam hal ini \texttt{id}.
 	\item \textbf{Waktu terakhir rute ini berubah pada angkot.web.id}
 \end{itemize}
 

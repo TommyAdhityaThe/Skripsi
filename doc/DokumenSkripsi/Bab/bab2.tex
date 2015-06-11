@@ -17,13 +17,13 @@ Seperti dapat dilihat pada gambar \ref{fig:2_arsitektur_saat_ini}, elemen
 arsitektur yang mendukung navigasi KIRI dibagi menjadi tiga, yaitu:
 
 \begin{description}
-	\item[Basis Data KIRI] menyimpan informasi rute 33 trayek angkot, yang masing-masing mencakup identifikasi trayek (\verb/trackId/ dan \verb/trackTypeId/), nama trayek (\verb/trackName/), daftar koordinat yang dilewati (\verb/geodata/), informasi pulang-pergi (\verb/pathloop/), catatan internal (\verb/internalInfo/), prioritas untuk dipilih (\verb/penalty/), informasi naik/turun penumpang (\verb/transferNodes/), dan parameter ekstra untuk pembelian tiket (\verb/extraParameters/).
-	\item[Berkas tracks.conf] adalah hasil ekstraksi dari basis data KIRI, yang menyimpan informasi penting saja yang dibutuhkan oleh algoritma mesin navigasi KIRI, yakni: \verb/trackId/, \verb/trackTypeId/, \verb/penalty/, \verb/geodata/, \verb/pathloop/, dan \verb/transferNodes/.
+	\item[Basis Data KIRI] menyimpan informasi rute 33 trayek angkot, yang masing-masing mencakup identifikasi trayek (\texttt{trackId} dan \texttt{trackTypeId}), nama trayek (\texttt{trackName}), daftar koordinat yang dilewati (\texttt{geodata}), informasi pulang-pergi (\texttt{pathloop}), catatan internal (\texttt{internalInfo}), prioritas untuk dipilih (\texttt{penalty}), informasi naik/turun penumpang (\texttt{transferNodes}), dan parameter ekstra untuk pembelian tiket (\texttt{extraParameters}).
+	\item[Berkas tracks.conf] adalah hasil ekstraksi dari basis data KIRI, yang menyimpan informasi penting saja yang dibutuhkan oleh algoritma mesin navigasi KIRI, yakni: \texttt{trackId}, \texttt{trackTypeId}, \texttt{penalty}, \texttt{geodata}, \texttt{pathloop}, dan \texttt{transferNodes}.
 	\item[Mesin Navigasi KIRI] adalah program yang bertugas mengolah data yang ada pada berkas tracks.conf, sehingga dapat menjawab pertanyaan navigasi dari titik asal ke titik tujuan. Karena alasan historis, mesin navigasi tidak membaca data langsung dari basis data, melainkan dari berkas tracks.conf.
 \end{description}
 
 \subsection{Basis Data KIRI}
-Basis data KIRI disimpan dalam sistem manajemen basis data MySQL. Salah satu dari tabel yang digunakan adalah tabel \verb/tracks/, yang menyimpan informasi rute trayek. Struktur dari tabel ini dijelaskan pada tabel \ref{tab:2_struktur_tabel_tracks}.
+Basis data KIRI disimpan dalam sistem manajemen basis data MySQL. Salah satu dari tabel yang digunakan adalah tabel \texttt{tracks}, yang menyimpan informasi rute trayek. Struktur dari tabel ini dijelaskan pada tabel \ref{tab:2_struktur_tabel_tracks}.
 
 \begin{table}
 	\caption{Struktur Tabel tracks}
@@ -46,17 +46,17 @@ Basis data KIRI disimpan dalam sistem manajemen basis data MySQL. Salah satu dar
 \end{table}
 
 \subsection{Berkas tracks.conf}
-Karena alasan historis\footnote{Pada awalnya mesin navigasi KIRI dibangun menggunakan bahasa C++, sehingga menyulitkan dalam mengakses basis data MySQL}, mesin navigasi KIRI tidak mengakses langsung ke basis data MySQL, melainkan membaca sebuah berkas yang bernama \verb/tracks.conf/.
+Karena alasan historis\footnote{Pada awalnya mesin navigasi KIRI dibangun menggunakan bahasa C++, sehingga menyulitkan dalam mengakses basis data MySQL}, mesin navigasi KIRI tidak mengakses langsung ke basis data MySQL, melainkan membaca sebuah berkas yang bernama \texttt{tracks.conf}.
 
-Berkas \verb/tracks.conf/ ini merupakan sebuah berkas teks yang menyimpan basis data trayek yang telah dibersihkan untuk dapat dibaca dengan mudah, satu \textit{record} per baris. Setiap baris berisi 6 \textit{field} yang dipisahkan dengan \textit{tab} (\verb/\t/). Berikut adalah penjelasan dari keenam \textit{field} tersebut:
+Berkas \texttt{tracks.conf} ini merupakan sebuah berkas teks yang menyimpan basis data trayek yang telah dibersihkan untuk dapat dibaca dengan mudah, satu \textit{record} per baris. Setiap baris berisi 6 \textit{field} yang dipisahkan dengan \textit{tab} (\texttt{\t}). Berikut adalah penjelasan dari keenam \textit{field} tersebut:
 
 \begin{description}
-	\item[trackTypeId.trackId] Berisi \verb/trackTypeId/ dan \verb/trackId/ dipisahkan dengan titik.
-	\item[penalty] Berisi nilai \verb/penalty/.
+	\item[trackTypeId.trackId] Berisi \texttt{trackTypeId} dan \texttt{trackId} dipisahkan dengan titik.
+	\item[penalty] Berisi nilai \texttt{penalty}.
 	\item[numberOfNodes] Berisi jumlah \textit{node} (titik) dari rute trayek ini.
 	\item[nodes] Berisi daftar koordinat \textit{node} dari rute trayek ini dipisahkan dengan \textit{tab}. Setiap koordinat node terdiri dari \textit{latitude} dan \textit{longitude} yang dipisahkan dengan spasi.
-	\item[pathLoop] Berisi nilai \verb/pathloop/ yang menunjukkan apakah rute ini merupakan rute pulang pergi atau searah.
-	\item[transferNodes] Berisi nilai \verb/transferNodes/ yang menunjukkan titik-titik di mana penumpang diperbolehkan untuk naik / turun.
+	\item[pathLoop] Berisi nilai \texttt{pathloop} yang menunjukkan apakah rute ini merupakan rute pulang pergi atau searah.
+	\item[transferNodes] Berisi nilai \texttt{transferNodes} yang menunjukkan titik-titik di mana penumpang diperbolehkan untuk naik / turun.
 \end{description}
 
 \subsection{Mesin Navigasi KIRI}
@@ -91,27 +91,27 @@ Adapun penjelasan untuk setiap kelas dapat dilihat di bawah ini:
 Berdasarkan kode sumber angkot.web.id \cite{angkotwebid}, situs angkot.web.id memanfaatkan \textit{HTTP request} \cite{rfc7231} untuk menerima perintah-perintah dan mengembalikan respon berupa data dalam sintaks JSON \cite{rfc7159}. Beberapa dari perintah tersebut dijelaskan pada subbab-subbab berikut.
 
 \subsection{Transportation List}
-Perintah ini digunakan untuk mendapatkan daftar semua daftar transportasi umum, dan dapat diakses pada dengan melakukan \textit{HTTP request GET} pada path \verb|/route/transportation-list.json|, tanpa parameter apapun. Adapun kembalian dari perintah ini adalah:
+Perintah ini digunakan untuk mendapatkan daftar semua daftar transportasi umum, dan dapat diakses pada dengan melakukan \textit{HTTP request GET} pada path \texttt{/route/transportation-list.json}, tanpa parameter apapun. Adapun kembalian dari perintah ini adalah:
 
 \begin{itemize}
-	\item \verb/status/: Status kembalian dari perintah yang dikirimkan
-	\item \verb/provinces/: \textit{Array} provinsi yang terdaftar, masing-masing elemen merupakan \textit{array} lain yang berisi:
+	\item \texttt{status}: Status kembalian dari perintah yang dikirimkan
+	\item \texttt{provinces}: \textit{Array} provinsi yang terdaftar, masing-masing elemen merupakan \textit{array} lain yang berisi:
 		\begin{itemize}
 			\item Kode provinsi
 			\item Nama provinsi
 		\end{itemize}
-	\item \verb/transportations/: \textit{Array} provinsi yang terdaftar, masing-masing berisi:
+	\item \texttt{transportations}: \textit{Array} provinsi yang terdaftar, masing-masing berisi:
 		\begin{itemize}
-			\item \verb/hasroute/: Menyatakan apakah trayek ini memiliki data rute
-			\item \verb/company/: Perusahaan pengelola trayek ini
-			\item \verb/id/: Indeks trayek ini dalam basis data
-			\item \verb/origin/: Awal rute trayek
-			\item \verb/destination/: Akhir rute trayek
-			\item \verb/province/: Provinsi tempat trayek ini beroperasi
-			\item \verb/city/: Kota tempat trayek ini beroperasi
-			\item \verb/number/: Nomer trayek
-			\item \verb/created/: \textit{UNIX time} trayek ini dibuat
-			\item \verb/updated/: \textit{UNIX time} trayek ini terakhir diperbaharui
+			\item \texttt{hasroute}: Menyatakan apakah trayek ini memiliki data rute
+			\item \texttt{company}: Perusahaan pengelola trayek ini
+			\item \texttt{id}: Indeks trayek ini dalam basis data
+			\item \texttt{origin}: Awal rute trayek
+			\item \texttt{destination}: Akhir rute trayek
+			\item \texttt{province}: Provinsi tempat trayek ini beroperasi
+			\item \texttt{city}: Kota tempat trayek ini beroperasi
+			\item \texttt{number}: Nomer trayek
+			\item \texttt{created}: \textit{UNIX time} trayek ini dibuat
+			\item \texttt{updated}: \textit{UNIX time} trayek ini terakhir diperbaharui
 		\end{itemize}
 \end{itemize}
 
@@ -146,30 +146,30 @@ Contoh kembalian dari perintah transportation list dapat dilihat pada kode di ba
 \end{lstlisting}
 
 \subsection{Transportation Detail}
-Perintah ini digunakan untuk mendapatkan detail dari sebuah trayek transportasi, dan diakses dengan melakukan \textit{HTTP request GET} pada path \verb|/route/transportation/nnn.json| (di mana \textit{nnn} adalah nomer kode trayek dalam basis data). Adapun kembalian dari perintah ini adalah:
+Perintah ini digunakan untuk mendapatkan detail dari sebuah trayek transportasi, dan diakses dengan melakukan \textit{HTTP request GET} pada path \texttt{/route/transportation/nnn.json} (di mana \textit{nnn} adalah nomer kode trayek dalam basis data). Adapun kembalian dari perintah ini adalah:
 
 \begin{itemize}
-	\item \verb/id/: Nomer kode trayek.
-	\item \verb/geojson/: Data rute dan atributnya dalam format
+	\item \texttt{id}: Nomer kode trayek.
+	\item \texttt{geojson}: Data rute dan atributnya dalam format
 		GeoJSON\cite{geojson}, terdiri dari:
 		\begin{itemize}
-			\item \verb/type/: Tipe GeoJSON yang digunakan
-			\item \verb/properties/: Properti-properti data GeoJSON, terdiri dari:
+			\item \texttt{type}: Tipe GeoJSON yang digunakan
+			\item \texttt{properties}: Properti-properti data GeoJSON, terdiri dari:
 				\begin{itemize}
-					\item \verb/number/: Nomer trayek
-					\item \verb/accept/: \textit{tidak diketahui}
-					\item \verb/company/: Perusahaan pengelola trayek ini
-					\item \verb/destination/: Akhir rute trayek
-					\item \verb/province/: Provisi tempat trayek ini beroperasi
-					\item \verb/origin/: Awal rute trayek
-					\item \verb/city/: Kote tempat trayek ini beroperasi
+					\item \texttt{number}: Nomer trayek
+					\item \texttt{accept}: \textit{tidak diketahui}
+					\item \texttt{company}: Perusahaan pengelola trayek ini
+					\item \texttt{destination}: Akhir rute trayek
+					\item \texttt{province}: Provisi tempat trayek ini beroperasi
+					\item \texttt{origin}: Awal rute trayek
+					\item \texttt{city}: Kote tempat trayek ini beroperasi
 				\end{itemize}
-			\item \verb/properties/: Data geometri rute trayek ini, mengikuti standar GeoJSON untuk tipe data \verb/MultiLineString/.
+			\item \texttt{properties}: Data geometri rute trayek ini, mengikuti standar GeoJSON untuk tipe data \texttt{MultiLineString}.
 		\end{itemize}
-	\item \verb/created/: \textit{UNIX time} trayek ini dibuat
-	\item \verb/status/: Status kembalian dari perintah yang dikirimkan
-	\item \verb/submission_id/: Kode submisi dari trayek yang dimaksud
-	\item \verb/updated/: \textit{UNIX time} trayek ini terakhir diperbaharui
+	\item \texttt{created}: \textit{UNIX time} trayek ini dibuat
+	\item \texttt{status}: Status kembalian dari perintah yang dikirimkan
+	\item \texttt{submission\_id}: Kode submisi dari trayek yang dimaksud
+	\item \texttt{updated}: \textit{UNIX time} trayek ini terakhir diperbaharui
 \end{itemize}
 
 Contoh kembalian dari perintah transportation dapat dilihat pada kode berikut:

@@ -3,7 +3,7 @@
 
 \section{Perancangan Aplikasi Mesin Navigasi KIRI}
 
-Seperti telah dibahas pada bab analisis, ada beberapa penambahan kelas pada mesin navigasi KIRI. Adapun kelas utama yang ditambahkan adalah kelas \verb/DataPuller/ yang bertanggung jawab untuk menarik data dari angkot.web.id. Kelas ini memiliki beberapa \textit{method} antara lain:
+Seperti telah dibahas pada bab analisis, ada beberapa penambahan kelas pada mesin navigasi KIRI. Adapun kelas utama yang ditambahkan adalah kelas \texttt{DataPuller} yang bertanggung jawab untuk menarik data dari angkot.web.id. Kelas ini memiliki beberapa \textit{method} antara lain:
 
 \begin{itemize}
 	\item \textbf{public void (File sqlPropertiesFile, PrintStream output)} \\
@@ -55,7 +55,7 @@ Seperti telah dibahas pada bab analisis, ada beberapa penambahan kelas pada mesi
 		\textbf{Kembalian:} informasi rute dalam format berkas tracks.conf
 \end{itemize}
 
-Selain itu, peneliti juga membuat kelas lain \verb/RouteResult/ yang merupakan \textit{inner class} dari \verb/DataPuller/, untuk menampung hasil dari pembuatan rute serta pembacaan rute dari angkot.web.id. Kelas ini memiliki beberapa atribut antara lain:
+Selain itu, peneliti juga membuat kelas lain \texttt{RouteResult} yang merupakan \textit{inner class} dari \texttt{DataPuller}, untuk menampung hasil dari pembuatan rute serta pembacaan rute dari angkot.web.id. Kelas ini memiliki beberapa atribut antara lain:
 
 \begin{itemize}
 	\item int \textbf{lastUpdate} \\
@@ -66,9 +66,9 @@ Selain itu, peneliti juga membuat kelas lain \verb/RouteResult/ yang merupakan \
 		Menyimpan representasi rute ini dalam format query MySQL.
 \end{itemize}
 
-Kelas \verb/RouteResult/ tidak memiliki method kecuali konstruktor dan getter.
+Kelas \texttt{RouteResult} tidak memiliki method kecuali konstruktor dan getter.
 
-Terakhir, ditambahkan pula kelas \verb/DataPullerException/ untuk mencatat segala eksepsi pada saat menarik data dari angkot.web.id.
+Terakhir, ditambahkan pula kelas \texttt{DataPullerException} untuk mencatat segala eksepsi pada saat menarik data dari angkot.web.id.
 
 Detail seluruh kelas yang ditambahkan dapat dilihat pada kelas diagram pada gambar \ref{fig:4_diagram_kelas}.
 
@@ -83,7 +83,7 @@ Detail seluruh kelas yang ditambahkan dapat dilihat pada kelas diagram pada gamb
 
 Protokol untuk melakukan sinkronisasi dibuat di atas protokol \textit{Transportation List} dan \textit{Transportation Detail} milik situs angkot.web.id. Di awal sinkronisasi, mesin navigasi KIRI mencatat trayek apa saja yang harus disinkronkan dengan angkot.web.id. Kemudian, mesin navigasi KIRI akan mengirimkan permintaan \textit{Transportartion List} dengan menyertakan parameter id/kode angkot angkot.web.id, yang dipisahkan dengan \textit{pipe} ("|"). Tambahan parameter ini merupakan hasil dari optimasi protokol yang sudah ada, sehingga jawaban yang dikirimkan hanya mencakup angkot yang diperlukan oleh KIRI saja.
 
-Contohnya, permintaan \textit{Transportation List} yang meminta status dari angkot dengan kode 1 dan 2 saja menggunakan perintah \verb@GET /route/transportation-list.json?id=1|2@. Hasil dari permintaan tersebut akan menghasilkan kembalian kurang lebih seperti berikut:
+Contohnya, permintaan \textit{Transportation List} yang meminta status dari angkot dengan kode 1 dan 2 saja menggunakan perintah \texttt{GET /route/transportation-list.json?id=1|2}. Hasil dari permintaan tersebut akan menghasilkan kembalian kurang lebih seperti berikut:
 
 \begin{lstlisting}
 {
@@ -124,7 +124,7 @@ Contohnya, permintaan \textit{Transportation List} yang meminta status dari angk
 }
 \end{lstlisting}
 
-Dari kembalian di atas, mesin navigasi KIRI dapat mengetahui kapan rute di angkot.web.id terakhir diperbaharui, untuk trayek-trayek yang diminta. Untuk setiap rute yang telah berubah, KIRI mengirimkan lagi perintah berikutnya, yaitu \textit{Transportation Detail}, yang memberikan rute penuh untuk trayek yang diminta. Sebagai contoh, jika rute dengan kode 1 ditemukan telah berubah, maka akan dikirimkan perintah \textit{Transportation Detail} \verb@GET /route/transportation/1.json@. Dari situ, rute lengkap akan disimpan pada berkas \verb/tracks.conf/.
+Dari kembalian di atas, mesin navigasi KIRI dapat mengetahui kapan rute di angkot.web.id terakhir diperbaharui, untuk trayek-trayek yang diminta. Untuk setiap rute yang telah berubah, KIRI mengirimkan lagi perintah berikutnya, yaitu \textit{Transportation Detail}, yang memberikan rute penuh untuk trayek yang diminta. Sebagai contoh, jika rute dengan kode 1 ditemukan telah berubah, maka akan dikirimkan perintah \textit{Transportation Detail} \texttt{GET /route/transportation/1.json}. Dari situ, rute lengkap akan disimpan pada berkas \texttt{tracks.conf}.
 
 \section{Perancangan Antarmuka}
 
