@@ -1,14 +1,17 @@
 %_____________________________________________________________________________
 %=============================================================================
-% data.tex v5 (10-11-2013) \ldots dibuat oleh Lionov - Informatika FTIS UNPAR
+% data.tex v6 (13-04-2015) \ldots dibuat oleh Lionov - Informatika FTIS UNPAR
 %
-% Perubahan pada versi 5 (10-11-2013)
-% - Perbaikan pada memasukkan bab : tidak perlu menuliskan apapun untuk 
-%	memasukkan seluruh bab (bagian V)
-% - Perbaikan pada memasukkan lampiran : tidak perlu menuliskan apapun untuk
-%	memasukkan seluruh lampiran atau -1 jika tidak memasukkan apapun
+% Perubahan pada versi 6 (13-04-2015)
+% - Perubahan untuk data-data ``template" menjadi lebih generik dan menggunakan
+%	tanda << dan >>
 %
 % Perubahan pada versi sebelumnya
+% 	versi 5 (10-11-2013)
+% 	- Perbaikan pada memasukkan bab : tidak perlu menuliskan apapun untuk 
+%	  memasukkan seluruh bab (bagian V)
+% 	- Perbaikan pada memasukkan lampiran : tidak perlu menuliskan apapun untuk
+%	  memasukkan seluruh lampiran atau -1 jika tidak memasukkan apapun
 %	versi 4 (21-10-2012)
 %	- Data dosen dipindah ke dosen.tex agar jika ada perubahan/update data dosen
 %   mahasiswa tidak perlu mengubah data.tex
@@ -27,6 +30,7 @@
 % Masukkan ke dalam file ini, data-data yang diperlukan oleh template ini
 % Cara memasukkan data dijelaskan di setiap bagian
 % Data yang WAJIB dan HARUS diisi dengan baik dan benar adalah SELURUHNYA !!
+% Hilangkan tanda << dan >> jika anda menemukannya
 %=============================================================================
 %_____________________________________________________________________________
 %=============================================================================
@@ -139,14 +143,17 @@
 %			  ujian akhir skripsi/tugas akhir
 % - pembimbing: isi dengan pembimbing anda, lihat daftar dosen di file dosen.tex
 %				jika pembimbing hanya 1, kosongkan parameter kedua 
-%				(e.g. \pembimbing{\JND}{  } )
+%				(e.g. \pembimbing{\JND}{  } ) , \JND adalah kode dosen
 % - penguji : isi dengan para penguji anda, lihat daftar dosen di file dosen.tex
-%				(e.g. \penguji{\JHD}{\JCD} )
+%				(e.g. \penguji{\JHD}{\JCD} ) , \JND dan \JCD adalah kode dosen
+%
 %=============================================================================
-\namanpm{Pascal Alfadian Nugroho}{2003730013}
-\tanggal{19}{3}{2015}
+\namanpm{Pascal Alfadian Nugroho}{2003730013}	%hilangkan tanda << & >>
+\tanggal{19}{3}{2015}			%hilangkan tanda << & >>
 \pembimbing{\LNV}{}     %Lihat singkatan pembimbing anda di file dosen.tex
+%Lihat singkatan pembimbing anda di file dosen.tex, hilangkan tanda << & >>
 \penguji{\TAB}{\CEN} 		%Lihat singkatan penguji anda di file dosen.tex
+%Lihat singkatan penguji anda di file dosen.tex, hilangkan tanda << & >>
 %=============================================================================
 
 %_____________________________________________________________________________
@@ -160,6 +167,7 @@
 %			   bawahnya
 %			 - Gunakan \texorpdfstring{\\}{} untuk pindah ke baris baru
 %			 - Judul TIDAK ditulis dengan menggunakan huruf besar seluruhnya !!
+%			 - Gunakan perintah \texorpdfstring{\\}{} untuk baris baru
 %=============================================================================
 
 \judulINA{Integrasi Situs Navigasi dengan Situs \textit{Crowdsourcing} Rute Angkot}
@@ -230,7 +238,7 @@
 % Kata Pengantar: tempat anda menuliskan kata pengantar dan ucapan terima 
 % kasih kepada yang telah membantu anda bla bla bla ....  
 %=============================================================================
-\prakata{\lipsum}
+\prakata{\lipsum[3]}
 %=============================================================================
 
 %_____________________________________________________________________________
