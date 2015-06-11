@@ -27,7 +27,7 @@ Implementasi kedua dilakukan pada sebuah mesin virtual yang dibuat pada \textit{
 
 \subsection{Basis Data}
 
-Aplikasi yang dibuat membutuhkan adanya implementasi tabel sesuai dengan yang dijabarkan di tabel \ref{tab:2_struktur_tabel_tracks}. Dalam penelitian ini, digunakan basis data MySQL\footnote{\url{https://www.mysql.com/}}. Dalam pengujian eksperimental, aplikasi menggunakan tabel yang sudah ada di basis data KIRI (bersifat rahasia). Untuk pengujian fungsional, tabel baru akan dibuat dengan beberapa data sampel untuk keperluan pengujian saja. Berikut adalah skrip SQL yang digunakan untuk membentuk dan mengisi tabel tersebut:
+Aplikasi yang dibuat membutuhkan adanya implementasi tabel sesuai dengan yang dijabarkan di tabel \ref{tab:2_struktur_tabel_tracks}. Dalam penelitian ini, digunakan basis data MySQL\footnote{\url{https://www.mysql.com/}, diakses 4 Juni 2015}. Dalam pengujian eksperimental, aplikasi menggunakan tabel yang sudah ada di basis data KIRI (bersifat rahasia). Untuk pengujian fungsional, tabel baru akan dibuat dengan beberapa data sampel untuk keperluan pengujian saja. Berikut adalah skrip SQL yang digunakan untuk membentuk dan mengisi tabel tersebut:
 
 \begin{lstlisting}
 DROP TABLE IF EXISTS `tracks`;
@@ -68,7 +68,7 @@ Ketiga tahap tersebut dijelaskan pada subbab-subbab berikut.
 
 \subsubsection{Tahap 1: Survei Kepuasan Kualitas Pencarian dan Potensi Keinginan Berkontribusi}
 
-Pada tahap ini, peneliti membuat survei \textit{online} memanfaatkan aplikasi Google Docs\footnote{\url{https://google.com/docs}}. Ada 6 pertanyaan yang ditanyakan, yaitu:
+Pada tahap ini, peneliti membuat survei \textit{online} memanfaatkan aplikasi Google Docs\footnote{\url{https://google.com/docs}, diakses 1 Juni 2015}. Ada 6 pertanyaan yang ditanyakan, yaitu:
 
 \begin{itemize}
 	\item \textbf{Seberapa baik rute kami secara keseluruhan?} (mengerikan / buruk / netral / baik / sempurna)
@@ -91,7 +91,7 @@ Survei ini disediakan \textit{online} pada alamat \url{http://goo.gl/forms/WkeU8
 Setelah masa survei berakhir, didapatkan 33 responden survei. Dari segi kualitas pencarian (Gambar \ref{fig:5_hasilsurvei_1_1}), secara umum pengguna puas dengan hasil kualitas pencarian, ditandai dengan sebagian besar pengguna memilih "baik" pada ketiga jenis pertanyaan. Pada bagian kualitas rute kendaraan, relatif lebih banyak pengguna yang memilih "sempurna" dibandingkan dengan rute berjalan. Peneliti menduga bahwa ini dikarenakan oleh dua hal:
 
 \begin{itemize}
-	\item Pencarian rute di KIRI relatif lebih baik dibandingkan dengan pada situs web sejenis\footnote{\url{http://angkot.tibandung.com/}}, karena lebih presisi hingga titik koordinat.
+	\item Pencarian rute di KIRI relatif lebih baik dibandingkan dengan pada situs web sejenis\footnote{\url{http://angkot.tibandung.com/}, diakses 1 Juni 2015}, karena lebih presisi hingga titik koordinat.
 	\item Karena keterbatasan data, hasil rute berjalan di KIRI menghasilkan garis lurus dan tidak mengikuti arah jalan yang sesungguhnya.
 \end{itemize}
 
@@ -127,7 +127,7 @@ Terakhir, survei mengenai potensi keinginan berkontribusi (Gambar \ref{fig:5_has
 
 \subsubsection{Tahap 2: Kampanye fitur integrasi perbaikan rute}
 
-Setelah fitur integrasi diimplementasikan, KIRI perlu mendorong penggunanya untuk berpartisipasi dalam perbaikan rute. Di situs KIRI sendiri, sebuah tautan akan diberikan setelah hasil pencarian diberikan. Jika tautan tersebut diklik, maka akan membuka video\footnote{\url{https://www.youtube.com/watch?v=jDFePujA8Kk}} di situs \textit{Youtube} yang menunjukkan langkah-langkah dalam memperbaiki rute yang salah di KIRI. Tautan ini terletak di tempat yang sama seperti pada saat survei di tahap 1, dan dapat dilihat pada gambar \ref{fig:5_petunjuk}.
+Setelah fitur integrasi diimplementasikan, KIRI perlu mendorong penggunanya untuk berpartisipasi dalam perbaikan rute. Di situs KIRI sendiri, sebuah tautan akan diberikan setelah hasil pencarian diberikan. Jika tautan tersebut diklik, maka akan membuka video\footnote{\url{https://www.youtube.com/watch?v=jDFePujA8Kk}, diakses 10 Juni 2015} di situs \textit{Youtube} yang menunjukkan langkah-langkah dalam memperbaiki rute yang salah di KIRI. Tautan ini terletak di tempat yang sama seperti pada saat survei di tahap 1, dan dapat dilihat pada gambar \ref{fig:5_petunjuk}.
 
 \begin{figure}
 	\centering
@@ -136,7 +136,7 @@ Setelah fitur integrasi diimplementasikan, KIRI perlu mendorong penggunanya untu
 	\label{fig:5_petunjuk}
 \end{figure}
 
-Selain itu, dilakukan juga kampanye berupa iklan di situs media sosial \textit{Facebook}\footnote{\url{https://www.facebook.com/}} selama satu bulan. Parameter-parameter yang digunakan untuk iklan ini adalah sebagai berikut:
+Selain itu, dilakukan juga kampanye berupa iklan di situs media sosial \textit{Facebook}\footnote{\url{https://www.facebook.com/}, diakses 10 Juni 2015} selama satu bulan. Parameter-parameter yang digunakan untuk iklan ini adalah sebagai berikut:
 
 \begin{itemize}
 	\item Budget, Schedule \& Optimization:
