@@ -1,6 +1,31 @@
 \chapter{Landasan Teori}
 \label{chap:pendahuluan}
 
+\section{Teknologi Pendukung}
+\label{sec:teknologi_pendukung}
+
+Subbab ini menjelaskan teknologi-teknologi umum yang mendukung penelitian ini.
+
+\subsection{JSON\cite{rfc7159}}
+
+JSON (\textit{JavaScript Object Notation}) adalah format pertukaran data berbasis teks yang ringan dan tidak terikat pada bahasa tertentu. Format JSON diturunkan dari bahasa pemrograman \textit{ECMAScript}\footnote{Sering juga dikenal dengan nama \textit{Javascript}}.
+
+Sebuah data JSON bisa berupa salah satu dari 5 elemen berikut:
+
+\begin{enumerate}
+	\item \textbf{nilai literal}, yaitu salah satu dari \texttt{false}, \texttt{null}, atau \texttt{true}.
+	\item \textbf{bilangan}, berupa bilangan bulat maupun desimal, dengan tanda titik (\texttt{.}) sebagai pemisah antara bilangan bulat dengan pecahan.
+	\item \textbf{\textit{string}}, deretan karakter yang diapit dengan tanda kutip ganda (\verb/"/). Di dalamnya bisa terdapat karakter karakter khusus seperti \textit{line feed} (\verb/\n/), tanda kutip ganda secara literal (\verb/\"/), atau garis miring terbalik secara literal (\verb/\\/).
+	\item \textbf{\textit{array}}, nol atau lebih data JSON, yang dipisahkan koma (\verb/,/) dan diapit dengan kurung siku (\verb/[/ dan \verb/]/). Data dalam \textit{array} tidak harus berjenis sama.
+	\item \textbf{\textit{object}}, nol atau lebih pasangan \textit{string} teks dan data JSON yang dipisahkan dengan tanda titik dua (\verb/:/). Untuk memisahkan pasangan satu dengan lainnya, digunakan tanda koma (\verb/,/).
+\end{enumerate}
+
+TODO contoh.
+
+\subsection{GeoJSON}
+
+TODO
+
 \section{Mesin Navigasi KIRI}
 \label{sec:mesin_navigasi_kiri}
 
@@ -16,11 +41,11 @@ KIRI memiliki mesin navigasi yang dibangun pada bahasa Java. Mesin ini bertugas 
 Seperti dapat dilihat pada gambar \ref{fig:2_arsitektur_saat_ini}, elemen
 arsitektur yang mendukung navigasi KIRI dibagi menjadi tiga, yaitu:
 
-\begin{description}
-	\item[Basis Data KIRI] menyimpan informasi rute 33 trayek angkot, yang masing-masing mencakup identifikasi trayek (\texttt{trackId} dan \texttt{trackTypeId}), nama trayek (\texttt{trackName}), daftar koordinat yang dilewati (\texttt{geodata}), informasi pulang-pergi (\texttt{pathloop}), catatan internal (\texttt{internalInfo}), prioritas untuk dipilih (\texttt{penalty}), informasi naik/turun penumpang (\texttt{transferNodes}), dan parameter ekstra untuk pembelian tiket (\texttt{extraParameters}).
-	\item[Berkas tracks.conf] adalah hasil ekstraksi dari basis data KIRI, yang menyimpan informasi penting saja yang dibutuhkan oleh algoritma mesin navigasi KIRI, yakni: \texttt{trackId}, \texttt{trackTypeId}, \texttt{penalty}, \texttt{geodata}, \texttt{pathloop}, dan \texttt{transferNodes}.
-	\item[Mesin Navigasi KIRI] adalah program yang bertugas mengolah data yang ada pada berkas tracks.conf, sehingga dapat menjawab pertanyaan navigasi dari titik asal ke titik tujuan. Karena alasan historis, mesin navigasi tidak membaca data langsung dari basis data, melainkan dari berkas tracks.conf.
-\end{description}
+\begin{enumerate}
+	\item \textbf{Basis Data KIRI} menyimpan informasi rute 33 trayek angkot, yang masing-masing mencakup identifikasi trayek (\texttt{trackId} dan \texttt{trackTypeId}), nama trayek (\texttt{trackName}), daftar koordinat yang dilewati (\texttt{geodata}), informasi pulang-pergi (\texttt{pathloop}), catatan internal (\texttt{internalInfo}), prioritas untuk dipilih (\texttt{penalty}), informasi naik/turun penumpang (\texttt{transferNodes}), dan parameter ekstra untuk pembelian tiket (\texttt{extraParameters}).
+	\item \textbf{Berkas tracks.conf} adalah hasil ekstraksi dari basis data KIRI, yang menyimpan informasi penting saja yang dibutuhkan oleh algoritma mesin navigasi KIRI, yakni: \texttt{trackId}, \texttt{trackTypeId}, \texttt{penalty}, \texttt{geodata}, \texttt{pathloop}, dan \texttt{transferNodes}.
+	\item \textbf{Mesin Navigasi KIRI} adalah program yang bertugas mengolah data yang ada pada berkas tracks.conf, sehingga dapat menjawab pertanyaan navigasi dari titik asal ke titik tujuan. Karena alasan historis, mesin navigasi tidak membaca data langsung dari basis data, melainkan dari berkas tracks.conf.
+\end{enumerate}
 
 \subsection{Basis Data KIRI}
 Basis data KIRI disimpan dalam sistem manajemen basis data MySQL. Salah satu dari tabel yang digunakan adalah tabel \texttt{tracks}, yang menyimpan informasi rute trayek. Struktur dari tabel ini dijelaskan pada tabel \ref{tab:2_struktur_tabel_tracks}.
@@ -88,7 +113,7 @@ Adapun penjelasan untuk setiap kelas dapat dilihat di bawah ini:
 \section{Protokol angkot.web.id}
 \label{sec:protokol_angkot_web_id}
 
-Berdasarkan kode sumber angkot.web.id \cite{angkotwebid}, situs angkot.web.id memanfaatkan \textit{HTTP request} \cite{rfc7231} untuk menerima perintah-perintah dan mengembalikan respon berupa data dalam sintaks JSON \cite{rfc7159}. Beberapa dari perintah tersebut dijelaskan pada subbab-subbab berikut.
+Berdasarkan kode sumber angkot.web.id \cite{angkotwebid}, situs angkot.web.id memanfaatkan \textit{HTTP request} \cite{rfc7231} untuk menerima perintah-perintah dan mengembalikan respon berupa data dalam sintaks JSON. Beberapa dari perintah tersebut dijelaskan pada subbab-subbab berikut.
 
 \subsection{Transportation List}
 Perintah ini digunakan untuk mendapatkan daftar semua daftar transportasi umum, dan dapat diakses pada dengan melakukan \textit{HTTP request GET} pada path \texttt{/route/transportation-list.json}, tanpa parameter apapun. Adapun kembalian dari perintah ini adalah:
