@@ -1,33 +1,145 @@
 \chapter{Landasan Teori}
-\label{chap:pendahuluan}
 
-\section{Teknologi Pendukung}
-\label{sec:teknologi_pendukung}
+\section{JSON}
 
-Subbab ini menjelaskan teknologi-teknologi umum yang mendukung penelitian ini.
-
-\subsection{JSON\cite{rfc7159}}
-
-JSON (\textit{JavaScript Object Notation}) adalah format pertukaran data berbasis teks yang ringan dan tidak terikat pada bahasa tertentu. Format JSON diturunkan dari bahasa pemrograman \textit{ECMAScript}\footnote{Sering juga dikenal dengan nama \textit{Javascript}}.
+JSON (\textit{JavaScript Object Notation}) adalah format pertukaran data berbasis teks yang ringan dan tidak terikat pada bahasa tertentu\cite{rfc7159}. Format JSON diturunkan dari bahasa pemrograman \textit{ECMAScript}\footnote{Sering juga dikenal dengan nama \textit{Javascript}}.
 
 Sebuah data JSON bisa berupa salah satu dari 5 elemen berikut:
 
 \begin{enumerate}
-	\item \textbf{nilai literal}, yaitu salah satu dari \texttt{false}, \texttt{null}, atau \texttt{true}.
-	\item \textbf{bilangan}, berupa bilangan bulat maupun desimal, dengan tanda titik (\texttt{.}) sebagai pemisah antara bilangan bulat dengan pecahan.
-	\item \textbf{\textit{string}}, deretan karakter yang diapit dengan tanda kutip ganda (\verb/"/). Di dalamnya bisa terdapat karakter karakter khusus seperti \textit{line feed} (\verb/\n/), tanda kutip ganda secara literal (\verb/\"/), atau garis miring terbalik secara literal (\verb/\\/).
-	\item \textbf{\textit{array}}, nol atau lebih data JSON, yang dipisahkan koma (\verb/,/) dan diapit dengan kurung siku (\verb/[/ dan \verb/]/). Data dalam \textit{array} tidak harus berjenis sama.
-	\item \textbf{\textit{object}}, nol atau lebih pasangan \textit{string} teks dan data JSON yang dipisahkan dengan tanda titik dua (\verb/:/). Untuk memisahkan pasangan satu dengan lainnya, digunakan tanda koma (\verb/,/).
+	\item \textbf{nilai literal}, yaitu salah satu dari ``\texttt{false}'', ``\texttt{null}'', atau ``\texttt{true}'' (tanpa tanda kutip).
+	\item \textbf{bilangan}, berupa bilangan bulat maupun desimal, dengan tanda titik ``(\texttt{.})'' sebagai pemisah antara bilangan bulat dengan pecahan.
+	\item \textbf{\textit{string}}, deretan karakter yang diapit dengan tanda kutip ganda (``\verb/"/''). Di dalamnya bisa terdapat karakter karakter khusus seperti \textit{line feed} (``\verb/\n/''), tanda kutip ganda secara literal (``\verb/\"/''), atau garis miring terbalik secara literal (``\verb/\\/'').
+	\item \textbf{larik}, nol atau lebih data JSON, yang dipisahkan koma (\verb/,/) dan diapit dengan kurung siku (\verb/[/ dan \verb/]/). Data dalam \textit{array} tidak harus berjenis sama.
+	\item \textbf{objek}, nol atau lebih pasangan nama/nilai, yaitu \textit{string} teks dan data JSON yang dipisahkan dengan tanda titik dua (``\verb/:/''). Untuk memisahkan pasangan satu dengan lainnya, digunakan tanda koma (\verb/,/).
 \end{enumerate}
 
-TODO contoh.
+Data JSON dapat mengandung karakter-karakter \textit{whitespace} berupa spasi, \textit{tab}, maupun \textit{linefeed} dan akan diabaikan (kecuali di dalam \textit{string}).
 
-\subsection{GeoJSON}
+Berikut adalah contoh sebuah data JSON:
 
-TODO
+\begin{lstlisting}
+{
+	"lulus": false,
+	"nilaiUTS": 89.9,
+	"nilaiUAS": null,
+	"nilaiTugas": [75, null, 80.3, 100],
+	"nama": "Pascal"
+}
+\end{lstlisting}
+
+Contoh di atas mendemonstrasikan sebuah objek (baris 1-7), nilai literal (baris 2 dan 4), bilangan (baris 3), larik (baris 5), dan \textit{string} (baris 6).
+
+\section{GeoJSON}
+
+GeoJSON adalah sebuah format berbasis JSON, untuk mengkodekan berbagai struktur data geografis\cite{geojson}. Sebuah data GeoJSON selalu terdiri dari satu buah objek, yang memiliki aturan-aturan sebagai berikut:
+
+\begin{enumerate}
+	\item Objek GeoJSON dapat memiliki berapapun jumlah anggota (pasangan nama / nilai).
+	\item Objek GeoJSON harus memiliki anggota, dengan nama ``\texttt{type}'', yang menunjukkan tipe dari objek GeoJSON tersebut.
+	\item Nilai dari \texttt{type} harus berupa salah satu dari ``\texttt{Point}'', ``\texttt{MultiPoint}'', ``\texttt{LineString}'', ``\texttt{MultiLineString}'', ``\texttt{Polygon}'', ``\texttt{MultiPolygon}'', ``\texttt{GeometryCollection}'', ``\texttt{Feature}'', atau ``\texttt{FeatureCollection}'' (\textit{case sensitive}). Anggota ini menunjukkan tipe dari objek GeoJSON.
+	\item Objek GeoJSON dapat memiliki anggota dengan nama ``\texttt{crs}'' yang menunjukkan referensi sistem koordinat.
+	\item Objek GeoJSON dapat memiliki anggota dengan nama ``\texttt{bbox}'' yang menunjukkan \textit{bounding box} (kotak yang melingkupi objek).
+\end{enumerate}
+
+Subbab-subbab berikut menjelaskan bagian-bagian dari GeoJSON yang terkait dengan penelitian ini. Bagian lain yang tidak dijelaskan dapat dilihat pada \cite{geojson}.
+
+\subsection{\textit{Geometry Object}}
+
+\textit{Geometry Object} adalah objek-objek geometri, yaitu salah satu dari \textit{Point}, \textit{MultiPoint}, \textit{LineString}, \textit{MultiLineString}, \textit{Polygon}, \textit{MultiPolygon} atau \textit{GeometryCollection}.
+
+Sebuah \textit{Geometry Object} harus memiliki sebuah anggota yang bernama ``\texttt{coordinates}''. Nilai dari \textit{coordinates} adalah sebuah larik, yang isinya tergantung tipe objek tersebut.
+
+\subsection{Tipe \textit{LineString}}
+
+Tipe ini digunakan untuk merepresentasikan deretan posisi, sehingga dalam GeoJSON objek ini direpresentasikan dengan sebuah larik dari posisi. Posisi sendiri adalah sebuah larik yang berisi dua atau lebih bilangan. Jika terdapat dua bilangan, maka kedua bilangan tersebut merepresentasikan koordinat dalam sumbu x dan y (bujur dan lintang). Jika ada bilangan ketiga, bilangan tersebut merepresentasikan koordinat dalam sumbu z (ketinggian). Bilangan keempat dan seterusnya tidak didefinisikan dalam standar ini.
+
+Berikut adalah contoh sebuah objek \textit{LineString}:
+
+\begin{lstlisting}
+{
+	"type": "LineString",
+	"coordinates": [
+		[107.60486, -6.88323],
+		[107.60417, -6.88182],
+		[107.60345, -6.87968],
+		[107.60445, -6.87525]
+	]
+}
+\end{lstlisting}
+
+Contoh di atas menunjukkan sebuah objek \textit{LineString} dengan deretan 4 posisi yang menunjukkan sebagian dari Jl. Ciumbuleuit, Bandung.
+
+\subsection{Tipe \textit{MultiLineString}}
+
+Tipe ini digunakan untuk merepresentasikan kumpulan dari \textit{LineString}, direpresentasikan oleh larik dari \textit{LineString} (dengan kata lain, larik dari larik dari posisi).
+
+Berikut adalah contoh sebuah objek \textit{MultiLineString}:
+
+\begin{lstlisting}
+{
+	"type": "MultiLineString",
+	"coordinates": [
+		[
+			[107.60486, -6.88323],
+			[107.60417, -6.88182],
+			[107.60345, -6.87968],
+			[107.60445, -6.87525]
+		],
+		[
+			[107.60485, -6.87369],
+			[107.60563, -6.87381],
+			[107.60660, -6.87411],
+			[107.60683, -6.87407]
+		]
+}
+\end{lstlisting}
+
+Contoh di atas menunjukkan sebuah objek \textit{MultiLineString} dengan dua deretan, masing-masing 4 posisi yang menunjukkan sebagian dari Jl. Ciumbuleuit dan Jl. Menjangan, Bandung.
+
+\subsection{Tipe \textit{Feature}}
+
+Tipe ini digunakan untuk merepresentasikan fitur dari sebuah objek geometri (kumpulan dari berbagai tipe lainnya). Aturan dari objek GeoJSON bertipe \texttt{Feature} adalah:
+
+\begin{enumerate}
+	\item Objek ini harus memiliki anggota dengan nama \texttt{geometry}, yang merupakan sebuah \textit{geometry object} atau \texttt{null}.
+	\item Objek ini harus memiliki anggota dengan nama \texttt{properties}, yang merupakan sebuah objek bebas atau \texttt{null}.
+	\item Jika objek ini diasosiasikan dengan sebuah \textit{identifier} (penanda), penanda tersebut harus diikutsertakan sebagai anggota dari objek ini dengan nama \texttt{id}.
+\end{enumerate}
+
+Berikut adalah contoh dari objek bertipe \textit{Feature}:
+
+\begin{lstlisting}
+{
+	"type": "Feature",
+	"id": 1434610833,
+	"properties": {
+		"name": "Jl. Ciumbuleuit and Jl. Menjangan",
+		"city": "Bandung"
+	},
+	"geometry": {
+		"type": "MultiLineString",
+		"coordinates": [
+			[
+				[107.60486, -6.88323],
+				[107.60417, -6.88182],
+				[107.60345, -6.87968],
+				[107.60445, -6.87525]
+			],
+			[
+				[107.60485, -6.87369],
+				[107.60563, -6.87381],
+				[107.60660, -6.87411],
+				[107.60683, -6.87407]
+			]
+		]
+	}
+}
+\end{lstlisting}
+
+Contoh di atas menunjukkan sebuah objek \textit{Feature} yang mendeskripsikan Jl. Ciumbuleuit dan Jl. Menjangan, beserta atribut-atributnya.
 
 \section{Mesin Navigasi KIRI}
-\label{sec:mesin_navigasi_kiri}
 
 KIRI memiliki mesin navigasi yang dibangun pada bahasa Java. Mesin ini bertugas untuk menerima masukan berupa koordinat titik asal dan tujuan, kemudian menemukan angkot-angkot yang harus dinaiki untuk menuju titik tujuan dari titik asal. Karena alasan kerahasiaan, pembahasan mengenai mesin navigasi KIRI tidak mengacu pada referensi publik, melainkan dari survei terhadap kode sumber internal KIRI.
 
@@ -57,9 +169,9 @@ Basis data KIRI disimpan dalam sistem manajemen basis data MySQL. Salah satu dar
 		\hline
 		Nama kolom & Tipe & Keterangan \\
 		\hline
-		trackId & varchar(32) & Kode trayek angkot (misal: "sthallciumbuleuitlurus"). Menjadi PRIMARY KEY tabel bersama trackTypeId. \\
-		trackTypeId & varchar(32) & Kode tipe trayek (untuk angkot bandung, selalu berisi "bdo\_angkot"). Menjadi PRIMARY KEY bersama trackId. \\
-		trackName & varchar(32) & Nama trayek yang dapat dibaca secara umum (misal: "St. Hall - Ciumbuleuit (lurus)"). \\
+		trackId & varchar(32) & Kode trayek angkot (misal: ``\texttt{sthallciumbuleuitlurus}''). Menjadi PRIMARY KEY tabel bersama trackTypeId. \\
+		trackTypeId & varchar(32) & Kode tipe trayek (untuk angkot bandung, selalu berisi ``\texttt{bdo\_angkot}''). Menjadi PRIMARY KEY bersama trackId. \\
+		trackName & varchar(32) & Nama trayek yang dapat dibaca secara umum (misal: ``\texttt{St. Hall - Ciumbuleuit (lurus)}''). \\
 		internalInfo & varchar(1024) & Informasi internal yang dapat ditambahkan dan tidak akan ditampilkan pada hasil pencarian. \\
 		geodata & linestring & Daftar koordinat dari rute trayek ini. \\
 		pathloop & tinyint(1) & Menandakan apakah trayek ini adalah trayek pulang pergi atau satu arah. \\
@@ -73,7 +185,7 @@ Basis data KIRI disimpan dalam sistem manajemen basis data MySQL. Salah satu dar
 \subsection{Berkas tracks.conf}
 Karena alasan historis\footnote{Pada awalnya mesin navigasi KIRI dibangun menggunakan bahasa C++, sehingga menyulitkan dalam mengakses basis data MySQL}, mesin navigasi KIRI tidak mengakses langsung ke basis data MySQL, melainkan membaca sebuah berkas yang bernama \texttt{tracks.conf}.
 
-Berkas \texttt{tracks.conf} ini merupakan sebuah berkas teks yang menyimpan basis data trayek yang telah dibersihkan untuk dapat dibaca dengan mudah, satu \textit{record} per baris. Setiap baris berisi 6 \textit{field} yang dipisahkan dengan \textit{tab} (\texttt{\t}). Berikut adalah penjelasan dari keenam \textit{field} tersebut:
+Berkas \texttt{tracks.conf} ini merupakan sebuah berkas teks yang menyimpan basis data trayek yang telah dibersihkan untuk dapat dibaca dengan mudah, satu \textit{record} per baris. Setiap baris berisi 6 \textit{field} yang dipisahkan dengan \textit{tab} (\verb/\t/). Berikut adalah penjelasan dari keenam \textit{field} tersebut:
 
 \begin{description}
 	\item[trackTypeId.trackId] Berisi \texttt{trackTypeId} dan \texttt{trackId} dipisahkan dengan titik.
@@ -111,7 +223,6 @@ Adapun penjelasan untuk setiap kelas dapat dilihat di bawah ini:
 \end{description}
 
 \section{Protokol angkot.web.id}
-\label{sec:protokol_angkot_web_id}
 
 Berdasarkan kode sumber angkot.web.id \cite{angkotwebid}, situs angkot.web.id memanfaatkan \textit{HTTP request} \cite{rfc7231} untuk menerima perintah-perintah dan mengembalikan respon berupa data dalam sintaks JSON. Beberapa dari perintah tersebut dijelaskan pada subbab-subbab berikut.
 
