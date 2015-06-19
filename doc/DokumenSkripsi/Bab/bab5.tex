@@ -25,7 +25,7 @@ Implementasi kedua dilakukan pada sebuah mesin virtual yang dibuat pada \textit{
 
 \subsection{Basis Data}
 
-Aplikasi yang dibuat membutuhkan adanya implementasi tabel sesuai dengan yang dijabarkan di tabel \ref{tab:2_struktur_tabel_tracks}. Dalam penelitian ini, digunakan basis data MySQL\footnote{\url{https://www.mysql.com/}, diakses 4 Juni 2015}. Dalam pengujian eksperimental, aplikasi menggunakan tabel yang sudah ada di basis data KIRI (bersifat rahasia). Untuk pengujian fungsional, tabel baru akan dibuat dengan beberapa data sampel untuk keperluan pengujian saja. Berikut adalah skrip SQL yang digunakan untuk membentuk dan mengisi tabel tersebut:
+Aplikasi yang dibuat membutuhkan adanya implementasi tabel sesuai dengan yang dijabarkan di tabel \ref{tab:2_struktur_tabel_tracks}. Dalam penelitian ini, digunakan basis data MySQL\cite{mysql}. Dalam pengujian eksperimental, aplikasi menggunakan tabel yang sudah ada di basis data KIRI (bersifat rahasia). Untuk pengujian fungsional, tabel baru akan dibuat dengan beberapa data sampel untuk keperluan pengujian saja. Berikut adalah skrip SQL yang digunakan untuk membentuk dan mengisi tabel tersebut:
 
 \begin{lstlisting}
 DROP TABLE IF EXISTS `tracks`;
@@ -50,11 +50,31 @@ INSERT INTO `tracks` VALUES ('testblank', 'bdo_angkot', 'Test Update from NULL',
 
 \subsection{Pengujian Fungsional}
 
-TODO
+Pengujian fungsional dilakukan untuk memastikan fitur integrasi berjalan sesuai dengan spesifikasi yang telah ditetapkan. Untuk melakukan pengujian fungsional, digunakan \textit{framework} JUnit\cite{junit}. Ada 9 tes kasus yang diujikan, dan detail serta hasilnya dapat dilihat di \ref{tab:5_hasil_pengujian_fungsional}.
+
+\begin{table}
+	\caption{Hasil Pengujian Fungsional}
+	\label{tab:5_hasil_pengujian_fungsional}
+	\begin{tabular}{|p{12.5cm}|p{2.5cm}|}
+		\hline
+		Nama \& deskripsi pengujian & Hasil \\
+		\hline
+		\textbf{testEnsurePullNoException} Memastikan tidak ada eksepsi yang terjadi saat operasi pull dijalankan. & berhasil \\
+		\textbf{testSQLUpdatedFromNoTimestamp} Memastikan pull berhasil memperbaharui SQL untuk data dengan internalInfo berisi `angkotwebid:nnn' (tanpa timestamp) & berhasil \\
+		\textbf{testTracksConfUpdatedFromNoTimestamp} Memastikan pull berhasil memperbaharui tracks.conf untuk data dengan internalInfo berisi `angkotwebid:nnn' (tanpa timestamp). & berhasil \\
+		\textbf{testSQLUpdatedFromLowerTimestamp} Memastikan pull berhasil memperbaharui SQL untuk data dengan internalInfo berisi `angkotwebid:nnn:mmm' (dengan timestamp tetapi lebih rendah). & berhasil \\
+		\textbf{testTracksConfUpdatedFromLowerTimestamp} Memastikan pull berhasil memperbaharui tracks.conf untuk data dengan internalInfo berisi `angkotwebid:nnn:mmm' (dengan timestamp tetapi lebih rendah). & berhasil \\
+		\textbf{testSQLNotUpdatedFromHigherTimestamp} Memastikan pull berhasil memperbaharui SQL untuk data dengan internalInfo berisi `angkotwebid:nnn:mmm' (dengan timestamp tetapi lebih tinggi). & berhasil \\
+		\textbf{testTracksConfNotUpdatedFromHigherTimestamp} Memastikan pull berhasil memperbaharui tracks.conf untuk data dengan internalInfo berisi `angkotwebid:nnn:mmm' (dengan timestamp tetapi lebih tinggi). & berhasil \\
+		\textbf{testSQLNotUpdatedFromNotAngkotWebid} Memastikan pull tidak memperbaharui SQL untuk data dengan internalInfo berisi `Not an angkotwebid track' (bukan track yang terintegrasi). & berhasil \\
+		\textbf{testTracksConfUpdatedFromHigherTimestamp} Memastikan pull tidak memperbaharui tracks.conf untuk data dengan internalInfo berisi `Not an angkotwebid track' (bukan track yang terintegrasi). & berhasil \\
+		\hline
+	\end{tabular}
+\end{table}
 
 \subsection{Pengujian Eksperimental}
 
-Pengujian eksperimental dibagi menjadi 3 tahap:
+Pengujian eksperimental dilakukan untuk melihat respon pengguna setelah fitur integrasikan diimplementasikan. Pengujian eksperimental dibagi menjadi 3 tahap:
 
 \begin{enumerate}
 	\item Survei \textit{online} terhadap kepuasan kualitas pencarian pengguna, dan potensi keinginan untuk berkontribusi selama satu bulan.
@@ -86,7 +106,7 @@ Survei ini disediakan \textit{online} pada alamat \url{http://goo.gl/forms/WkeU8
 	\label{fig:5_survei_1}
 \end{figure}
 
-Setelah masa survei berakhir, didapatkan 33 responden survei. Dari segi kualitas pencarian (Gambar \ref{fig:5_hasilsurvei_1_1}), secara umum pengguna puas dengan hasil kualitas pencarian, ditandai dengan sebagian besar pengguna memilih "baik" pada ketiga jenis pertanyaan. Pada bagian kualitas rute kendaraan, relatif lebih banyak pengguna yang memilih "sempurna" dibandingkan dengan rute berjalan. Peneliti menduga bahwa ini dikarenakan oleh dua hal:
+Setelah masa survei berakhir, didapatkan 33 responden survei. Dari segi kualitas pencarian (Gambar \ref{fig:5_hasilsurvei_1_1}), secara umum pengguna puas dengan hasil kualitas pencarian, ditandai dengan sebagian besar pengguna memilih ``baik'' pada ketiga jenis pertanyaan. Pada bagian kualitas rute kendaraan, relatif lebih banyak pengguna yang memilih ``sempurna'' dibandingkan dengan rute berjalan. Peneliti menduga bahwa ini dikarenakan oleh dua hal:
 
 \begin{itemize}
 	\item Pencarian rute di KIRI relatif lebih baik dibandingkan dengan pada situs web sejenis\footnote{\url{http://angkot.tibandung.com/}, diakses 1 Juni 2015}, karena lebih presisi hingga titik koordinat.
