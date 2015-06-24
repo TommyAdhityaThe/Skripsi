@@ -2,16 +2,16 @@
 
 \section{JSON}
 
-JSON (\textit{JavaScript Object Notation}) adalah format pertukaran data berbasis teks yang ringan dan tidak terikat pada bahasa tertentu\cite{rfc7159}. Format JSON diturunkan dari bahasa pemrograman \textit{ECMAScript}\footnote{Sering juga dikenal dengan nama \textit{Javascript}}.
+JSON (\textit{JavaScript Object Notation}) adalah format pertukaran data berbasis teks yang ringan dan tidak terikat pada bahasa tertentu\cite{rfc7159}. Format JSON diturunkan dari bahasa pemrograman \textit{ECMAScript}\footnote{Sering juga dikenal dengan nama \textit{JavaScript}}.
 
 Sebuah data JSON bisa berupa salah satu dari 5 elemen berikut:
 
 \begin{enumerate}
 	\item \textbf{nilai literal}, yaitu salah satu dari ``\texttt{false}'', ``\texttt{null}'', atau ``\texttt{true}'' (tanpa tanda kutip).
-	\item \textbf{bilangan}, berupa bilangan bulat maupun desimal, dengan tanda titik ``(\texttt{.})'' sebagai pemisah antara bilangan bulat dengan pecahan.
+	\item \textbf{bilangan}, berupa bilangan bulat maupun desimal, dengan tanda titik (``\texttt{.}'' sebagai pemisah antara bilangan bulat dengan pecahan.
 	\item \textbf{\textit{string}}, deretan karakter yang diapit dengan tanda kutip ganda (``\verb/"/''). Di dalamnya bisa terdapat karakter karakter khusus seperti \textit{line feed} (``\verb/\n/''), tanda kutip ganda secara literal (``\verb/\"/''), atau garis miring terbalik secara literal (``\verb/\\/'').
-	\item \textbf{larik}, nol atau lebih data JSON, yang dipisahkan koma (\verb/,/) dan diapit dengan kurung siku (\verb/[/ dan \verb/]/). Data dalam \textit{array} tidak harus berjenis sama.
-	\item \textbf{objek}, nol atau lebih pasangan nama/nilai, yaitu \textit{string} teks dan data JSON yang dipisahkan dengan tanda titik dua (``\verb/:/''). Untuk memisahkan pasangan satu dengan lainnya, digunakan tanda koma (\verb/,/).
+	\item \textbf{larik}, nol atau lebih data JSON, yang dipisahkan koma (``\verb/,/'') dan diapit dengan kurung siku (``\verb/[/'' dan ``\verb/]/''). Data dalam \textit{array} tidak harus berjenis sama.
+	\item \textbf{objek}, nol atau lebih pasangan nama/nilai, yaitu \textit{string} teks dan data JSON yang dipisahkan dengan tanda titik dua (``\verb/:/''). Untuk memisahkan pasangan satu dengan lainnya, digunakan tanda koma (``\verb/,/'').
 \end{enumerate}
 
 Data JSON dapat mengandung karakter-karakter \textit{whitespace} berupa spasi, \textit{tab}, maupun \textit{linefeed} dan akan diabaikan (kecuali di dalam \textit{string}).
@@ -68,7 +68,7 @@ Berikut adalah contoh sebuah objek \textit{LineString}:
 }
 \end{lstlisting}
 
-Contoh di atas menunjukkan sebuah objek \textit{LineString} dengan deretan 4 posisi yang menunjukkan sebagian dari Jl. Ciumbuleuit, Bandung.
+Contoh di atas menunjukkan sebuah objek \textit{LineString} dengan deretan 4 posisi yang menunjukkan sebagian dari Jalan Ciumbuleuit, Bandung.
 
 \subsection{Tipe \textit{MultiLineString}}
 
@@ -95,16 +95,16 @@ Berikut adalah contoh sebuah objek \textit{MultiLineString}:
 }
 \end{lstlisting}
 
-Contoh di atas menunjukkan sebuah objek \textit{MultiLineString} dengan dua deretan, masing-masing 4 posisi yang menunjukkan sebagian dari Jl. Ciumbuleuit dan Jl. Menjangan, Bandung.
+Contoh di atas menunjukkan sebuah objek \textit{MultiLineString} dengan dua deretan, masing-masing 4 posisi yang menunjukkan sebagian dari Jalan Ciumbuleuit dan Jalan Menjangan, Bandung.
 
 \subsection{Tipe \textit{Feature}}
 
-Tipe ini digunakan untuk merepresentasikan fitur dari sebuah objek geometri (kumpulan dari berbagai tipe lainnya). Aturan dari objek GeoJSON bertipe \texttt{Feature} adalah:
+Tipe ini digunakan untuk merepresentasikan fitur dari sebuah objek geometri (kumpulan dari berbagai tipe lainnya). Aturan dari objek GeoJSON bertipe \textit{Feature} adalah:
 
 \begin{enumerate}
-	\item Objek ini harus memiliki anggota dengan nama \texttt{geometry}, yang merupakan sebuah \textit{geometry object} atau \texttt{null}.
-	\item Objek ini harus memiliki anggota dengan nama \texttt{properties}, yang merupakan sebuah objek bebas atau \texttt{null}.
-	\item Jika objek ini diasosiasikan dengan sebuah \textit{identifier} (penanda), penanda tersebut harus diikutsertakan sebagai anggota dari objek ini dengan nama \texttt{id}.
+	\item Objek ini harus memiliki anggota dengan nama ``\texttt{geometry}'', yang merupakan sebuah \textit{geometry object} atau \texttt{null}.
+	\item Objek ini harus memiliki anggota dengan nama ``\texttt{properties}'', yang merupakan sebuah objek bebas atau \texttt{null}.
+	\item Jika objek ini diasosiasikan dengan sebuah \textit{identifier} (penanda), penanda tersebut harus diikutsertakan sebagai anggota dari objek ini dengan nama ``\texttt{id}''.
 \end{enumerate}
 
 Berikut adalah contoh dari objek bertipe \textit{Feature}:
@@ -114,7 +114,7 @@ Berikut adalah contoh dari objek bertipe \textit{Feature}:
 	"type": "Feature",
 	"id": 1434610833,
 	"properties": {
-		"name": "Jl. Ciumbuleuit and Jl. Menjangan",
+		"name": "Jalan Ciumbuleuit and Jalan Menjangan",
 		"city": "Bandung"
 	},
 	"geometry": {
@@ -137,7 +137,7 @@ Berikut adalah contoh dari objek bertipe \textit{Feature}:
 }
 \end{lstlisting}
 
-Contoh di atas menunjukkan sebuah objek \textit{Feature} yang mendeskripsikan Jl. Ciumbuleuit dan Jl. Menjangan, beserta atribut-atributnya.
+Contoh di atas menunjukkan sebuah objek \textit{Feature} yang mendeskripsikan Jalan Ciumbuleuit dan Jalan Menjangan, beserta atribut-atributnya.
 
 \section{Mesin Navigasi KIRI}
 
@@ -145,7 +145,7 @@ KIRI memiliki mesin navigasi yang dibangun pada bahasa Java. Mesin ini bertugas 
 
 \begin{figure}
 	\centering
-	\includegraphics[scale=1]{Gambar/2_arsitektur_saat_ini}
+	\includegraphics[scale=0.7]{Gambar/2_arsitektur_saat_ini}
 	\caption{Arsitektur Saat Ini} 
 	\label{fig:2_arsitektur_saat_ini}
 \end{figure}
@@ -158,6 +158,8 @@ arsitektur yang mendukung navigasi KIRI dibagi menjadi tiga, yaitu:
 	\item \textbf{Berkas tracks.conf} adalah hasil ekstraksi dari basis data KIRI, yang menyimpan informasi penting saja yang dibutuhkan oleh algoritma mesin navigasi KIRI, yakni: \texttt{trackId}, \texttt{trackTypeId}, \texttt{penalty}, \texttt{geodata}, \texttt{pathloop}, dan \texttt{transferNodes}.
 	\item \textbf{Mesin Navigasi KIRI} adalah program yang bertugas mengolah data yang ada pada berkas tracks.conf, sehingga dapat menjawab pertanyaan navigasi dari titik asal ke titik tujuan. Karena alasan historis, mesin navigasi tidak membaca data langsung dari basis data, melainkan dari berkas tracks.conf.
 \end{enumerate}
+
+Ketiga elemen tersebut dijelaskan pada subbab-subbab berikut.
 
 \subsection{Basis Data KIRI}
 Basis data KIRI disimpan dalam sistem manajemen basis data MySQL. Salah satu dari tabel yang digunakan adalah tabel \texttt{tracks}, yang menyimpan informasi rute trayek. Struktur dari tabel ini dijelaskan pada tabel \ref{tab:2_struktur_tabel_tracks}.
@@ -185,16 +187,16 @@ Basis data KIRI disimpan dalam sistem manajemen basis data MySQL. Salah satu dar
 \subsection{Berkas tracks.conf}
 Karena alasan historis\footnote{Pada awalnya mesin navigasi KIRI dibangun menggunakan bahasa C++, sehingga menyulitkan dalam mengakses basis data MySQL}, mesin navigasi KIRI tidak mengakses langsung ke basis data MySQL, melainkan membaca sebuah berkas yang bernama \texttt{tracks.conf}.
 
-Berkas \texttt{tracks.conf} ini merupakan sebuah berkas teks yang menyimpan basis data trayek yang telah dibersihkan untuk dapat dibaca dengan mudah, satu \textit{record} per baris. Setiap baris berisi 6 \textit{field} yang dipisahkan dengan \textit{tab} (\verb/\t/). Berikut adalah penjelasan dari keenam \textit{field} tersebut:
+Berkas \texttt{tracks.conf} ini merupakan sebuah berkas teks yang menyimpan basis data trayek yang telah dibersihkan untuk dapat dibaca dengan mudah, satu \textit{record} per baris. Setiap baris berisi 6 \textit{field} yang dipisahkan dengan \textit{tab} (\textit{Unicode} U+0009\cite{unicode8}). Berikut adalah penjelasan dari keenam \textit{field} tersebut:
 
-\begin{description}
-	\item[trackTypeId.trackId] Berisi \texttt{trackTypeId} dan \texttt{trackId} dipisahkan dengan titik.
-	\item[penalty] Berisi nilai \texttt{penalty}.
-	\item[numberOfNodes] Berisi jumlah \textit{node} (titik) dari rute trayek ini.
-	\item[nodes] Berisi daftar koordinat \textit{node} dari rute trayek ini dipisahkan dengan \textit{tab}. Setiap koordinat node terdiri dari \textit{latitude} dan \textit{longitude} yang dipisahkan dengan spasi.
-	\item[pathLoop] Berisi nilai \texttt{pathloop} yang menunjukkan apakah rute ini merupakan rute pulang pergi atau searah.
-	\item[transferNodes] Berisi nilai \texttt{transferNodes} yang menunjukkan titik-titik di mana penumpang diperbolehkan untuk naik / turun.
-\end{description}
+\begin{enumerate}
+	\item \textbf{trackTypeId.trackId} Berisi \texttt{trackTypeId} dan \texttt{trackId} dipisahkan dengan titik.
+	\item \textbf{penalty} Berisi nilai \texttt{penalty}.
+	\item \textbf{numberOfNodes} Berisi jumlah \textit{node} (titik) dari rute trayek ini.
+	\item \textbf{nodes} Berisi daftar koordinat \textit{node} dari rute trayek ini dipisahkan dengan \textit{tab}. Setiap koordinat node terdiri dari \textit{latitude} dan \textit{longitude} yang dipisahkan dengan spasi.
+	\item \textbf{pathLoop} Berisi nilai \texttt{pathloop} yang menunjukkan apakah rute ini merupakan rute pulang pergi atau searah.
+	\item \textbf{transferNodes} Berisi nilai \texttt{transferNodes} yang menunjukkan titik-titik di mana penumpang diperbolehkan untuk naik / turun.
+\end{enumerate}
 
 \subsection{Mesin Navigasi KIRI}
 
@@ -222,12 +224,12 @@ Adapun penjelasan untuk setiap kelas dapat dilihat di bawah ini:
 	\item[Dijkstra] Kelas ini merepresentasikan algoritma \textit{Dijkstra's shortest path}\cite{Cormen:2001}, untuk digunakan dalam pencarian rute.
 \end{description}
 
-\section{Protokol angkot.web.id}
+\section{Protokol Peta Angkutan Umum}
 
-Berdasarkan kode sumber angkot.web.id \cite{angkotwebid}, situs angkot.web.id memanfaatkan \textit{HTTP request} \cite{rfc7231} untuk menerima perintah-perintah dan mengembalikan respon berupa data dalam sintaks JSON. Beberapa dari perintah tersebut dijelaskan pada subbab-subbab berikut.
+Berdasarkan kode sumber Peta Angkutan Umum \cite{angkotwebid}, situs tersebut memanfaatkan \textit{HTTP request} \cite{rfc7231} untuk menerima perintah-perintah dan mengembalikan respon berupa data dalam sintaks JSON. Beberapa dari perintah tersebut dijelaskan pada subbab-subbab berikut.
 
 \subsection{Transportation List}
-Perintah ini digunakan untuk mendapatkan daftar semua daftar transportasi umum, dan dapat diakses pada dengan melakukan \textit{HTTP request GET} pada path \texttt{/route/transportation-list.json}, tanpa parameter apapun. Adapun kembalian dari perintah ini adalah:
+Perintah ini digunakan untuk mendapatkan daftar semua daftar transportasi umum, dan dapat diakses pada dengan melakukan \textit{HTTP request GET} pada path \texttt{/route/transportation-list.json}, tanpa parameter apapun. Adapun kembalian dari perintah ini adalah sebuah objek JSON yang terdiri dari pasangan nama/nilai berikut:
 
 \begin{itemize}
 	\item \texttt{status}: Status kembalian dari perintah yang dikirimkan
@@ -251,7 +253,7 @@ Perintah ini digunakan untuk mendapatkan daftar semua daftar transportasi umum, 
 		\end{itemize}
 \end{itemize}
 
-Contoh kembalian dari perintah transportation list dapat dilihat pada kode di bawah ini:
+Contoh kembalian dari perintah transportation list (\url{https://angkot.web.id/route/transportation-list.json}) dapat dilihat pada kode di bawah ini:
 
 \begin{lstlisting}
 {
@@ -286,10 +288,9 @@ Perintah ini digunakan untuk mendapatkan detail dari sebuah trayek transportasi,
 
 \begin{itemize}
 	\item \texttt{id}: Nomer kode trayek.
-	\item \texttt{geojson}: Data rute dan atributnya dalam format
-		GeoJSON\cite{geojson}, terdiri dari:
+	\item \texttt{geojson}: Data rute dan atributnya dalam format GeoJSON, terdiri dari:
 		\begin{itemize}
-			\item \texttt{type}: Tipe GeoJSON yang digunakan
+			\item \texttt{type}: Tipe GeoJSON yang digunakan, selalu berisi ``\texttt{Feature}''
 			\item \texttt{properties}: Properti-properti data GeoJSON, terdiri dari:
 				\begin{itemize}
 					\item \texttt{number}: Nomer trayek
@@ -308,7 +309,7 @@ Perintah ini digunakan untuk mendapatkan detail dari sebuah trayek transportasi,
 	\item \texttt{updated}: \textit{UNIX time} trayek ini terakhir diperbaharui
 \end{itemize}
 
-Contoh kembalian dari perintah transportation dapat dilihat pada kode berikut:
+Contoh kembalian dari perintah transportation (https://angkot.web.id/route/transportation/348.json) dapat dilihat pada kode berikut:
 
 \begin{lstlisting}
 {
