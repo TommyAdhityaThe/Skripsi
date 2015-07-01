@@ -1,4 +1,4 @@
-name := """appKIRI"""
+name := """KIRI"""
 
 version := "1.0-SNAPSHOT"
 
