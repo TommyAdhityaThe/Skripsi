@@ -26,69 +26,77 @@
 \author{\nama \textendash \@npm} 
 
 %tulis nama dan NPM anda di sini:
-\newcommand{\nama}{Lionov}
-\newcommand{\@npm}{1997730020}
-\newcommand{\@judultopik}{Median Trajectory} % Judul/topik anda
+\newcommand{\nama}{Tommy Adhitya The}
+\newcommand{\@npm}{2012730031}
+\newcommand{\@judultopik}{\textit{Porting} PHP menjadi Java dan Play Framework. Studi Kasus: KIRI \textit{Dashboard Server Side}} % Judul/topik anda
 \newcommand{\jumpemb}{1} % Jumlah pembimbing, 1 atau 2
-\newcommand{\tanggal}{01/01/1900}
+\newcommand{\tanggal}{27/08/2015}
 \maketitle
 
 \pagenumbering{arabic}
 
 \section{Deskripsi}
-Tuliskan deskripsi dari topik skripsi yang akan anda ajukan. Di sini dapat dituliskan latar belakang, seperti apa penelitian yang sudah ada sebelumnya dan apa yang akan anda kerjakan. Sertakan gambar agar penjelasan anda menjadi lebih baik.
+\textit{Website} KIRI merupakan \textit{website} untuk membantu seseorang menemukan rute transportasi umum ke tempat tujuannya. Dengan memasukkan lokasi awal serta lokasi tujuan orang tersebut, \textit{website} KIRI akan memberikan langkah-langkah(contoh: berjalan sejauh berapa meter, menggunakan angkot, dll) tercepat untuk sampai ke lokasi tujuan. \textit{Website} KIRI telah hadir di berbagai kota seperti Bandung, Depok, Jakarta, Surabaya dan Malang. \textit{Website} KIRI sangat membantu bagi orang-orang baru(contoh: turis) yang masih belum mengenal jalanan kota yang sedang dikunjunginya.
 
-\lipsum[1] %hapus ini
+KIRI \textit{Dashboard Server Side} adalah bagian dari \textit{website} KIRI. KIRI \textit{Dashboard Server Side} berfungsi sebagai pengatur proses CRUD(\textit{Create, Read, Update dan Delete}) daftar rute yang terdapat dalam \textit{database website} KIRI. KIRI \textit{Dashboard Server Side} menggunakan bahasa PHP dalam pembuatannya. Bahasa PHP kurang cocok untuk proyek besar seperti website KIRI karena tidak ada deklarasi variabel dan tipe variabel.
+
+Java merupakan bahasa pemrograman yang umum digunakan oleh banyak orang. Selain umum digunakan, Java juga merupakan bahasa pemrograman yang lebih terstruktur dibandingkan PHP. Deklarasi variabel dan tipe variabel pada Java membuat setiap variabel memiliki kegunaan yang lebih jelas dan dapat lebih dimengerti. Play Framework merupakan \textit{framework} yang membantu implementasi Java dalam pembuatan suatu \textit{website}. Play Framework juga cocok untuk proyek skala besar karena arsitekturnya sudah menggunakan MVC(\textit{Model View Controller}).
+
+Berdasarkan ditemukannya kekurangan-kekurangan pada KIRI \textit{Dashboard Server Side} seperti yang telah dijelaskan maka solusi untuk mengatasi kekurangan tersebut adalah dibuatnya skripsi ini, yaitu \textit{porting} PHP menjadi Java dan Play Framework KIRI \textit{Dashboard Server Side}.
 
 \section{Rumusan Masalah}
-Tuliskan rumusan dari masalah yang akan anda bahas pada skripsi ini. Rumusan masalah biasanya berupa kalimat pertanyaan. Gunakan itemize seperti contoh di bagian Deskripsi Perangkat Lunak.
+Berikut adalah susunan permasalahan yang akan dibahas pada penelitian ini:
+	\begin{itemize}
+		\item Bagaimana isi kode KIRI \textit{Dashboard Server Side} dan apa saja kekurangan yang ada di dalamnya?
+		\item Bagaimana cara melakukan \textit{porting} bahasa PHP menjadi Java dan Play Framework kode KIRI \textit{Dashboard Server Side} tanpa mengurangi fungsi-fungsi utama yang dimiliki?
+	\end{itemize}
 
 \section{Tujuan}
-Tuliskan tujuan dari topik skripsi yang anda ajukan. Tujuan penelitian biasanya berkaitan erat dengan pertanyaan yang diajukan di bagian rumusan masalah. Gunakan itemize seperti contoh di bagian Deskripsi Perangkat Lunak.
-
+	Berdasarkan rumusan masalah yang telah dibuat, maka tujuan skripsi ini dijelaskan ke dalam poin-poin sebagai berikut:
+	\begin{itemize}
+		\item Mengetahui isi kode KIRI \textit{Dashboard Server Side} dan apa saja kekurangan yang ada di dalamnya.
+		\item Mengetahui cara melakukan \textit{porting} bahasa PHP menjadi Java dan Play Framework kode KIRI \textit{Dashboard Server Side} tanpa mengurangi fungsi-fungsi utama yang dimiliki.
+	\end{itemize}
+	
 \section{Deskripsi Perangkat Lunak}
-Tuliskan deksripsi dari perangkat lunak yang akan anda hasilkan. Apa saja fitur yang disediakan oleh PL tersebut dan apa saja kemampuan dari PL tersebut. Perhatikan contoh di bawah ini:
-
 Perangkat lunak akhir yang akan dibuat memiliki fitur minimal sebagai berikut:
 \begin{itemize}
-	\item Pengguna dapat membangkitkan data-data {\it trajectory} secara otomatis sesuai dengan aturan yang telah ditentukan.
-	\item Pengguna dapat memasukkan secara manual data-data {\it trajectory}, baik melalui suatu {\it GUI (Graphical User Interface)} maupun melalui file teks. 
-	\item PL dapat menampilkan data-data yang sudah dimasukkan ataupun yang dibangkitkan secara otomatis melalui {\it GUI (Graphical User Interface)}.
-	\item Pengguna dapat memasukkan parameter-parameter yang digunakan oleh algoritma.
-	\item PL dapat menghitung dan menampilkan median trajectory secara otomatis, berdasarkan data-data trajectory yang diberikan.
-	\item PL dapat secara otomatis melakukan pembangkitan data untuk digunakan pada beberapa ratus tes kasus yang akan diuji. Untuk setiap tes kasus, PL dapat membuat laporan lengkap mengenai tes kasus tersebut.
-\end{itemize}
+	\item Pengguna dapat melakukan registrasi untuk mendapatkan hak akses terhadap KIRI \textit{Dashboard Server Side}.
+	\item Pengguna dapat melakukan otentikasi ke KIRI \textit{Dashboard Server Side} bila telah terdaftar ke dalam \textit{database website} KIRI.
+	\item Pengguna dapat menambahkan data rute transportasi umum ke dalam \textit{database} KIRI.
+	\item Pengguna dapat mengubah data rute transportasi umum \textit{website} KIRI.
+	\item Pengguna dapat menghapus data rute transportasi umum \textit{website} KIRI.
+	\item PL dapat menampilkan daftar rute transportasi umum yang telah terdaftar dalam \textit{database} KIRI.
+	\item PL dapat membangkitkan GUI berupa tampilan geografis salah satu rute transportasi umum yang dipilih pengguna.
+	\end{itemize}
 
 \section{Rencana Kerja}
-Tuliskan rencana anda untuk menyelesaikan skripsi. Rencana kerja dibagi menjadi dua bagian yaitu yang akan dilakukan pada saat mengambil kuliah AIF401 Skripsi 1 dan pada saat mengambil kuliah AIF402 Skripsi 2. Perhatikan contoh berikut ini :
-
 Rencana kerja untuk menyelesaikan skripsi ini:
 \begin{itemize}
 	\item Pada saat mengambil kuliah AIF401 Skripsi 1
 	\begin{enumerate}
-		\item Melakukan studi literatur tentang algoritma-algoritma yang berkaitan dengan pemrosesan data trajectory.
-		\item Mempelajari algoritma untuk menghitung Frechet Distance
-		\item Mempelajari fitur-fitur bahasa Java untuk membuat Graphical User Interface
-		\item Merancang algoritma/langkah-langkah untuk membuat secara otomatis pembangkit data trajectory
+		\item Mempelajari kode \textit{website} KIRI \textit{Dashboard Server Side}(bahasa PHP).
+		\item Melakukan studi literatur tentang MySQL Spatial Extensions.
+		\item Melakukan studi literatur tentang JDBC dan MySQL.
+		\item Melakukan studi literatur tentang Java dan Play Framework.
+		\item Merancang prototipe KIRI \textit{Dashboard Server Side} dalam bahasa Java dan Play Framework.
 	\end{enumerate}
 	\item Pada saat mengambil kuliah AIF401 Skripsi 2
 	\begin{enumerate}
-		\item Merancang dan mengimplementasikan algoritma untuk mencari Median Trajectory.
-		\item Mengimplementasikan pembangkit data trajectory 
-		\item Melakukan pengujian dan eksperimen
-		\item Membuat dokumentasi skripsi
+		\item Melakukan \textit{porting} kode \textit{website} KIRI \textit{Dashboard Server Side} menjadi Java dan Play Framework.
+		\item Melakukan pengujian terhadap fitur-fitur minimal.
+		\item Membuat dokumentasi skripsi.
 	\end{enumerate}
 \end{itemize}
 
 \section{Isi {\it Progress Report} Skripsi 1}
 Isi dari {\it Progress Report} Skripsi 1 yang akan diselesaikan dan dilaporkan ke pembimbing paling lambat 2 minggu sebelum tenggat waktu yang ditetapkan koordinator adalah :
 \begin{enumerate}
-	\item Algoritma/langkah-langkah untuk membuat pembangkit otomatis data trajectory
-	\item Hasil eksperimen penggunaan fitur-fitur Graphical User Interface pada bahasa Java
-	\item Algoritma dan contoh perhitungan untuk kasus menghitung jarak dengan Frechet Distance
+	\item Hasil eksperimen penggunaan Java dan Play Framework.
+	\item Rancangan prototipe KIRI \textit{Dashboard Server Side} dalam bahasa Java dan Play Framework.
 	\item \ldots (to be continued)
 \end{enumerate}
-Estimasi persentase penyelesaian skripsi sampai dengan {\it Progress Report} Skripsi 1 adalah : 99\%
+Estimasi persentase penyelesaian skripsi sampai dengan {\it Progress Report} Skripsi 1 adalah : 50\%
 
 \section{Pernyataan Khusus}
 Berlatar belakang perihal kejujuran serta keterbasan jumlah dosen, saya menyatakan akan mematuhi aturan-aturan khusus berikut:
