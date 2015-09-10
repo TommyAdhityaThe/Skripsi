@@ -16,7 +16,7 @@
 \makeatletter
 \renewcommand{\@maketitle} {\begin{center} {\LARGE \textbf{ \textsc{\@title}} \par} \bigskip {\large \textbf{\textsc{\@author}} }\end{center} }
 \renewcommand{\thispagestyle}[1]{}
-\markright{\textbf{\textsc{AIF401 \textemdash Rencana Kerja Skripsi \textemdash Sem. Ganjil 2015/2016}}}
+\markright{\textbf{\textsc{AIF401/AIF402 \textemdash Rencana Kerja Skripsi \textemdash Sem. Ganjil 2015/2016}}}
 
 \onehalfspacing
  
@@ -28,21 +28,21 @@
 %tulis nama dan NPM anda di sini:
 \newcommand{\nama}{Tommy Adhitya The}
 \newcommand{\@npm}{2012730031}
-\newcommand{\@judultopik}{\textit{Porting} PHP menjadi Java dan Play Framework. Studi Kasus: KIRI \textit{Dashboard Server Side}} % Judul/topik anda
+\newcommand{\@judultopik}{\textit{Porting} PHP menjadi Java/Play Framework. Studi Kasus: KIRI \textit{Dashboard Server Side}} % Judul/topik anda
 \newcommand{\jumpemb}{1} % Jumlah pembimbing, 1 atau 2
-\newcommand{\tanggal}{27/08/2015}
+\newcommand{\tanggal}{11/09/2015}
 \maketitle
 
 \pagenumbering{arabic}
 
 \section{Deskripsi}
-\textit{Website} KIRI merupakan \textit{website} untuk membantu seseorang menemukan rute transportasi umum ke tempat tujuannya. Dengan memasukkan lokasi awal serta lokasi tujuan orang tersebut, \textit{website} KIRI akan memberikan langkah-langkah(contoh: berjalan sejauh berapa meter, menggunakan angkot, dll) tercepat untuk sampai ke lokasi tujuan. \textit{Website} KIRI telah hadir di berbagai kota seperti Bandung, Depok, Jakarta, Surabaya dan Malang. \textit{Website} KIRI sangat membantu bagi orang-orang baru(contoh: turis) yang masih belum mengenal jalanan kota yang sedang dikunjunginya.
+KIRI (http://kiri.travel/) merupakan situs web untuk membantu pengguna menemukan rute transportasi umum ke tempat tujuannya. Dengan memasukkan lokasi awal serta lokasi tujuan pengguna tersebut, situs web KIRI akan memberikan langkah-langkah (contoh: berjalan sejauh berapa meter, menggunakan angkot, dll) tercepat untuk sampai ke lokasi tujuan. Situs web KIRI telah hadir di berbagai kota seperti Bandung, Depok, Jakarta, Surabaya dan Malang.
 
-KIRI \textit{Dashboard Server Side} adalah bagian dari \textit{website} KIRI. KIRI \textit{Dashboard Server Side} berfungsi sebagai pengatur proses CRUD(\textit{Create, Read, Update dan Delete}) daftar rute yang terdapat dalam \textit{database website} KIRI. KIRI \textit{Dashboard Server Side} menggunakan bahasa PHP dalam pembuatannya. Bahasa PHP kurang cocok untuk proyek besar seperti website KIRI karena tidak ada deklarasi variabel dan tipe variabel.
+KIRI \textit{Dashboard} (https://dev.kiri.travel/bukitjarian/) adalah bagian dari situs web KIRI. KIRI \textit{Dashboard} berfungsi sebagai pengatur proses CRUD (\textit{Create, Read, Update} dan \textit{Delete}) daftar rute yang terdapat dalam \textit{database} situs web KIRI. KIRI \textit{Dashboard Server Side} menggunakan bahasa PHP dalam pembuatannya. Bahasa PHP kurang cocok untuk proyek besar seperti \textit{dashboard}. Salah satu penyebab bahasa PHP kurang cocok adalah karena tidak ada deklarasi dan tipe variabel dalam penggunaan bahasa PHP.
 
-Java merupakan bahasa pemrograman yang umum digunakan oleh banyak orang. Selain umum digunakan, Java juga merupakan bahasa pemrograman yang lebih terstruktur dibandingkan PHP. Deklarasi variabel dan tipe variabel pada Java membuat setiap variabel memiliki kegunaan yang lebih jelas dan dapat lebih dimengerti. Play Framework merupakan \textit{framework} yang membantu implementasi Java dalam pembuatan suatu \textit{website}. Play Framework juga cocok untuk proyek skala besar karena arsitekturnya sudah menggunakan MVC(\textit{Model View Controller}).
+Java merupakan bahasa pemrograman yang umum digunakan oleh banyak orang. Selain umum digunakan, Java juga merupakan bahasa pemrograman yang lebih terstruktur dibandingkan PHP. Adanya deklarasi dan tipe variabel pada Java membuat setiap variabel memiliki kegunaan yang lebih jelas dan mudah dimengerti. Play Framework merupakan \textit{framework} yang membantu implementasi Java dalam pembuatan suatu situs web. Play Framework juga cocok untuk proyek skala besar karena arsitekturnya sudah menggunakan MVC(\textit{Model View Controller}).
 
-Berdasarkan ditemukannya kekurangan-kekurangan pada KIRI \textit{Dashboard Server Side} seperti yang telah dijelaskan maka solusi untuk mengatasi kekurangan tersebut adalah dibuatnya skripsi ini, yaitu \textit{porting} PHP menjadi Java dan Play Framework KIRI \textit{Dashboard Server Side}.
+Berdasarkan ditemukannya kekurangan-kekurangan pada KIRI \textit{Dashboard Server Side} seperti yang telah dijelaskan maka solusi untuk mengatasi kekurangan tersebut adalah dibuatnya skripsi ini, yaitu \textit{porting} PHP menjadi Java/Play Framework KIRI \textit{Dashboard Server Side}.
 
 \section{Rumusan Masalah}
 Berikut adalah susunan permasalahan yang akan dibahas pada penelitian ini:
@@ -50,65 +50,62 @@ Berikut adalah susunan permasalahan yang akan dibahas pada penelitian ini:
 		\item Bagaimana isi kode KIRI \textit{Dashboard Server Side} dan apa saja kekurangan yang ada di dalamnya?
 		\item Bagaimana cara melakukan \textit{porting} bahasa PHP menjadi Java dan Play Framework kode KIRI \textit{Dashboard Server Side} tanpa mengurangi fungsi-fungsi utama yang dimiliki?
 	\end{itemize}
-
+	
 \section{Tujuan}
-	Berdasarkan rumusan masalah yang telah dibuat, maka tujuan skripsi ini dijelaskan ke dalam poin-poin sebagai berikut:
+Berdasarkan rumusan masalah yang telah dibuat, maka tujuan skripsi ini dijelaskan ke dalam poin-poin sebagai berikut:
 	\begin{itemize}
 		\item Mengetahui isi kode KIRI \textit{Dashboard Server Side} dan apa saja kekurangan yang ada di dalamnya.
 		\item Mengetahui cara melakukan \textit{porting} bahasa PHP menjadi Java dan Play Framework kode KIRI \textit{Dashboard Server Side} tanpa mengurangi fungsi-fungsi utama yang dimiliki.
 	\end{itemize}
-	
-\section{Deskripsi Perangkat Lunak}
-Perangkat lunak akhir yang akan dibuat memiliki fitur minimal sebagai berikut:
-\begin{itemize}
-	\item Pengguna dapat melakukan registrasi untuk mendapatkan hak akses terhadap KIRI \textit{Dashboard Server Side}.
-	\item Pengguna dapat melakukan otentikasi ke KIRI \textit{Dashboard Server Side} bila telah terdaftar ke dalam \textit{database website} KIRI.
-	\item Pengguna dapat menambahkan data rute transportasi umum ke dalam \textit{database} KIRI.
-	\item Pengguna dapat mengubah data rute transportasi umum \textit{website} KIRI.
-	\item Pengguna dapat menghapus data rute transportasi umum \textit{website} KIRI.
-	\item PL dapat menampilkan daftar rute transportasi umum yang telah terdaftar dalam \textit{database} KIRI.
-	\item PL dapat membangkitkan GUI berupa tampilan geografis salah satu rute transportasi umum yang dipilih pengguna.
-	\end{itemize}
 
-\section{Rencana Kerja}
-Rencana kerja untuk menyelesaikan skripsi ini:
+\section{Deskripsi Perangkat Lunak}
+Perangkat lunak akhir yang akan dibuat memiliki fitur-fitur sebagai berikut:
 \begin{itemize}
-	\item Pada saat mengambil kuliah AIF401 Skripsi 1
-	\begin{enumerate}
-		\item Mempelajari kode \textit{website} KIRI \textit{Dashboard Server Side}(bahasa PHP).
-		\item Melakukan studi literatur tentang MySQL Spatial Extensions.
-		\item Melakukan studi literatur tentang JDBC dan MySQL.
-		\item Melakukan studi literatur tentang Java dan Play Framework.
-		\item Merancang prototipe KIRI \textit{Dashboard Server Side} dalam bahasa Java dan Play Framework.
-	\end{enumerate}
-	\item Pada saat mengambil kuliah AIF401 Skripsi 2
-	\begin{enumerate}
-		\item Melakukan \textit{porting} kode \textit{website} KIRI \textit{Dashboard Server Side} menjadi Java dan Play Framework.
-		\item Melakukan pengujian terhadap fitur-fitur minimal.
-		\item Membuat dokumentasi skripsi.
-	\end{enumerate}
+	\item Pengguna dapat melakukan registrasi untuk mendapatkan hak akses terhadap KIRI \textit{Dashboard}.
+	\item Pengguna dapat melakukan otentikasi ke KIRI \textit{Dashboard} bila telah terdaftar ke dalam \textit{database} situs web KIRI.
+	\item Pengguna dapat menambah (\textit{add}) dan mengubah (\textit{edit}) data rute transportasi umum dan data \textit{api keys} KIRI \textit{Dashboard}.
+	\item Pengguna dapat menghapus (\textit{delete}) data rute transportasi umum KIRI \textit{Dashboard}.
+	\item PL dapat menampilkan daftar rute transportasi umum dan daftar \textit{api keys} yang telah terdaftar dalam \textit{database} KIRI.
+	\item PL dapat membangkitkan GUI(\textit{Graphical User Interface}) berupa tampilan geografis salah satu rute transportasi umum yang dipilih pengguna.
 \end{itemize}
 
-\section{Isi {\it Progress Report} Skripsi 1}
-Isi dari {\it Progress Report} Skripsi 1 yang akan diselesaikan dan dilaporkan ke pembimbing paling lambat 2 minggu sebelum tenggat waktu yang ditetapkan koordinator adalah :
-\begin{enumerate}
-	\item Hasil eksperimen penggunaan Java dan Play Framework.
-	\item Rancangan prototipe KIRI \textit{Dashboard Server Side} dalam bahasa Java dan Play Framework.
-	\item \ldots (to be continued)
-\end{enumerate}
-Estimasi persentase penyelesaian skripsi sampai dengan {\it Progress Report} Skripsi 1 adalah : 50\%
+\section{Detail Pengerjaan Skripsi}
+Bagian-bagian pekerjaan skripsi ini adalah sebagai berikut :
+	\begin{enumerate}
+		\item Mempelajari kode situs web KIRI \textit{Dashboard Server Side}(bahasa PHP).
+		\item Melakukan studi literatur tentang MySQL Spatial Extensions dan Java/Play Framework.
+		\item Menganalisis teori-teori untuk membangun KIRI \textit{Dashboard Server Side} dalam bahasa Java/Play Framework.
+		\item Merancang KIRI \textit{Dashboard Server Side} dalam bahasa Java/Play Framework.
+		\item Melakukan \textit{porting} kode situs web KIRI \textit{Dashboard Server Side} menjadi Java/Play Framework.
+		\item Melakukan pengujian terhadap fitur-fitur yang sudah dibuat.
+		\item Menulis dokumen skripsi.
+	\end{enumerate}
 
-\section{Pernyataan Khusus}
-Berlatar belakang perihal kejujuran serta keterbasan jumlah dosen, saya menyatakan akan mematuhi aturan-aturan khusus berikut:
-\begin{enumerate}
-	\item Skripsi adalah hasil karya saya sendiri. Peran teman / orang lain adalah untuk membantu pemahaman, tetapi tidak dalam konten Skripsi.
-	\item Saya menetapkan batasan yang jelas antara konten saya, dengan buatan orang lain (termasuk kode yang diambil dari {\it open source project})
-	\item Pengambilan kedua hanya akan dilakukan hanya jika sudah memenuhi minimal 90\% dari target.
-\end{enumerate}
-Saya bersedia mematuhi peraturan di atas, dan bersedia menerima sanksi pembatalan pengambilan Skripsi dengan dosen pembimbing terkait jika terbukti melanggar. Peraturan ini berlaku pada Skripsi 1 dan 2.
+\section{Rencana Kerja}
+Berikut adalah rencana kerja yang akan dilakukan dalam skripsi ini:
+\begin{center}
+  \begin{tabular}{ | c | c | c | c | l |}
+    \hline
+    1*  & 2*(\%) & 3*(\%) & 4*(\%) &5*\\ \hline \hline
+    1   & 10 & 10 &  	 & \\ \hline
+    2   & 10 & 10 &  	 & \\ \hline
+    3   & 15 & 15 &  	 & \\ \hline
+    4   & 15 &    & 15 & \\ \hline
+    5   & 15 &    & 15 & \\ \hline
+    6   & 15 &    & 15 & \\ \hline
+    7   & 20 & 5  & 15 & {\footnotesize menulis dokumen skripsi hingga bab 3 pada S1} \\ \hline
+    Total&100& 40 & 60 & \\ \hline
+  \end{tabular}
+\end{center}
 
-\vspace{1.5cm}
+Keterangan (*)\\
+1 : Bagian pengerjaan Skripsi (nomor disesuaikan dengan detail pengerjaan di bagian 5)\\
+2 : Persentase total \\
+3 : Persentase yang akan diselesaikan di Skripsi 1 \\
+4 : Persentase yang akan diselesaikan di Skripsi 2 \\
+5 : Penjelasan singkat apa yang dilakukan di S1 (Skripsi 1) atau S2 (skripsi 2)
 
+\vspace{1cm}
 \centering Bandung, \tanggal\\
 \vspace{2cm} \nama \\ 
 \vspace{1cm}
