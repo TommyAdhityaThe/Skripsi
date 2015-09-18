@@ -1,38 +1,57 @@
 \chapter{Pendahuluan}
-\label{chap: pendahuluan}
+\label{chap:pendahuluan}
 
 \section{Latar Belakang}
-\label{sec:latarBelakang}
-Kemacetan merupakan salah satu masalah yang umumnya ditemukan di kota-kota besar. Kemacetan telah menghabiskan banyak sekali waktu produktivitas orang-orang yang tinggal di kota besar. Kemacetan dapat terjadi karena banyak faktor. Salah satu faktor kemacetan adalah karena jumlah kendaraan yang ada dalam suatu kota tidak sebanding dengan kapasitas jalan yang ada pada kota tersebut.
+\label{sec:latar_belakang}
+KIRI (http://kiri.travel/) merupakan situs web untuk membantu pengguna menemukan rute transportasi umum ke tempat tujuannya. Dengan memasukkan lokasi awal serta lokasi tujuan pengguna tersebut, situs web KIRI akan memberikan langkah-langkah (contoh: berjalan sejauh berapa meter, menggunakan angkot, dll) tercepat untuk sampai ke lokasi tujuan. Situs web KIRI telah hadir di berbagai kota seperti Bandung, Depok, Jakarta, Surabaya dan Malang.
 
-Bandung merupakan salah satu kota besar di mana kemacetan terjadi hampir setiap hari terutama pada saat waktu menjelang berangkat dan pulang kerja. Kemacetan terjadi dikarenakan setiap individu di Bandung umumnya memiliki jam kerja yang sama. Jam kerja yang sama membuat ledakan kendaraan terjadi di jalanan pada saat-saat tertentu. Dikarenakan kapasitas jalanan tidak dapat menampung banyaknya kendaraan yang ada maka terjadilah kemacetan.
+KIRI \textit{Dashboard} (https://dev.kiri.travel/bukitjarian/) adalah bagian dari situs web KIRI. KIRI \textit{Dashboard} berfungsi sebagai pengatur proses CRUD (\textit{Create, Read, Update} dan \textit{Delete}) daftar rute yang terdapat dalam \textit{database} situs web KIRI. KIRI \textit{Dashboard Server Side} menggunakan bahasa PHP dalam pembuatannya. Bahasa PHP kurang cocok untuk proyek besar seperti \textit{dashboard}. Salah satu penyebab bahasa PHP kurang cocok adalah karena tidak ada deklarasi dan tipe variabel dalam penggunaan bahasa PHP.
 
-Salah satu solusi untuk mengatasi kemacetan adalah penggunaan fasilitas angkutan umum. Angkutan umum akan mengurangi penggunaan kendaraan pribadi secara drastis. Faktanya, di Bandung orang-orang masih jarang menggunakan angkutan umum. Orang takut dan bingung menggunakan angkutan umum dikarenakan kendaraan umum seperti angkot memiliki rute jalannya masing-masing sesuai kode angkot. Terkadang perlu digunakan lebih dari 1 angkot untuk sampai ke tujuan. Bandung juga merupakan kota yang banyak dihuni oleh kaum-kaum pelajar(mahasiswa) asal luar Bandung. Otomatis banyak penghuni Bandung adalah orang-orang yang masih buta akan jalan apalagi rute angkutan umum yang ada di Bandung.
+Java merupakan bahasa pemrograman yang umum digunakan oleh banyak orang. Selain umum digunakan, Java juga merupakan bahasa pemrograman yang lebih terstruktur dibandingkan PHP. Adanya deklarasi dan tipe variabel pada Java membuat setiap variabel memiliki kegunaan yang lebih jelas dan mudah dimengerti. Play Framework merupakan \textit{framework} yang membantu implementasi Java dalam pembuatan suatu situs web. Play Framework juga cocok untuk proyek skala besar karena arsitekturnya sudah menggunakan konsep MVC(\textit{Model View Controller}).
 
-KIRI merupakan sebuah solusi untuk permasalahan kebutaan rute angkutan umum masyarakat yang tinggal di Bandung. KIRI memberikan layanan berupa pengetahuan akan rute angkutan umum yang harus ditempuh oleh seseorang untuk mencapai tujuannya dari tempat orang tersebut berasal. Dengan adanya KIRI orang-orang akan menjadi lebih berani dan siap untuk menggunakan kendaraan umum dalam bepergian baik orang asli Bandung maupun orang dari luar Bandung. Permasalahan kemacetan di Bandung diharapkan dapat berkurang atau bahkan terselesaikan dengan adanya bantuan dari KIRI.
-
-KIRI terbagi ke dalam 2 bagian penting, yaitu: \textit{frontend} dan \textit{dashboard}. Pada bagian \textit{frontend} pada KIRI merupakan bagian \textit{user interface} dan juga sekaligus merupakan halaman utama KIRI, yang dapat diakses melalui alamat \href{http://kiri.travel}{http://kiri.travel}. Pada bagian \textit{dashboard} pada KIRI merupakan bagian yang digunakan untuk tim \textit{developer} untuk memperbaiki ataupun melakukan pengembangan sistem KIRI, yang dapat diakses melalui alamat \href{https://dev.kiri.travel/bukitjarian}{https://dev.kiri.travel/bukitjarian}. KIRI menggunakan bahasa pemrograman PHP untuk membuat bagian \textit{dashboard server side}.
-
-KIRI merupakan proyek besar yang akan terus berkembang seiring dengan perkembangan waktu dikarenakan kebutuhan masyarakat akan rute angkutan umum akan selalu ada dan terus berkembang. Bahasa PHP kurang cocok untuk proyek skala besar seperti KIRI. Tidak ada deklarasi dan tipe variabel yang jelas pada bahasa PHP. Setiap programer PHP memiliki ciri khasnya sendiri dalam membangun program. Untuk setiap programer baru yang ingin mengembangkan sistem perlu mempelajari sistem secara detail terlebih dahulu agar mampu mengerti konsep desain program yang ada. Java merupakan bahasa yang umum dan lebih terstruktur. Play Framework membantu implementasi Java untuk pembuatan \textit{website}. Play Framework menggunakan prinsip MVC sehingga setiap programer sudah langsung mengetahui desain program yang ada. Play Framework membuat setiap programer memiliki konsep dan prinsip desain program yang sama antara yang satu dan yang lainnya, sehingga mempermudah programer untuk melakukan pengembangan sistem.
-
-Berdasarkan permasalahan-permasalahan yang telah peneliti jelaskan, peneliti tertarik untuk melakukan perombakan sistem bagian \textit{dashboard} KIRI(\href{https://dev.kiri.travel/bukitjarian}{https://dev.kiri.travel/bukitjarian}). Peneliti tertarik untuk melakukan perombakan bahasa yang diguanakan, dari yang semula menggunakan bahasa PHP menjadi menggunakan Java dengan menggunakan Play Framework. Untuk itu dibuatlah penelitian ``Porting PHP menjadi Java dan Play Framework. Studi Kasus: KIRI Dashboard Server Side'' guna menyelesaikan masalah-masalah yang ada.
+Berdasarkan ditemukannya kekurangan-kekurangan pada KIRI \textit{Dashboard Server Side} seperti yang telah dijelaskan, maka solusi untuk mengatasi kekurangan tersebut adalah dibuatnya skripsi ini, yaitu ``\textit{Porting} PHP menjadi Java/Play Framework (Studi Kasus KIRI \textit{Dashboard Server Side})''.
 
 \section{Rumusan Masalah}
 \label{sec:rumusan_masalah}
-	Berikut adalah susunan permasalahan yang akan dibahas pada penelitian ini:
+Berikut adalah susunan permasalahan yang akan dibahas pada penelitian ini:
 	\begin{enumerate}
-		\item Bagaimana rancangan dan cara kerja sistem \textit{dashboard server side}  KIRI versi lama dengan menggunakan bahasa pemrograman PHP?
-		\item Apa saja kelebihan dan kekurangan rancangan sistem \textit{dashboard server side}  KIRI versi lama dengan menggunakan bahasa pemrograman PHP?
-		\item Bagaimana rancangan dan cara kerja sistem \textit{dashboard server side}  KIRI versi baru dengan menggunakan bahasa pemrograman Java dengan memanfaatkan Play Framework?
-		\item Apa saja kelebihan dan kekurangan rancangan sistem \textit{dashboard server side}  KIRI versi baru dengan menggunakan bahasa pemrograman Java dengan memanfaatkan Play Framework?
+		\item Bagaimana isi kode KIRI \textit{Dashboard Server Side} dan apa saja kekurangan yang ada di dalamnya?
+		\item Bagaimana cara melakukan \textit{porting} bahasa PHP menjadi Java/Play Framework kode KIRI \textit{Dashboard Server Side} tanpa mengurangi fungsi-fungsi utama yang dimiliki?
 	\end{enumerate}
-
+	
 \section{Tujuan}
 \label{sec:tujuan}
-	Berdasarkan rumusan masalah yang telah dibuat, maka tujuan penelitian ini dijelaskan ke dalam poin-poin sebagai berikut:
+Berdasarkan rumusan masalah yang telah dibuat, maka tujuan skripsi ini dijelaskan ke dalam poin-poin sebagai berikut:
 	\begin{enumerate}
-		\item Mengetahui rancangan dan cara kerja sistem \textit{dashboard server side}  KIRI versi lama dengan menggunakan bahasa pemrograman PHP,
-		\item Mengetahui kelebihan dan kekurangan rancangan sistem \textit{dashboard server side}  KIRI versi lama dengan menggunakan bahasa pemrograman PHP,
-		\item Mengetahui rancangan dan cara kerja sistem \textit{dashboard server side}  KIRI versi baru dengan menggunakan bahasa pemrograman Java dengan memanfaatkan Play Framework,
-		\item Mengetahui kelebihan dan kekurangan rancangan sistem \textit{dashboard server side}  KIRI versi baru dengan menggunakan bahasa pemrograman Java dengan memanfaatkan Play Framework.
+		\item Mengetahui isi kode KIRI \textit{Dashboard Server Side} dan apa saja kekurangan yang ada di dalamnya.
+		\item Mengetahui cara melakukan \textit{porting} bahasa PHP menjadi Java/Play Framework kode KIRI \textit{Dashboard Server Side} tanpa mengurangi fungsi-fungsi utama yang dimiliki.
+	\end{enumerate}
+	
+\section{Batasan Masalah}
+\label{sec:batasan_masalah}
+Skripsi ini dibuat berdasarkan batasan-batasan sebagai berikut:
+	\begin{enumerate}
+		\item Java/Play Framework yang digunakan selama penulisan skripsi ini adalah versi 2.4.3.
+		\item \textit{Porting} Kode KIRI \textit{Dashboard Server Side} yang dilakukan adalah berdasarkan versi terbaru dari Github dengan \textit{username}: ``pascalalfadian''. (https://github.com/pascalalfadian/TirtayasaGH)
+	\end{enumerate}
+	
+\section{Metode Penelitian}
+\label{sec:metode_penelitian}
+Berikut adalah metode penelitian yang digunakan dalam pembuatan skripsi ini:
+	\begin{enumerate}
+		\item Melakukan studi literatur mengenai kode KIRI \textit{Dashboard Server Side}, MySQL Spatial Extensions dan Java/Play Framework.
+		\item Menganalisis teori-teori untuk membangun KIRI \textit{Dashboard Server Side} dalam bahasa Java/Play Framework.
+		\item Merancang KIRI \textit{Dashboard Server Side} dalam bahasa Java/Play Framework.
+		\item Melakukan \textit{porting} kode situs web KIRI \textit{Dashboard Server Side} menjadi Java/Play Framework.
+		\item Melakukan pengujian terhadap fitur-fitur yang sudah dibuat.
+		\item Menulis dokumen skripsi.
+	\end{enumerate}
+
+\section{Sistematika Penulisan}
+\label{sec:sistematika_penulisan}
+Setiap bab dalam penulisan ini memiliki sistematika yang dijelaskan ke dalam poin-poin sebagai berikut:
+	\begin{enumerate}
+		\item Bab 1: Pendahuluan. 
+		\item Bab 2: Dasar Teori.
+		\item Bab 3: Analisis.
 	\end{enumerate}
