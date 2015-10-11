@@ -3,11 +3,25 @@
 
 \section{Latar Belakang}
 \label{sec:latar_belakang}
-KIRI\cite{kiritravel} merupakan situs web untuk membantu pengguna menemukan rute transportasi umum ke tempat tujuannya. Dengan memasukkan lokasi awal serta lokasi tujuan pengguna tersebut, situs web KIRI akan memberikan langkah-langkah (contoh: berjalan sejauh berapa meter, menggunakan angkot, dll) tercepat untuk sampai ke lokasi tujuan. Situs web KIRI telah hadir di berbagai kota seperti Bandung, Depok, Jakarta, Surabaya dan Malang.
+KIRI\cite{kiritravel} (gambar \ref{fig:1_kiritravel}) merupakan situs web untuk membantu pengguna menemukan rute transportasi umum ke tempat tujuannya. Dengan memasukkan lokasi awal serta lokasi tujuan pengguna tersebut, situs web KIRI akan memberikan langkah-langkah (contoh: berjalan sejauh berapa meter, menggunakan angkot, dan sebagainya) tercepat untuk sampai ke lokasi tujuan.
 
-KIRI \textit{Dashboard}\cite{devkiritravel} adalah bagian dari situs web KIRI. KIRI \textit{Dashboard} berfungsi sebagai pengatur proses CRUD (\textit{Create, Read, Update} dan \textit{Delete}) daftar rute yang terdapat dalam \textit{database} situs web KIRI. KIRI \textit{Dashboard Server Side} menggunakan bahasa PHP dalam pembuatannya\cite{kiridashboard}. Bahasa PHP kurang cocok untuk proyek besar seperti \textit{dashboard}. Salah satu penyebab bahasa PHP kurang cocok adalah karena tidak ada deklarasi dan tipe variabel dalam penggunaan bahasa PHP.
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[scale=0.5]{Gambar/1_kiritravel.JPG}
+	\caption{Situs web KIRI\cite{kiritravel}}
+	\label{fig:1_kiritravel}
+\end{figure}
 
-Java merupakan bahasa pemrograman yang umum digunakan oleh banyak orang. Selain umum digunakan, Java juga merupakan bahasa pemrograman yang lebih terstruktur dibandingkan PHP. Adanya deklarasi dan tipe variabel pada Java membuat setiap variabel memiliki kegunaan yang lebih jelas dan mudah dimengerti. Play Framework merupakan \textit{framework} yang membantu implementasi Java dalam pembuatan suatu situs web. Play Framework juga cocok untuk proyek skala besar karena arsitekturnya sudah menggunakan konsep MVC (\textit{Model View Controller})\cite{playforjava}.
+KIRI \textit{Dashboard}\cite{devkiritravel} (gambar \ref{fig:1_kiridashboard}) adalah bagian dari situs web KIRI. KIRI \textit{Dashboard} berfungsi sebagai pengatur proses CRUD (\textit{Create, Read, Update,} dan \textit{Delete}) daftar rute yang terdapat dalam \textit{database} situs web KIRI. KIRI \textit{Dashboard Server Side} menggunakan bahasa PHP dalam pembuatannya\cite{kiridashboard}. Bahasa PHP kurang cocok untuk proyek skala besar seperti \textit{dashboard}. Salah satu penyebab bahasa PHP kurang cocok adalah karena tidak ada deklarasi dan tipe variabel dalam penggunaan bahasa PHP.
+
+Java merupakan bahasa pemrograman yang umum digunakan oleh banyak orang. Selain umum digunakan, Java juga merupakan bahasa pemrograman yang lebih terstruktur dibandingkan dengan PHP. Adanya deklarasi dan tipe variabel pada Java membuat setiap variabel memiliki kegunaan yang lebih jelas dan mudah dimengerti. Play Framework merupakan salah satu \textit{framework} yang membantu implementasi Java dalam pembuatan suatu situs web. Play Framework juga cocok untuk proyek skala besar karena arsitekturnya sudah menggunakan konsep MVC (\textit{Model View Controller})\cite{playforjava}.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[scale=0.5]{Gambar/1_kiridashboard.JPG}
+	\caption{KIRI \textit{Dashboard}\cite{devkiritravel}}
+	\label{fig:1_kiridashboard}
+\end{figure}
 
 Berdasarkan ditemukannya kekurangan-kekurangan pada KIRI \textit{Dashboard Server Side} seperti yang telah dijelaskan, maka solusi untuk mengatasi kekurangan tersebut adalah dibuatlah penelitian ini untuk mengubah KIRI \textit{Dashboard Server Side} yang semula dalam bahasa PHP menjadi bahasa Java dengan menggunakan Play Framework.
 
@@ -23,27 +37,27 @@ Java dengan menggunakan Play Framework?
 	
 \section{Tujuan}
 \label{sec:tujuan}
-Berdasarkan rumusan masalah yang telah dibuat, maka tujuan skripsi ini dijelaskan ke dalam poin-poin sebagai berikut:
+Berdasarkan rumusan masalah yang telah dibuat, maka tujuan penelitian ini dijelaskan ke dalam poin-poin sebagai berikut:
 	\begin{enumerate}
 		\item Mengetahui isi kode KIRI \textit{Dashboard Server Side} dan kekurangan-kekurangan yang ada di dalamnya.
 		\item Mengetahui cara kerja Play Framework berbasis MVC.
 		\item Melakukan \textit{porting} KIRI \textit{Dashboard Server Side} yang semula dalam bahasa PHP menjadi bahasa
-Java dengan menggunakan Play Framework
+Java dengan menggunakan Play Framework.
 	\end{enumerate}
 	
 \section{Batasan Masalah}
 \label{sec:batasan_masalah}
-Skripsi ini dibuat berdasarkan batasan-batasan sebagai berikut:
+Penelitian ini dibuat berdasarkan batasan-batasan sebagai berikut:
 	\begin{enumerate}
-		\item Play Framework yang digunakan selama penulisan skripsi ini adalah versi 2.4.3.
-		\item \textit{Porting} Kode KIRI \textit{Dashboard Server Side} yang dilakukan adalah berdasarkan versi terbaru dari Github dengan \textit{username}: ``pascalalfadian''\cite{kiridashboard}. 
+		\item Play Framework yang digunakan selama penelitian ini adalah versi 2.4.3.
+		\item \textit{Porting} Kode KIRI \textit{Dashboard Server Side} yang dilakukan adalah berdasarkan versi terbaru dari Github dengan \textit{username}: ``pascalalfadian''\cite{kiridashboard}.
 	\end{enumerate}
 	
 \section{Metode Penelitian}
 \label{sec:metode_penelitian}
-Berikut adalah metode penelitian yang digunakan dalam pembuatan skripsi ini:
+Berikut adalah metode penelitian yang digunakan dalam penelitian ini:
 	\begin{enumerate}
-		\item Melakukan studi literatur mengenai kode KIRI \textit{Dashboard Server Side}, MySQL Spatial Extensions dan Play Framework.
+		\item Melakukan studi literatur mengenai kode KIRI \textit{Dashboard Server Side}, MySQL Spatial Extensions, dan Play Framework.
 		\item Menganalisis teori-teori untuk membangun KIRI \textit{Dashboard Server Side} dalam bahasa Java dengan menggunakan Play Framework.
 		\item Merancang KIRI \textit{Dashboard Server Side} dalam bahasa Java dengan menggunakan Play Framework.
 		\item Melakukan \textit{porting} kode situs web KIRI \textit{Dashboard Server Side} menjadi Java dengan menggunakan Play Framework.
@@ -52,9 +66,13 @@ Berikut adalah metode penelitian yang digunakan dalam pembuatan skripsi ini:
 
 \section{Sistematika Penulisan}
 \label{sec:sistematika_penulisan}
-Setiap bab dalam penulisan ini memiliki sistematika yang dijelaskan ke dalam poin-poin sebagai berikut:
+Setiap bab dalam penelitian ini memiliki sistematika penulisan yang dijelaskan ke dalam poin-poin sebagai berikut:
 	\begin{enumerate}
-		\item Bab 1: Pendahuluan, yaitu membahas mengenai gambaran umum skripsi ini yang berisi tentang latar belakang, rumusan masalah, tujuan, batasan masalah, metode penelitian dan sistematika penulisan.
-		\item Bab 2: Dasar Teori, yaitu membahas mengenai teori-teori yang mendukung berjalannya skripsi ini yang berisi tentang kode KIRI \textit{Dashboard Server Side}, penggunaan MySQL Spatial Extensions, dan Play Framework.
-		\item Bab 3: Analisis, yaitu membahas mengenai analisa masalah yang berisi tentang kode KIRI \textit{Dashboard Server Side} beserta kekurangan-kekurangannya dan cara melakukan \textit{porting} bahasa PHP menjadi Java/Play Framework kode KIRI \textit{Dashboard Server Side}.
+		\item Bab 1: Pendahuluan, yaitu membahas mengenai gambaran umum penelitian ini yang. Berisi tentang latar belakang, rumusan masalah, tujuan, batasan masalah, metode penelitian, dan sistematika penulisan.
+		\item Bab 2: Dasar Teori, yaitu membahas mengenai teori-teori yang mendukung berjalannya penulisan ini. Berisi tentang MySQL Spatial Extensions dan Play Framework.
+		\item Bab 3: Analisis, yaitu membahas mengenai analisa masalah. Berisi tentang analisis kode KIRI \textit{Dashboard Server Side} dan analisis kekurangan-kekurangan kode KIRI \textit{Dashboard Server Side}.
+		\item Bab 4: Perancangan, yaitu membahas mengenai perancangan yang dilakukan sebelum melakukan tahapan implementasi. Berisi tentang perancangan fitur CRUD KIRI \textit{Dashboard Server Side} menggunakan Play Framework, perancangan basis data, dan perancangan antarmuka KIRI \textit{Dashboard} menggunakan Play Framework.
+		\item Bab 5: Implementasi dan Pengujian, yaitu membahas mengenai implementasi dan pengujian aplikasi yang telah dilakukan. Berisi tentang implementasi dan hasil pengujian aplikasi.
+		\item Bab 6: Kesimpulan dan Saran, yaitu membahas hasil kesimpulan dari keseluruhan penelitian ini dan saran-saran yang dapat
+diberikan untuk penelitian berikutnya. Berisi tentang kesimpulan dan saran.
 	\end{enumerate}
