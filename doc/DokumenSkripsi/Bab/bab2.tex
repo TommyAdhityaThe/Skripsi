@@ -16,7 +16,7 @@
 	
 \subsection{Tipe Data Spatial}
 \label{sec:tipe_data_spatial}
-Berdasarkan kemampuan penyimpanan nilai geometri\cite{spatialtipedata}, tipe data spatial dapat dikelompokan ke dalam 2 jenis:
+Berdasarkan kemampuan penyimpanan nilai geometri\cite{spatialtipedata}, tipe data \textit{spatial} dapat dikelompokan ke dalam 2 jenis:
 \begin{enumerate}
 	\item Tipe data yang hanya dapat menyimpan sebuah nilai geometri saja, yaitu:
 	\begin{itemize}
@@ -58,11 +58,11 @@ Berdasarkan kemampuan penyimpanan nilai geometri\cite{spatialtipedata}, tipe dat
 
 \section{Play Framework}
 \label{sec:play_framework}
-Play Framework adalah sekumpulan kerangka kode yang dapat digunakan untuk membangun suatu situs web. Play Framework tidak hanya menggunakan bahasa Java dalam pembuatannya. Bahasa Scala juga digunakan Play Framework dalam beberapa bagian seperti bagian \textit{view} dan \textit{route}\cite{playforjava}. Play Framework menggunakan konsep MVC (\textit{Model} \textit{View} \textit{Controller}) sebagai pola arsitekturnya. Konsep MVC pada suatu kode membuat kode mudah dikembangkan baik secara tampilan maupun pengembangan fitur-fiturnya.
+Play Framework adalah sekumpulan kerangka kode yang dapat digunakan untuk membangun suatu situs web. Play Framework tidak hanya menggunakan bahasa Java dalam pembuatannya. Bahasa Scala juga digunakan Play Framework dalam beberapa bagian seperti bagian \textit{view} dan \textit{route}\cite{playforjava}. Play Framework menggunakan konsep MVC (\textit{Model} \textit{View} \textit{Controller}) sebagai pola arsitekturnya. Konsep MVC pada suatu kode membuat kode mudah dikembangkan baik secara tampilan maupun pengembangan fitur-fiturnya. Ketika \textit{server} Play Framework dijalankan, secara \textit{default} dapat diakses melalui ``localhost:9000''.
 
-\section{Struktur Aplikasi}
+\subsection{Struktur Aplikasi}
 \label{sec:struktur_aplikasi}
-Ketika Play Framework pertama kali ter-\textit{install} pada komputer, Play Framework menyediakan \textit{default} direktori dengan struktur minimal (gambar \ref{fig:2_strukturplay}).
+Ketika Play Framework pertama kali ter-\textit{install} pada komputer, Play Framework menyediakan \textit{default} direktori dengan struktur minimal (gambar \ref{fig:2_strukturplay}). \textit{Folder} ``app'' merupakan \textit{folder} yang berisi mengenai pola arsitektur yang dimiliki Play Framework, yaitu ``controllers'', ``views'', dan ``models'' (tidak dibuat secara \textit{default}), pola arsitektur MVC akan dijelaskan lebih lanjut pada subbab selanjutnya. Folder ``conf'' berisi mengenai \textit{file} ``application.conf'' yang menyimpan pengaturan-pengaturan seperti kumpulan \textit{log}, koneksi ke \textit{database}, jenis \textit{port} tempat \textit{server} berjalan, dll. \textit{File} ``routes'' merupakan file yang mengatur bagaimana HTTP \textit{requests} nantinya akan diproses lebih lanjut yang akan dijelaskan pada subbab selanjutnya. Pada \textit{folder} ``project'' terdapat \textit{file} ``build.properties'' dan ``plugins.sbt'', \textit{file} tersebut mendeskripsikan versi Play dan SBT yang digunakan. \textit{Folder} ``public'' merupakan folder yang menyimpan data-data seperti gambar (folder ``images''), kumpulan Javascript yang digunakan (folder ``javascripts'', secara \textit{default} berisikan file ``jquery-1.9.0.min.js'') dan data-data CSS (folder ``stylesheets''). \textit{File} ``build.sbt'' mengatur \textit{dependencies} yang dibutuhkan dalam pembuatan aplikasi. Terakhir adalah \textit{folder} ``test'' yang merupakan salah satu kelebihan dari Play Framework, bagian ini berisikan \textit{file} ``Application.test'' dan ``Integration.test'' yang dapat digunakan untuk melakukan serangkaian \textit{testing} yang diinginkan terhadap aplikasi.
 
 \begin{figure}[htbp]
 	\centering
@@ -71,6 +71,22 @@ Ketika Play Framework pertama kali ter-\textit{install} pada komputer, Play Fram
 	\label{fig:2_strukturplay}
 \end{figure}
 
+\subsection{\textit{Routes}}
+\label{sec:routes}
+\textit{Routes} adalah \textit{file} yang mengatur pemetaan dari HTTP URLs menuju kode aplikasi (dalam hal ini menuju ke \textit{controllers}). Secara \textit{default}, \textit{routes} berisikan kode seperti pada gambar \ref{fig:2_routes1}. Kode \textit{default} pada \textit{routes} tersebut dapat memetakan permintaan URL \textit{index} standar seperti ``localhost:9000'' ketika \textit{server} Play Framework sudah dijalankan.
 
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[scale=1]{Gambar/2_routes1.JPG}
+	\caption{Isi kode \textit{file} ``routes''\cite{playforjava}}
+	\label{fig:2_routes1}
+\end{figure}
 
+Struktur \textit{routes} terdiri dari 3 bagian (gambar \ref{fig:2_routes2}), yaitu HTTP \textit{method}, URL \textit{path}, dan \textit{action method}. Struktur \textit{routes} seperti yang dijelaskan pada gambar \ref{fig:2_routes2} juga sekaligus menjadi struktur minimal yang harus ada agar \textit{routes} dapat memetakan suatu HTTP URLs. HTTP \textit{method} berisikan protokol yang ingin dilakukan terhadap suatu HTTP \textit{request}. HTTP \textit{method} dapat berupa ``\texttt{GET}'', ``\texttt{POST}'', ``\texttt{DELETE}'', atau ``\texttt{PUT}''.
 
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[scale=1]{Gambar/2_routes2.JPG}
+	\caption{Struktur kode \textit{file} ``routes''\cite{playforjava}}
+	\label{fig:2_routes2}
+\end{figure}
