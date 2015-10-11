@@ -62,7 +62,16 @@ Play Framework adalah sekumpulan kerangka kode yang dapat digunakan untuk memban
 
 \subsection{Struktur Aplikasi}
 \label{sec:struktur_aplikasi}
-Ketika Play Framework pertama kali ter-\textit{install} pada komputer, Play Framework menyediakan \textit{default} direktori dengan struktur minimal (gambar \ref{fig:2_strukturplay}). \textit{Folder} ``app'' merupakan \textit{folder} yang berisi mengenai pola arsitektur yang dimiliki Play Framework, yaitu ``controllers'', ``views'', dan ``models'' (tidak dibuat secara \textit{default}), pola arsitektur MVC akan dijelaskan lebih lanjut pada subbab selanjutnya. Folder ``conf'' berisi mengenai \textit{file} ``application.conf'' yang menyimpan pengaturan-pengaturan seperti kumpulan \textit{log}, koneksi ke \textit{database}, jenis \textit{port} tempat \textit{server} berjalan, dll. \textit{File} ``routes'' merupakan file yang mengatur bagaimana HTTP \textit{requests} nantinya akan diproses lebih lanjut yang akan dijelaskan pada subbab selanjutnya. Pada \textit{folder} ``project'' terdapat \textit{file} ``build.properties'' dan ``plugins.sbt'', \textit{file} tersebut mendeskripsikan versi Play dan SBT yang digunakan. \textit{Folder} ``public'' merupakan folder yang menyimpan data-data seperti gambar (folder ``images''), kumpulan Javascript yang digunakan (folder ``javascripts'', secara \textit{default} berisikan file ``jquery-1.9.0.min.js'') dan data-data CSS (folder ``stylesheets''). \textit{File} ``build.sbt'' mengatur \textit{dependencies} yang dibutuhkan dalam pembuatan aplikasi. Terakhir adalah \textit{folder} ``test'' yang merupakan salah satu kelebihan dari Play Framework, bagian ini berisikan \textit{file} ``Application.test'' dan ``Integration.test'' yang dapat digunakan untuk melakukan serangkaian \textit{testing} yang diinginkan terhadap aplikasi.
+Ketika Play Framework pertama kali ter-\textit{install} pada komputer, Play Framework menyediakan \textit{default} direktori dengan struktur minimal (gambar \ref{fig:2_strukturplay}). Berikut adalah penjelasan struktur minimal Play Framework:
+\begin{enumerate}
+	\item \textit{Folder} ``app'' merupakan \textit{folder} yang berisi mengenai pola arsitektur yang dimiliki Play Framework, yaitu ``models'' (tidak dibuat secara \textit{default}), ``views'', dan ``controllers'' yang akan dijelaskan lebih lanjut pada subbab selanjutnya (subbab \textit{Models}: \ref{sec:models}, subbab \textit{Views}: \ref{sec:views}, dan subbab \textit{Controllers}: \ref{sec:controllers}).
+	\item \textit{Folder} ``conf'' berisi mengenai \textit{file} ``application.conf'' yang menyimpan pengaturan-pengaturan seperti kumpulan \textit{log}, koneksi ke \textit{database}, jenis \textit{port} tempat \textit{server} bekerja, dll. \textit{Folder} ``conf'' juga berisi \textit{file} ``routes'' yang mengatur bagaimana HTTP \textit{requests} nantinya akan diproses lebih lanjut yang akan dijelaskan pada subbab selanjutnya (subbab \ref{sec:routes}).
+	\item \textit{Folder} ``project'' terdapat \textit{file} ``build.properties'' dan ``plugins.sbt'', \textit{file} tersebut mendeskripsikan versi Play dan SBT yang digunakan pada aplikasi.
+	\item \textit{Folder} ``public'' merupakan \textit{folder} yang menyimpan data-data seperti gambar (\textit{folder} ``images''), kumpulan Javascript yang digunakan (\textit{folder} ``javascripts'', secara \textit{default} berisikan \textit{file} ``jquery-1.9.0.min.js'') dan data-data CSS (folder ``stylesheets'').
+	\item \textit{File} ``build.sbt'' mengatur \textit{dependencies} yang dibutuhkan dalam pembuatan aplikasi.
+	\item Terakhir adalah \textit{folder} ``test'' yang merupakan salah satu kelebihan dari Play Framework, bagian ini berisikan \textit{file} ``Application.test'' dan ``Integration.test'' yang dapat digunakan untuk melakukan serangkaian \textit{testing} yang diinginkan terhadap aplikasi.
+\end{enumerate}
+     
 
 \begin{figure}[htbp]
 	\centering
@@ -77,16 +86,75 @@ Ketika Play Framework pertama kali ter-\textit{install} pada komputer, Play Fram
 
 \begin{figure}[htbp]
 	\centering
-		\includegraphics[scale=1]{Gambar/2_routes1.JPG}
+		\includegraphics[scale=0.8]{Gambar/2_routes1.JPG}
 	\caption{Isi kode \textit{file} ``routes''\cite{playforjava}}
 	\label{fig:2_routes1}
 \end{figure}
 
-Struktur \textit{routes} terdiri dari 3 bagian (gambar \ref{fig:2_routes2}), yaitu HTTP \textit{method}, URL \textit{path}, dan \textit{action method}. Struktur \textit{routes} seperti yang dijelaskan pada gambar \ref{fig:2_routes2} juga sekaligus menjadi struktur minimal yang harus ada agar \textit{routes} dapat memetakan suatu HTTP URLs. HTTP \textit{method} berisikan protokol yang ingin dilakukan terhadap suatu HTTP \textit{request}. HTTP \textit{method} dapat berupa ``\texttt{GET}'', ``\texttt{POST}'', ``\texttt{DELETE}'', atau ``\texttt{PUT}''.
+Struktur \textit{routes} terdiri dari 3 bagian (gambar \ref{fig:2_routes2}), yaitu HTTP \textit{method}, URL \textit{path}, dan \textit{action method}. Struktur \textit{routes} seperti yang dijelaskan pada gambar \ref{fig:2_routes2} juga sekaligus menjadi struktur minimal yang harus ada agar \textit{routes} dapat memetakan suatu HTTP URLs. HTTP \textit{method} berisikan protokol yang ingin dilakukan terhadap suatu HTTP \textit{request}. HTTP \textit{method} dapat berupa ``\texttt{GET}'', ``\texttt{POST}'', ``\texttt{DELETE}'', ``\texttt{PATCH}'', ``\texttt{HEAD}'' atau ``\texttt{PUT}''\cite{playframeworkrouting1}. URL \textit{path} merupakan direktori yang ingin dituju dalam \textit{server} aplikasi. URL \textit{path} dimulai dengan tanda ``/'' dan diikuti dengan nama direktori yang ingin dituju. Terakhir, \textit{action method} merupakan pemilihan kelas \textit{controller} yang ingin dituju. Struktur \textit{action method} terdiri dari 3 bagian (dipisahkan dengan karakter ``.''), yaitu pemilihan \textit{package} ``controllers'' yang ingin dituju, bagian kedua adalah pemilihan kelas ``controllers'' yang dipilih (contohnya: ``Products'' pada gambar \ref{fig:2_routes2}), dan terakhir adalah pemilihan \textit{method} yang ada pada kelas ``controllers'' yang dipilih (contohnya: ``list()'').
 
 \begin{figure}[htbp]
 	\centering
-		\includegraphics[scale=1]{Gambar/2_routes2.JPG}
+		\includegraphics[scale=0.8]{Gambar/2_routes2.JPG}
 	\caption{Struktur kode \textit{file} ``routes''\cite{playforjava}}
 	\label{fig:2_routes2}
 \end{figure}
+
+URL \textit{path} dan \textit{action method} pada \textit{routes} juga dapat berisi sebuah nilai variabel (gambar \ref{fig:2_routes3}). Penulisan sebuah variabel pada URL \textit{path} dimulai dengan tanda ``:'' lalu diikuti dengan nama variabel yang diinginkan, contohnya: ``\texttt{:id}''. Ketika menggunakan variabel pada URL \textit{path}, pada \textit{action method} perlu ditambahkan deklarasi variabel yang ditaruh di dalam bagian \textit{method} yang dipilih. Cara penulisan deklarasi variabel pada \textit{action method} adalah dimulai dengan nama variabel, lalu diikuti karakter ``:'', dan diakhiri dengan tipe variabel yang diinginkan. Contoh penulisan deklarasi variabel di dalam \textit{method} suatu kelas pada bagian \textit{action method}: ``\texttt{id: Long}'' seperti dijelaskan pada gambar \ref{fig:2_routes3}. 
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[scale=0.8]{Gambar/2_routes3.JPG}
+	\caption{Struktur kode \textit{file} ``routes'' dengan variabel\cite{playframeworkrouting2} (\textbf{lingkaran merah})}
+	\label{fig:2_routes3}
+\end{figure}
+
+\subsection{\textit{Models}}
+\label{sec:models}
+Fungsi \textit{models} pada Play Framework sama seperti fungsi \textit{models} pada pola arsitektur MVC secara umum, yaitu untuk memanipulasi dan menyimpan data. Secara \textit{default}, \textit{models} tidak dibuat oleh struktur minimal Play Framework (gambar \ref{fig:2_strukturplay}). Untuk itu perlu menambahkan \textit{models} secara manual ke dalam struktur Play Framework. Langkah yang dilakukan untuk menambahkan \textit{models} ke dalam Play Framework adalah:
+\begin{enumerate}
+	\item Menambahkan folder ``models'' ke dalam folder ``app'',
+	\item Menambahkan file dengan format ``.java'' ke dalam folder ``models''.
+\end{enumerate}
+
+Tidak ada aturan khusus yang diharuskan dalam penulisan kode dalam kelas \textit{models}. Selama kelas \textit{models} yang dibuat memenuhi aturan bahasa Java, maka \textit{models} dapat dieksekusi oleh \textit{server} Play Framework.
+
+\subsection{\textit{Views}}
+\label{sec:views}
+Fungsi \textit{views} pada Play Framework adalah mengatur tampilan yang ingin ditampilkan di layar. \textit{Views} menggunakan bahasa HTML dan Scala. Bahasa Scala pada \textit{views} berfungsi sebagai penerima parameter yang dikirimkan dari kelas \textit{models} dimana antara \textit{models} dan \textit{views} dihubungkan oleh \textit{controllers}. Penamaan \textit{file} di dalam folder \textit{views} (gambar \ref{fig:2_strukturplay}) harus dengan format sebagai berikut, ``namaFile.scala.html''.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[scale=0.8]{Gambar/2_views.JPG}
+	\caption{Contoh struktur kode \textit{views}\cite{playforjava}}
+	\label{fig:2_views}
+\end{figure}
+
+Baris pertama pada kode \textit{views} (gambar \ref{fig:2_views}) digunakan sebagai parameter penerima input dari \textit{models} yang dihubungkan dengan \textit{controllers}. Format deklarasi variabel pada parameter \textit{views} diawali dengan karakter ``@'', lalu ``(namaVariabel$_1$:tipeVariabel$_1$)(namaVariabel$_2$:tipeVariabel$_2$) . . . (namaVariabel$_n$:tipeVariabel$_n$)'', dimana n adalah jumlah parameter yang ingin digunakan pada aplikasi \textit{views}. Variabel pada parameter yang sudah dideklarikan dapat dipanggil dengan menggunakan format ``@namaVariabel'' (seperti dijelaskan pada baris 9 gambar \ref{fig:2_views}).
+
+\subsection{\textit{Controllers}}
+\label{sec:controllers}
+\textit{Controllers} merupakan bagian pada Play Framework yang terhubung langsung dengan \textit{routes} (subbab \ref{sec:routes}). Jika \textit{action method} yang dikirimkan oleh \textit{routes} sesuai dengan \textit{method} yang dimiliki suatu kelas \textit{controllers}, maka \textit{controllers} akan mengeksekusi fungsi logika yang terdapat pada \textit{method} dan mengembalikan nilai berupa objek dari kelas \textit{Result} (gambar \ref{fig:2_controllers1}). Fungsi dari \textit{controllers} dalam arsitektur MVC adalah sebagai penghubung antara \textit{models} dan \textit{views}. 
+
+\begin{figure}[htbp]
+	\centering	
+		\includegraphics[scale=0.8]{Gambar/2_controllers1.JPG}
+	\caption{Contoh bagaimana hubungan \textit{routes} dan \textit{controllers} dalam memproses HTTP \textit{requests}\cite{playforjava}}
+	\label{fig:2_controllers1}
+\end{figure}
+
+Penulisan kode pada suatu kelas \textit{controllers} menggunakan bahasa Java dan memiliki aturan khusus (gambar \ref{fig:2_controllers2}). Aturan khusus dijelaskan ke dalam poin-poin sebagai berikut:
+\begin{enumerate}
+	\item Deklarasi kelas harus \textit{public},
+	\item Kelas yang dibuat harus \textit{extends} ``\texttt{play.mvc.Controller}'',
+	\item \textit{Method} yang dibuat dalam suatu kelas \textit{controllers} harus bertipe \textit{static},
+	\item Nilai kembalian \textit{method} yang dibuat dalam suatu kelas \textit{controllers} harus berupa objek dari kelas Result.
+\end{enumerate}
+
+\begin{figure}[htbp]
+	\centering	
+		\includegraphics[scale=0.8]{Gambar/2_controllers2.JPG}
+	\caption{Contoh struktur kode \textit{controllers}\cite{playforjava}}
+	\label{fig:2_controllers2}
+\end{figure}
+
