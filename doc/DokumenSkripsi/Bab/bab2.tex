@@ -111,6 +111,61 @@ public void connectToAndQueryDatabase(String username, String password) {
 
 Contoh di atas menunjukkan bagaimana JDBC API membantu aplikasi Java membuat koneksi terhadap suatu \textit{database} (baris 3-6), membuat dan mengirimkan suatu \textit{query} ke \textit{database} (baris 8 dan 9), dan menerima dan melakukan proses terhadap hasil yang didapatkan dari pengiriman \textit{query} tersebut (baris 9-15).
 
+\subsection{\textit{Interface} Connection}
+\label{sec:intercon}
+\textit{Interface} Connection adalah sebuah koneksi (\textit{session}) dengan \textit{database} spesifik\cite{packagejavasql}. Eksekusi SQL \textit{statements} (subbab \ref{sec:statement}) dan penerimaan hasil kembalian (subbab \ref{sec:resultset}) dari eksekusi tersebut dapat terjadi karena adanya koneksi dengan \textit{database} yang dibentuk oleh \textit{interface} Connection. Berikut adalah sebagian \textit{method} yang ada pada \textit{interface} Connection:
+\begin{itemize}
+	\item \texttt{void close()}
+	
+	\textit{Method} ini digunakan untuk memutuskan koneksi dengan \textit{database} yang sedang terhubung.
+	
+	\item \texttt{Statement createStatement()}
+	
+	\textit{Method} ini digunakan untuk membangun objek \texttt{Statement} yang dapat digunakan untuk mengirimkan SQL \textit{statements} ke \textit{database} yang sedang terhubung.
+\end{itemize}
+
+\subsection{Kelas DriverManager}
+\label{sec:drivermanager}
+Kelas DriverManager adalah cara paling dasar untuk mengatur JDBC \textit{drivers}\cite{packagejavasql}. Berikut adalah salah satu \textit{method} yang ada di kelas DriverManager untuk mengatur JDBC \textit{drivers}:
+\begin{itemize}
+	\item \texttt{public static Connection getConnection(String url, String user, String password)}
+	
+	\textit{Method} ini digunakan untuk membangun sebuah koneksi dengan \textit{database}. Umumnya method ini digunakan untuk membangun \textit{interface} Connection (subbab \ref{sec:intercon}).
+	
+	Parameter:
+	\begin{enumerate}
+		\item \texttt{url}, alamat dari \textit{database}, formatnya adalah ``\textit{jdbc:\textit{subprotocol}:\textit{subname}}'',
+		\item \texttt{user}, \textit{username} untuk mengakses \textit{database},
+		\item \texttt{password}, \textit{password} dari \textit{username}.
+	\end{enumerate}
+	
+	Nilai kembalian: sebuah koneksi terhadap \textit{database} yang sesuai dengan alamat \texttt{url}.
+\end{itemize}
+
+\subsection{\textit{Interface} Statement}
+\label{sec:statement}
+\textit{Interface} Statement adalah objek yang digunakan untuk melakukan eksekusi terhadap suatu \textit{query} dan mengembalikan nilai kembalian dari eksekusi tersebut\cite{packagejavasql}. Berikut adalah salah satu \textit{method} yang ada di \textit{interface} Statement:
+\begin{itemize}
+	\item \texttt{ResultSet executeQuery(String sql)}
+	
+	Parameter: \texttt{sql}, sebuah SQL \textit{statement} yang akan dikirimkan ke \textit{database}.
+	
+	Nilai kembalian: objek \texttt{ResultSet} yang berupa data yang dihasilkan dari eksekusi \textit{query} \texttt{sql}.
+\end{itemize}
+
+\subsection{\textit{Interface} ResultSet}
+\label{sec:resultset}
+\textit{Interface} ResultSet adalah sebuah tabel data yang merepresentasikan hasil dari sebuah eksekusi \textit{query} pada suatu \textit{database}\cite{packagejavasql} (subbab \ref{sec:statement}). Cara kerja \textit{interface} ResultSet adalah dengan sistem indeks. Pada awalnya indeks ResultSet menunjuk pada data ``bayangan'' sebelum data pertama. Setiap pemanggilan \textit{method} ``\texttt{next()}'', ResultSet akan menyebabkan nilai indeks semakin meningkat (bertambah 1). Berikut adalah salah satu contoh \textit{method} \textit{interface} ResultSet:
+\begin{itemize}
+	\item \texttt{Object getObject(String columnLabel)}
+	
+	Parameter: \texttt{columnLabel}, merupakan nama kolom pada indeks yang ditunjuk.
+	
+	Nilai kembalian: data berupa \texttt{Object} pada indeks yang ditunjuk.
+\end{itemize}
+
+
+
 \section{Play Framework}
 \label{sec:play_framework}
 Play Framework adalah sekumpulan kerangka kode yang dapat digunakan untuk membangun suatu situs web\cite{playforjava}. Play Framework tidak hanya menggunakan bahasa Java dalam pembuatannya. Bahasa Scala juga digunakan Play Framework dalam beberapa bagian seperti bagian \textit{view} dan \textit{route}. Play Framework menggunakan konsep MVC (\textit{Model} \textit{View} \textit{Controller}) sebagai pola arsitekturnya. Konsep MVC pada suatu kode membuat kode mudah dikembangkan baik secara tampilan maupun pengembangan fitur-fiturnya. Ketika \textit{server} Play Framework dijalankan, secara \textit{default} dapat diakses melalui ``localhost:9000''.
@@ -245,7 +300,7 @@ Play Framework menyediakan sebuah \textit{plugin} yang dapat digunakan untuk men
 	libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.18"
 	\end{lstlisting}
 	
-	Baris 1 kode program di atas adalah untuk mengaktifkan plugin JDBC pada Play Framework. Play tidak menyediakan \textit{database drivers} apapun, untuk itu perlu menambahkan \textit{database driver} (baris 2) sebagai \textit{dependency} untuk aplikasi Play Framework.
+	Baris 1 kode program di atas adalah untuk mengaktifkan plugin JDBC pada Play Framework. Play tidak menyediakan \textit{database driver} apapun, untuk itu perlu menambahkan \textit{database driver} (baris 2) sebagai \textit{dependency} untuk aplikasi Play Framework.
 	
 	\item Menambahkan kode program ke dalam ``conf/application.conf'' (gambar \ref{fig:2_strukturplay}), yaitu:
 	
