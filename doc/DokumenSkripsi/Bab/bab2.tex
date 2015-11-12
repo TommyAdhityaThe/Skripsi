@@ -34,7 +34,7 @@
 
 \subsection{\textit{Point}}
 \label{sec:point}
-\textit{Point} adalah nilai geometri yang merepresentasikan sebuah lokasi ke dalam suatu koordinat\cite{mysqlspatial}. Koordinat pada \textit{Point} terdiri dari nilai X dan Y dimana X merepresentasikan letak lokasi dalam garis bujur dan Y merepresentasikan letak lokasi dalam garis lintang. \textit{Point} tidak memiliki dimensi maupun nilai batasan. Contoh representasi \textit{Point} adalah Universitas Katolik Parahyangan direpresentasikan dalam koordinat X=-6.874735 dan Y=107.6049079 (gambar \ref{fig:2_UNPAR}).
+\textit{Point} adalah nilai geometri yang merepresentasikan sebuah lokasi ke dalam suatu koordinat\cite{mysqlspatial}. Koordinat pada \textit{Point} terdiri dari nilai X dan Y dimana X merepresentasikan letak lokasi terhadap garis bujur dan Y merepresentasikan letak lokasi terhadap garis lintang. \textit{Point} tidak memiliki dimensi maupun nilai batasan. Contoh representasi \textit{Point} adalah Universitas Katolik Parahyangan direpresentasikan dalam koordinat X=107.6049079 dan Y=-6.874735 (gambar \ref{fig:2_UNPAR}).
 
 \begin{figure}[htbp]
 	\centering
@@ -59,24 +59,34 @@
 Format Well-Known Text (WKT) adalah salah satu aturan penulisan tipe data \textit{spatial} untuk merepresentasikan suatu \textit{geographic feature}\cite{mysqlspatial}. WKT merepresentasikan nilai geometri yang dimodelkan untuk pertukaran data geometri dalam ASCII \textit{form}. Berikut adalah contoh format WKT:
 
 \begin{lstlisting}
-	POINT(15 20)
+	POINT(107.6049079 -6.874735)
 	
-	LINESTRING(0 0, 10 10, 20 25, 50 60)
+	LINESTRING(107.60502219200134 -6.875194997571583, 
+						 107.60445356369019 -6.875386727913034,
+						 107.60347723960876 -6.879647382202341,
+						 107.6040780544281 -6.881479451795388,
+						 107.60461449623108 -6.8812344661545986,
+						 107.60483980178833 -6.880861661676069)
 \end{lstlisting}
 
-Contoh di atas menunjukkan format WKT dari \textit{Point} (baris 1) dan format WKT dari \textit{LineString} (baris 3).
+Contoh di atas menunjukkan format WKT dari \textit{Point} (baris 1) dan format WKT dari \textit{LineString} (baris 3-8).
 
 Berikut adalah contoh penggunaan format WKT dalam MySQL:
 
 \begin{lstlisting}
-	CREATE TABLE geom (g GEOMETRY);
+	CREATE TABLE geom (g LINESTRING);
 
-	INSERT INTO geom VALUES (ST_GeomFromText('LINESTRING(0 0,1 1,2 2)'));
+	INSERT INTO geom VALUES (ST_GeomFromText('LINESTRING(107.60502219200134 -6.875194997571583, 
+						 107.60445356369019 -6.875386727913034,
+						 107.60347723960876 -6.879647382202341,
+						 107.6040780544281 -6.881479451795388,
+						 107.60461449623108 -6.8812344661545986,
+						 107.60483980178833 -6.880861661676069)'));
 	
 	SELECT ST_AsText(g) FROM geom;
 \end{lstlisting}
 
-Contoh di atas menunjukkan pembuatan tabel ``\texttt{geom}'' dengan sebuah kolom ``\texttt{g}'' dan tipe data ``\texttt{GEOMETRY}'' (baris 1), menambahkan 1 baris berupa ``\texttt{ST\_GeomFromText('LINESTRING(0 0,1 1,2 2)')}'' (\textit{LineString} dalam format WKT) ke dalam tabel ``\texttt{geom}'' (baris 3), dan melihat data ``\texttt{ST\_AsText(g)}'' dari tabel ``\texttt{geom}'' yang nilainya adalah ``\texttt{LINESTRING(0 0,1 1,2 2)}'' (baris 5).
+Contoh di atas menunjukkan pembuatan tabel ``\texttt{geom}'' dengan sebuah kolom ``\texttt{g}'' dan tipe data ``\texttt{LINESTRING}'' (baris 1), menambahkan 1 baris data berupa \textit{LineString} ke dalam tabel ``\texttt{geom}'' (baris 3-8), dan melihat data dari tabel ``\texttt{geom}'' (baris 10), dimana nilai kembalian ``\texttt{ST\_AsText(g)}'' berupa data \textit{LineString} dalam format WKT .
 
 
 
@@ -155,13 +165,35 @@ Kelas DriverManager adalah cara paling dasar untuk mengatur JDBC \textit{drivers
 
 \subsection{\textit{Interface} ResultSet}
 \label{sec:resultset}
-\textit{Interface} ResultSet adalah sebuah tabel data yang merepresentasikan hasil dari sebuah eksekusi \textit{query} pada suatu \textit{database}\cite{packagejavasql} (subbab \ref{sec:statement}). Cara kerja \textit{interface} ResultSet adalah dengan sistem indeks. Pada awalnya indeks ResultSet menunjuk pada data ``bayangan'' sebelum data pertama. Setiap pemanggilan \textit{method} ``\texttt{next()}'', ResultSet akan menyebabkan nilai indeks semakin meningkat (bertambah 1). Berikut adalah salah satu contoh \textit{method} \textit{interface} ResultSet:
+\textit{Interface} ResultSet adalah sebuah tabel data yang merepresentasikan hasil dari sebuah eksekusi \textit{query} pada suatu \textit{database}\cite{packagejavasql} (subbab \ref{sec:statement}). Cara kerja \textit{interface} ResultSet adalah dengan sistem indeks. Pada awalnya indeks ResultSet menunjuk pada data ``bayangan'' sebelum data pertama. Setiap pemanggilan \textit{method} ``\texttt{next()}'' pada objek ResultSet akan menyebabkan nilai indeks semakin meningkat (bertambah 1). Berikut adalah contoh \textit{method} \textit{interface} ResultSet:
 \begin{itemize}
+	\item \texttt{boolean next()}
+	
+	Nilai kembalian: \texttt{true} jika terdapat data pada indeks selanjutnya, \texttt{false} bila tidak ditemukan data pada indeks selanjutnya.
+
 	\item \texttt{Object getObject(String columnLabel)}
 	
-	Parameter: \texttt{columnLabel}, merupakan nama kolom pada indeks yang ditunjuk.
+	Parameter: \texttt{columnLabel}, merupakan nama kolom yang ingin diambil nilainya.
 	
-	Nilai kembalian: data berupa \texttt{Object} pada indeks yang ditunjuk.
+	Nilai kembalian: data berupa \texttt{Object} pada indeks baris dan kolom yang ditunjuk.
+	
+	\item \texttt{String getString(String columnLabel)}
+	
+	Parameter: \texttt{columnLabel}, merupakan nama kolom yang ingin diambil nilainya.
+	
+	Nilai kembalian: data berupa \texttt{String} pada indeks baris dan kolom yang ditunjuk.
+	
+	\item \texttt{int getInt(String columnLabel)}
+	
+	Parameter: \texttt{columnLabel}, merupakan nama kolom yang ingin diambil nilainya.
+	
+	Nilai kembalian: data berupa \texttt{int} pada indeks baris dan kolom yang ditunjuk.
+	
+	\item \texttt{boolean getBoolean(String columnLabel)}
+	
+	Parameter: \texttt{columnLabel}, merupakan nama kolom yang ingin diambil nilainya.
+	
+	Nilai kembalian: data berupa \texttt{boolean} pada indeks baris dan kolom yang ditunjuk.
 \end{itemize}
 
 
