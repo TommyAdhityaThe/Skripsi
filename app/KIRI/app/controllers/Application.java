@@ -11,9 +11,11 @@ import org.json.simple.JSONObject;
 import play.db.*;
 import java.io.*;
 import java.sql.*;
+import java.util.Random;
 
 public class Application extends Controller {
 	DynamicForm requestData;
+    
 
 	public Result index(){
 		return ok(index.render("APLIKASI SIAP!!"));
@@ -32,13 +34,13 @@ public class Application extends Controller {
         return ok(sb.toString());
     }
 
-    public Result handle() {
+    public Result handle() throws IOException, SQLException{
     	this.requestData = Form.form().bindFromRequest();
     	String mode = this.requestData.get("mode");
         if(mode.equals("login")){
         	return this.login();
         }
-        if(mode.equals("register")){
+        else if(mode.equals("register")){
         	return this.register();
         }
         else{
@@ -46,30 +48,99 @@ public class Application extends Controller {
         }
     }
 
-    private Result login() {
+    private Result login() throws IOException, SQLException{
     	JSONObject obj;
     	String userid = this.requestData.get("userid");
     	String password = this.requestData.get("password");
-    	//masih salah belum convert ke JSON
     	if (userid.length() > 128) {
-			return badRequest("User ID length is more than allowed (" + userid.length() + ")");
+			return badRequest(this.return_invalid_credentials("User ID length is more than allowed (" + userid.length() + ")"));
 		}
-		//masih salah belum convert ke JSON
 		if (password.length() > 32) {
-			return badRequest("Password length is more than allowed ("+ password.length() + ")");
+			return badRequest(this.return_invalid_credentials("Password length is more than allowed ("+ password.length() + ")"));
 		}
 
-		//generate dummy langsung berhasil
+        // Retrieve the user information
+        java.sql.Connection connection = DB.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet result = statement.executeQuery("SELECT * FROM users WHERE email='"+userid+"'");
+        if(!result.next()){
+            System.out.println("userid tidak ditemukan");
+            return badRequest(this.return_invalid_credentials(null));
+        }
+
+        String hasher=result.getString("password");
+        if(!hasher.equals(password)){
+            System.out.println("password salah");
+            return badRequest(this.return_invalid_credentials(null));
+        }
+        StringBuilder privileges= new StringBuilder();
+        if (result.getInt("privilegeRoute") != 0) {
+            privileges.append(",route");
+        }
+        if (result.getInt("privilegeApiUsage") != 0) {
+            privileges.append(",apiusage");
+        }
+        if (privileges.length() > 0) {
+            privileges=new StringBuilder(privileges.substring(1));
+        }
 		obj = new JSONObject();
 		obj.put("status", "ok");
         obj.put("sessionid", "e27wy7s3f08fmu13");
-        obj.put("privileges", "route,apiusage");
+        obj.put("privileges", privileges.toString());
         return ok(obj.toString());
     }
     
-    private Result register() {
-        return ok("rede");
+    private Result register() throws IOException, SQLException{
+        JSONObject obj;
+        String email = this.requestData.get("userid");
+        String fullname = this.requestData.get("fullname");
+        String company = this.requestData.get("company");
+
+        // Check if the email has already been registered.
+        java.sql.Connection connection = DB.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet result = statement.executeQuery("SELECT email FROM users WHERE email='"+email+"'");
+        while (result.next()) {
+            return badRequest("udah ada usernya");
+        }
+
+        // Generate password tanpa fitur hash and send password (belum dilakukan)
+        String password = this.generate_password();
+        statement.executeUpdate("INSERT INTO users(email, password, privilegeApiUsage, fullName, company) VALUES('" + email + "', '" + password +"', 1, '" + fullname +"', '" + company +"');");
+        
+
+        return ok(this.well_done(null));
     }
 
 
+    private String generate_password(){
+        return this.generate_random("abcdefghiklmnopqrstuvwxyz0123456789", 8);
+    }
+    
+    private String generate_random(String chars, int length){
+        int chars_size = chars.length();
+        Random random=new Random();
+        String string = "";
+        for (int i = 0; i < length; i++) {
+            string += chars.charAt(random.nextInt(chars_size));
+        }
+        return string;
+    }
+
+    private String well_done(String message) {
+        JSONObject obj;
+        obj = new JSONObject();
+        obj.put("status", "ok");
+        if (message != null) {
+            obj.put("status", message);
+        }
+        return obj.toString();
+    }
+
+    public String return_invalid_credentials(String logmessage) {
+        JSONObject obj;
+        obj = new JSONObject();
+        obj.put("status", "credentialfail");
+        return obj.toString();
+    }
 }
