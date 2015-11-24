@@ -3,8 +3,12 @@
 # ~~~~
 
 # Home page
-GET     /                          		 controllers.Application.index()
-GET     /bukitjarian/*file               controllers.Assets.at(path="/public/bukitjarian", file)
+GET		/	 		 					 controllers.Application.index()
+GET		/testingdb	 					 controllers.Application.testingDB()
+POST	/bukitjarian/handle.php	 		 controllers.Application.handle()
+GET     /bukitjarian		             controllers.Assets.at(path ="/public/bukitjarian", file="index.html")
+GET     /*file		             		 controllers.Assets.at(path ="/public/bukitjarian", file)
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               	 controllers.Assets.versioned(path="/public", file: Asset)

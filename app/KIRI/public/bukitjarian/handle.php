@@ -1,7 +1,7 @@
 <?php
-require_once '../KIRI/etc/utils.php';
-require_once '../KIRI/etc/constants.php';
-require_once '../KIRI/etc/PasswordHash.php';
+require_once '../../etc/utils.php';
+require_once '../../etc/constants.php';
+require_once '../../etc/PasswordHash.php';
 
 start_working();
 
