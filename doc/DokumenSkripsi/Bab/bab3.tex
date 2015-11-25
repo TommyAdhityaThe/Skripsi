@@ -3,15 +3,20 @@
 
 \section{Analisis Sistem Kini}
 \label{sec:analisissistemkini}
-Berikut adalah penjelasan secara umum mengenai Kode KIRI (gambar \ref{fig:3_strukturkiri}):
+Berdasarkan hasil analisa serta wawancara dengan kontributor kode KIRI, berikut adalah penjelasan secara umum mengenai isi kode KIRI (gambar \ref{fig:3_strukturkiri}):
 \begin{enumerate}
-	\item \textit{Folder} ``.settings'' merupakan \textit{folder} yang menyimpan \textit{file-file} pengaturan kode KIRI untuk Eclipse.
+	\item \textit{Folder} ``.settings'' merupakan \textit{folder} yang menyimpan \textit{file-file} pengaturan sistem KIRI untuk Eclipse. Eclipse adalah sebuah \textit{open source} IDE (\textit{Integrated Development Environment}) yang membantu programer dalam membangun suatu perangkat lunak\cite{eclipse}.
 	\item \textit{Folder} ``etc'' merupakan \textit{folder} yang menyimpan \textit{file-file} untuk membangun konstanta-konstanta dan fungsi-fungsi yang digunakan oleh sistem KIRI.
 	\item \textit{Folder} ``log'' merupakan \textit{folder} yang berisi \textit{file-file} untuk mencatat setiap kinerja sistem KIRI.
 	\item \textit{Folder} ``public\_html'' merupakan \textit{folder} yang berisi \textit{file-file} untuk membangun KIRI \textit{Front End}.
 	\item \textit{Folder} ``public\_html\_dev'' merupakan \textit{folder} yang berisi \textit{file-file} untuk membangun KIRI \textit{Dashboard}.
-	\item \textit{Folder} ``res'' merupakan \textit{folder} yang berisi \textit{file-file} yang bersifat publik seperti gambar dan XML yang digunakan sebagai pendukung sistem KIRI.
+	\item \textit{Folder} ``res'' merupakan \textit{folder} yang berisi \textit{file-file} yang bersifat publik seperti gambar, data XML, dll yang digunakan sebagai pendukung sistem KIRI.
 	\item \textit{Folder} ``sql'' merupakan \textit{folder} yang menyimpan \textit{database} sistem KIRI.
+	\item \textit{File} ``.buildpath'' dan ``.project'' merupakan \textit{file} yang menyimpan konfigurasi untuk Eclipse.
+	\item \textit{File} ``.gitignore'' merupakan \textit{file} yang menyimpan daftar \textit{file} yang tidak perlu dikirimkan ke tempat penyimpanan Github karena \textit{file-file} tersebut dibangkitkan oleh sistem KIRI. Github adalah sebuah tempat penyimpanan \textit{online} yang dikhususkan untuk menyimpan isi kode suatu perangkat lunak\cite{github}.
+	\item \textit{File} ``.gitmodules'' merupakan \textit{file} yang menyimpan alamat kode eksternal yang digunakan dalam sistem KIRI.
+	\item \textit{File} ``README.md'' merupakan \textit{file} yang berisi keterangan singkat mengenai proyek KIRI. Isi keterangan singkat tersebut digunakan untuk mencegah sembarang orang agar tidak membuka proyek KIRI di Github.
+	\item \textit{File} ``build.properties'' dan ``build.xml'' merupakan \textit{file} yang digunakan Ant untuk mendistribusikan program. Ant adalah sebuah perangkat yang dapat digunakan untuk menjalankan tes dan menjalankan aplikasi dalam bahasa Java\cite{ant}.
 \end{enumerate}
 
 \begin{figure}[htbp]
@@ -28,11 +33,18 @@ Berikut adalah penjelasan secara umum mengenai Kode KIRI (gambar \ref{fig:3_stru
 	\label{fig:3_public_html_dev}
 \end{figure}
 
+Penelitian ini berfokus pada pembahasan KIRI \textit{Dashboard}, untuk itu bagian yang akan dianalisa lebih mendalam adalah pada bagian ``public\_html\_dev'' (gambar \ref{fig:3_public_html_dev}) dan beberapa bagian-bagian pendukung untuk membangun KIRI \textit{Dashboard}. \textit{Folder} ``public\_html\_dev'' memiliki struktur sebagai berikut:
+\begin{enumerate}
+	\item \textit{Folder} ``bukitjarian'', berisi mengenai \textit{file-file} untuk membangun KIRI \textit{Dashboard} (gambar \ref{fig:3_bukit_jarian}).
+	\item \textit{Folder} ``docs'', berisi sebuah \textit{file} ``index.php'' yang bila dijalankan akan mengarahkan pengguna ke alamat \url{https://bitbucket.org/projectkiri/kiri_api/wiki/Home} (gambar \ref{fig:3_dokumentasi}). Halaman tersebut berisi mengenai dokumentasi sistem KIRI.
+	\item \textit{File} ``index.php'', bila \textit{file} ini dieksekusi maka akan mengarahkan pengguna ke alamat \url{http://static.kiri.travel/developer} (gambar \ref{fig:3_developer}). Halaman tersebut berisi informasi mengenai alamat KIRI \textit{Dashboard}, dokumentasi KIRI, dan halaman untuk memberikan masukan kepada kontributor sistem KIRI.
+\end{enumerate}
+
 \begin{figure}[htbp]
 	\centering
-		\includegraphics[scale=0.5]{Gambar/3_bukit_jarian.png}
-	\caption{Struktur \textit{folder} ``bukitjarian''}
-	\label{fig:3_bukit_jarian}
+		\includegraphics[scale=0.35]{Gambar/3_dokumentasi.png}
+	\caption{Halaman dokumentasi KIRI}
+	\label{fig:3_dokumentasi}
 \end{figure}
 
 \begin{figure}[htbp]
@@ -44,25 +56,18 @@ Berikut adalah penjelasan secara umum mengenai Kode KIRI (gambar \ref{fig:3_stru
 
 \begin{figure}[htbp]
 	\centering
-		\includegraphics[scale=0.35]{Gambar/3_dokumentasi.png}
-	\caption{Halaman dokumentasi KIRI}
-	\label{fig:3_dokumentasi}
+		\includegraphics[scale=0.5]{Gambar/3_bukit_jarian.png}
+	\caption{Struktur \textit{folder} ``bukitjarian''}
+	\label{fig:3_bukit_jarian}
 \end{figure}
-
-Penelitian ini berfokus pada pembahasan KIRI \textit{Dashboard}, untuk itu bagian yang akan dibahas lebih mendalam adalah hanya bagian ``public\_html\_dev'' (gambar \ref{fig:3_public_html_dev}) dan beberapa bagian-bagian pendukung untuk membangun KIRI \textit{Dashboard}. \textit{Folder} ``public\_html\_dev'' memiliki struktur sebagai berikut:
-\begin{enumerate}
-	\item \textit{Folder} ``bukitjarian'', berisi mengenai \textit{file-file} untuk membangun KIRI \textit{Dashboard} (gambar \ref{fig:3_bukit_jarian}).
-	\item \textit{Folder} ``docs'', berisi mengenai \textit{file-file} yang akan mengarahkan ke bagian dokumentasi KIRI (gambar \ref{fig:3_dokumentasi}).
-	\item ``index.php'', bila \textit{file} ini dieksekusi maka akan mengarahkan pengguna ke halaman developer KIRI (gambar \ref{fig:3_developer}), dimana berisi informasi mengenai alamat KIRI \textit{Dashboard}, dokumentasi KIRI, dan halaman untuk memberikan \textit{feedback}.
-\end{enumerate}
 
 Pada direktori ``public\_html\_dev/bukitjarian'' (gambar \ref{fig:3_bukit_jarian}) terdapat bermacam-macam \textit{file} dan \textit{folder}. Berdasarkan wawancara dengan kontributor kode, terdapat dua bagian \textit{file} dan \textit{folder} yang berperan penting dalam membangun KIRI \textit{Dashboard}:
 \begin{enumerate}
-	\item ``index.html'', ``bukitjariangwt/'', dan ``images/''. \textit{File} dan \textit{folder} ini dibangun dengan menggunakan perangkat lunak GWT. GWT berguna untuk melakukan konversi kode dalam bahasa Java menjadi HTML dan JavaScript. Hasil konversi menggunakan GWT akan mengalami \textit{obfuscate} (pengacakan) sehingga sulit untuk dianalisa. Namun demikian, \textit{file-file} ini bersifat statis dan tidak memerlukan operasi khusus di \textit{server}, sehingga dapat disalin (\textit{copy}) apa adanya. 
+	\item ``index.html'', ``bukitjariangwt/'', dan ``images/''. \textit{File} dan \textit{folder} ini dibangun dengan menggunakan perangkat lunak GWT. GWT (\textit{Google Web Toolkit}) adalah perangkat lunak yang digunakan untuk membangun dan melakukan optimasi suatu aplikasi berbasis web\cite{gwt}. Dengan GWT, pengguna tidak perlu ahli dalam menggunakan bahasa pemrograman berbasis web seperti JavaScript. GWT menggunakan bahasa Java dalam pembuatannya dan akan melakukan konversi kode Java tersebut menjadi HTML dan JavaScript. Hasil konversi menggunakan GWT akan mengalami \textit{obfuscate} (pengacakan) sehingga sulit untuk dianalisa. Namun demikian, \textit{file-file} ini bersifat statis dan tidak memerlukan operasi khusus di \textit{server}, sehingga dapat disalin (\textit{copy}) apa adanya. 
 	\item ``handle.php'' merupakan kode pada sisi \textit{server} yang bertugas untuk melayani permintaan-permintaan dari \textit{browser} yang dieksekusi oleh ``index.html''.
 \end{enumerate}
 
-Seperti disebutkan sebelumnya, \textit{file} ``handle.php'' berfungsi untuk melayani permintaan-permintaan yang dikirimkan oleh ``index.html''. \textit{File} ini dapat dibagi menjadi 16 bagian yang masing-masing melayani \textit{domain} permintaan tertentu. Berikut adalah isi kode ``handle.php'':
+Seperti disebutkan sebelumnya, \textit{file} ``handle.php'' berfungsi untuk melayani berbagai jenis permintaan yang dikirimkan oleh ``index.html''. \textit{File} ini dapat dibagi menjadi 16 bagian yang masing-masing melayani sebuah permintaan tertentu. Analisa lebih mendalam mengenai 16 bagian isi kode ``handle.php'' (kode \ref{lst:handle.php}) akan dijelaskan pada 16 subbab yang akan dijelaskan pada pembahasan analisa selanjutnya.
 
 \subsection{Bagian Pemeriksaan \textit{Login}}
 \label{sec:pemeriksaanlogin}
