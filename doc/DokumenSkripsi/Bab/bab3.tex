@@ -191,3 +191,35 @@ Sistem KIRI menggunakan perangkat lunak MySQL sebagai sarana penyimpanan untuk m
 
 \section{Analisis Sistem Usulan}
 \label{sec:analisissistemusulan}
+Berdasarkan hasil analisa dan wawancara dengan kontributor kode pada subbab sebelumnya (subbab \ref{sec:analisissistemkini} dan subbab \ref{sec:analisisdatabasesistemkini}) didapatkan poin-poin bahwa:
+\begin{enumerate}
+	\item KIRI \textit{Dashboard} terdiri dari dua bagian penting, yaitu bagian pertama adalah \textit{file} dan \textit{folder} yang bersifat statis, yaitu: ``index.html'', ``bukitjariangwt/'', dan ``images/'', serta bagian kedua adalah ``handle.php'' yang bertugas menangani permintaan-permintaan (dari ``index.html'') pada sisi \textit{server}.
+	\item KIRI \textit{Dashboard server side} (\textit{file} ``handle.php'') terbagi menjadi 16 bagian dalam menangani permintaan.
+	\item Perangkat lunak pengolahan data yang digunakan oleh sistem KIRI adalah MySQL.
+\end{enumerate}
+
+Dalam memodelkan KIRI \textit{Dashboard} dengan menggunakan Play Framework perlu memperhatikan beberapa hal, yaitu: MVC, \textit{routes}, dan \textit{database}.
+
+\subsection{Routes}
+\label{sec:routesusulan}
+Kebutuhan KIRI \textit{Dashboard} adalah pemetaan untuk ke 2 bagian, yaitu:
+\begin{enumerate}
+	\item Pemetaan URL untuk menangani tampilan (\textit{View}) KIRI \textit{Dashboard}. Hanya 1 pemetaan untuk tampilan (walau fitur KIRI \textit{Dashboard} banyak) yang dibutuhkan karena kode KIRI pada sistem kini telah menggunakan permodelan sistem yang menggunakan AJAX dalam mengatur proses permintaan datanya. Penggunaaan AJAX memungkinkan suatu aplikasi berbasis web tidak perlu melakukan permintaan berulang-ulang untuk tampilan yang umumnya sama (meningkatkan kecepatan saat \textit{browsing}).
+	\item Pemetaan URL untuk menangani permintaan dari tampilan, yaitu KIRI \textit{Dashboard server side} ((\textit{Controller})). Bagian pemetaan ini yang nantinya akan menangani 16 bagian permintaan yang dilakukan bagian tampilan KIRI \textit{Dashboard}.
+\end{enumerate}
+
+\subsection{\textit{Views}}
+\label{sec:viewusulan}
+Seperti yang telah dijelaskan pada subbab sebelumnya bahwa bagian tampilan KIRI \textit{Dashboard} dibuat dengan menggunakan perangkat GWT dimana kode yang dihasilkan sangat sulit untuk dipelajari. Walau sulit dipelajari, bagian tampilan KIRI \textit{Dashboard} memiliki keuntungan sendiri karena bersifat statis (dijelaskan oleh kontributor kode). Sifat statis ini memudahkan permodelan karena dengan begitu kode dapat disalin apa adanya ke sistem usulan. Pada Play Framework \textit{file-file} yang bersifat statis seperti ini dapat disimpan pada bagian \textit{folder} ``public/''. Akibat dari disimpanny \textit{file-file} tampilan ke \textit{folder} ``public/'' adalah bagian \textit{views} pada struktur Play Framework akan kosong. Kosongnya bagian \textit{views} menyebabkan seolah-olah Play Framework tidak menggunakan konsep MVC.
+
+\subsection{\textit{Controllers}}
+\label{sec:controllerusulan}
+Pada bagian ini akan dibuat sebuah metode yang akan menangani permintaan dari \textit{views} sistem usulan. Bagian ini berfungsi seperti ``handle.php'', yaitu menangani 16 jenis permintaan seperti yang telah dijelaskan pada subbab sebelumnya.
+
+\subsection{\textit{Models}}
+\label{sec:modelusulan}
+Tidak ada bagian yang perlu diubah menjadi \textit{models}, maka bagian ini tidak perlu ada pada sistem usulan.
+
+\subsection{\textit{Database}}
+\label{sec:databaseusulan}
+Sistem kini menggunakan MySQL sebagai perangkat pengolah datanya. Aplikasi yang dibuat dengan Play Framework memungkinkan untuk menggunakan MySQL sebagai perangkat pengolahan datanya. Untuk itu bagian \textit{database} sistem kini dapat disalin apa adanya. Perbedaan pada sistem usulan adalah pada penulisan kode dalam melakukan koneksi dan eksekusi suatu \textit{query} ke MySQL karena sebelumnya menggunakan bahasa PHP dan Play Framework menggunakan bahasa Java (JDBC).
