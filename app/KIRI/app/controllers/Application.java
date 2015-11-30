@@ -7,20 +7,26 @@ import views.html.*;
 
 //tambahan import
 import play.data.*;
-import org.json.simple.JSONObject;
 import play.db.*;
 import java.io.*;
 import java.sql.*;
 import java.util.Random;
+
+//untuk json
+import play.libs.Json;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class Application extends Controller {
 	DynamicForm requestData;
     
 
 	public Result index(){
-		return ok(index.render("APLIKASI SIAP!!"));
+		return redirect("/bukitjarian/");
 	}
 
+    public Result pagenotfound(String other){
+        return notFound("<h1>"+other+" not found</h1>").as("text/html");
+    }
 
     public Result testingDB() throws IOException, SQLException{
     	java.sql.Connection connection = DB.getConnection();
@@ -49,7 +55,6 @@ public class Application extends Controller {
     }
 
     private Result login() throws IOException, SQLException{
-    	JSONObject obj;
     	String userid = this.requestData.get("userid");
     	String password = this.requestData.get("password");
     	if (userid.length() > 128) {
@@ -83,15 +88,14 @@ public class Application extends Controller {
         if (privileges.length() > 0) {
             privileges=new StringBuilder(privileges.substring(1));
         }
-		obj = new JSONObject();
-		obj.put("status", "ok");
+        ObjectNode obj = Json.newObject();
+        obj.put("status", "ok");
         obj.put("sessionid", "e27wy7s3f08fmu13");
         obj.put("privileges", privileges.toString());
-        return ok(obj.toString());
+        return ok(obj);
     }
     
     private Result register() throws IOException, SQLException{
-        JSONObject obj;
         String email = this.requestData.get("userid");
         String fullname = this.requestData.get("fullname");
         String company = this.requestData.get("company");
@@ -127,20 +131,18 @@ public class Application extends Controller {
         return string;
     }
 
-    private String well_done(String message) {
-        JSONObject obj;
-        obj = new JSONObject();
+    private ObjectNode well_done(String message) {
+        ObjectNode obj = Json.newObject();
         obj.put("status", "ok");
         if (message != null) {
             obj.put("status", message);
         }
-        return obj.toString();
+        return obj;
     }
 
-    public String return_invalid_credentials(String logmessage) {
-        JSONObject obj;
-        obj = new JSONObject();
+    public ObjectNode return_invalid_credentials(String logmessage) {
+        ObjectNode obj = Json.newObject();
         obj.put("status", "credentialfail");
-        return obj.toString();
+        return obj;
     }
 }
