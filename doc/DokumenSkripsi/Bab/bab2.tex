@@ -92,7 +92,7 @@ Contoh di atas menunjukkan pembuatan tabel ``\texttt{geom}'' dengan sebuah kolom
 
 \section{JDBC}
 \label{sec:jdbc}
-JDBC API adalah bagian dari Java API yang dapat digunakan untuk mengakses semua jenis data yang terstruktur, terutama data yang tersimpan dalam suatu \textit{Relational Database}\cite{jdbc}. JDBC dapat membantu 3 jenis aktivitas \textit{programming} dalam menggunakan bahasa Java, yaitu:
+JDBC API adalah bagian dari Java API yang dapat digunakan untuk mengakses semua jenis data yang terstruktur, terutama data yang tersimpan dalam suatu \textit{Relational Database}\cite{javadocumentation}. JDBC dapat membantu 3 jenis aktivitas \textit{programming} dalam menggunakan bahasa Java, yaitu:
 \begin{enumerate}
 	\item Menghubungkan aplikasi Java ke suatu sumber data seperti \textit{database},
 	\item Mengirimkan \textit{queries} dan pembaharuan \textit{statement} ke \textit{database},
@@ -123,7 +123,7 @@ Contoh di atas menunjukkan bagaimana JDBC API membantu aplikasi Java membuat kon
 
 \subsection{\textit{Interface} Connection}
 \label{sec:intercon}
-\textit{Interface} Connection adalah sebuah koneksi (\textit{session}) dengan \textit{database} spesifik\cite{packagejavasql}. Eksekusi SQL \textit{statements} (subbab \ref{sec:statement}) dan penerimaan hasil kembalian (subbab \ref{sec:resultset}) dari eksekusi tersebut dapat terjadi karena adanya koneksi dengan \textit{database} yang dibentuk oleh \textit{interface} Connection. Berikut adalah sebagian \textit{method} yang ada pada \textit{interface} Connection:
+\textit{Interface} Connection adalah sebuah koneksi (\textit{session}) dengan \textit{database} spesifik\cite{javadocumentation}. Eksekusi SQL \textit{statements} (subbab \ref{sec:statement}) dan penerimaan hasil kembalian (subbab \ref{sec:resultset}) dari eksekusi tersebut dapat terjadi karena adanya koneksi dengan \textit{database} yang dibentuk oleh \textit{interface} Connection. Berikut adalah sebagian \textit{method} yang ada pada \textit{interface} Connection:
 \begin{itemize}
 	\item \texttt{void close()}
 	
@@ -136,7 +136,7 @@ Contoh di atas menunjukkan bagaimana JDBC API membantu aplikasi Java membuat kon
 
 \subsection{Kelas DriverManager}
 \label{sec:drivermanager}
-Kelas DriverManager adalah cara paling dasar untuk mengatur JDBC \textit{drivers}\cite{packagejavasql}. Berikut adalah salah satu \textit{method} yang ada di kelas DriverManager untuk mengatur JDBC \textit{drivers}:
+Kelas DriverManager adalah cara paling dasar untuk mengatur JDBC \textit{drivers}\cite{javadocumentation}. Berikut adalah salah satu \textit{method} yang ada di kelas DriverManager untuk mengatur JDBC \textit{drivers}:
 \begin{itemize}
 	\item \texttt{public static Connection getConnection(String url, String user, String password)}
 	
@@ -154,7 +154,7 @@ Kelas DriverManager adalah cara paling dasar untuk mengatur JDBC \textit{drivers
 
 \subsection{\textit{Interface} Statement}
 \label{sec:statement}
-\textit{Interface} Statement adalah objek yang digunakan untuk melakukan eksekusi terhadap suatu \textit{query} dan mengembalikan nilai kembalian dari eksekusi tersebut\cite{packagejavasql}. Berikut adalah salah satu \textit{method} yang ada di \textit{interface} Statement:
+\textit{Interface} Statement adalah objek yang digunakan untuk melakukan eksekusi terhadap suatu \textit{query} dan mengembalikan nilai kembalian dari eksekusi tersebut\cite{javadocumentation}. Berikut adalah salah satu \textit{method} yang ada di \textit{interface} Statement:
 \begin{itemize}
 	\item \texttt{ResultSet executeQuery(String sql)}
 	
@@ -165,7 +165,7 @@ Kelas DriverManager adalah cara paling dasar untuk mengatur JDBC \textit{drivers
 
 \subsection{\textit{Interface} ResultSet}
 \label{sec:resultset}
-\textit{Interface} ResultSet adalah sebuah tabel data yang merepresentasikan hasil dari sebuah eksekusi \textit{query} pada suatu \textit{database}\cite{packagejavasql} (subbab \ref{sec:statement}). Cara kerja \textit{interface} ResultSet adalah dengan sistem indeks. Pada awalnya indeks ResultSet menunjuk pada data ``bayangan'' sebelum data pertama. Setiap pemanggilan \textit{method} ``\texttt{next()}'' pada objek ResultSet akan menyebabkan nilai indeks semakin meningkat (bertambah 1). Berikut adalah contoh \textit{method} \textit{interface} ResultSet:
+\textit{Interface} ResultSet adalah sebuah tabel data yang merepresentasikan hasil dari sebuah eksekusi \textit{query} pada suatu \textit{database}\cite{javadocumentation} (subbab \ref{sec:statement}). Cara kerja \textit{interface} ResultSet adalah dengan sistem indeks. Pada awalnya indeks ResultSet menunjuk pada data ``bayangan'' sebelum data pertama. Setiap pemanggilan \textit{method} ``\texttt{next()}'' pada objek ResultSet akan menyebabkan nilai indeks semakin meningkat (bertambah 1). Berikut adalah contoh \textit{method} \textit{interface} ResultSet:
 \begin{itemize}
 	\item \texttt{boolean next()}
 	
