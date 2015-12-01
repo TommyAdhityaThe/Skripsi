@@ -576,7 +576,7 @@ Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap 
 
 Bagian ini terletak di baris 209-246 dari ``handle.php'' (kode Listing \ref{lst:handle.php}). Bagian ini akan dieksekusi hanya jika terdapat parameter ``\texttt{mode=importkml}'' pada permintaan POST. Bagian ini berfungsi untuk menambahkan data geografis suatu rute dimana data yang ditambahkan berasal dari sebuah \textit{file} dengan format KML (\textit{Keyhole Markup Language}). KML adalah format \textit{file} yang digunakan untuk menampilkan data geografis dalam aplikasi pemetaan\cite{kml}. 
 
-Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap rute jalan atau tidak (baris 210). Lalu program akan memeriksa apakah pengguna memberikan \textit{trackid} pada permintaan atau tidak (baris 211). Selanjutnya program akan memeriksa apakah \textit{file} pengguna memberikan \textit{file} dengan format sesuai atau tidak (baris 213-218). Pada baris 219-228 program akan mengambil data LineString yang terdapat pada \textit{file} dengan menggunakan teknik \textit{regular expression} (baris 224). Baris 231-239 program akan membangun data LineString yang semula dalam format KML menjadi format WKT. Program akan menambahkan data LineString dalam WKT tersebut ke dalam \textit{database} sesuai dengan \textit{trackid} yang diberikan pengguna (baris 241-243). Terakhir, program akan mengirimkan pesan dalam format JSON sebagai penanda bahwa pengguna berhasil melakukan import data KML (baris 245).
+Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap rute jalan atau tidak (baris 210). Lalu program akan memeriksa apakah pengguna memberikan \textit{trackid} pada permintaan atau tidak (baris 211). Selanjutnya program akan memeriksa apakah \textit{file} pengguna memberikan \textit{file} dengan format sesuai atau tidak (baris 213-218). Pada baris 219-228 program akan mengambil data LineString yang terdapat pada \textit{file} dengan menggunakan \textit{regular expression} (baris 224). \textit{Regular expression} adalah karakter atau kata spesial yang digunakan untuk menjelaskan pola pencarian\cite{regex}. Baris 231-239 program akan membangun data LineString yang semula dalam format KML menjadi format WKT. Program akan menambahkan data LineString dalam WKT tersebut ke dalam \textit{database} sesuai dengan \textit{trackid} yang diberikan pengguna (baris 241-243). Terakhir, program akan mengirimkan pesan dalam format JSON sebagai penanda bahwa pengguna berhasil melakukan import data KML (baris 245).
 
 \item \textbf{Bagian Menghapus Rute}
 
@@ -623,8 +623,8 @@ Bagian ini diawali dengan memeriksa apakah pengguna memberikan \textit{password}
 \end{itemize}
 
 		
-		\item Melakukan studi literatur tentang MySQL Spatial Extensions, JDBC, Play Framework, JSON, dan \textit{Regular Expression}.\\
-		{\bf status :} Ada sejak rencana kerja skripsi, kecuali JDBC, JSON, dan \textit{Regular Expression}\\
+		\item Melakukan studi literatur tentang MySQL Spatial Extensions, JDBC, Play Framework, dan JSON.\\
+		{\bf status :} Ada sejak rencana kerja skripsi, kecuali JDBC, dan JSON\\
 		{\bf hasil :}
 		
 		\begin{itemize}
@@ -983,8 +983,24 @@ Play Framework menyediakan sebuah \textit{plugin} yang dapat digunakan untuk men
 	
 \item \textbf{JSON}
 
+JSON (\textit{JavaScript Object Notation}) adalah sebuah format pertukaran data ringan\cite{json}. JSON dapat dibangun dalam 2 buah struktur:
+\begin{enumerate}
+	\item Sekumpulan pasangan antara nama dengan nilai. Umumnya dikenal dengan sebutan objek. Sebuah objek dalam JSON dimulai dengan karakter ``\texttt{\{}'' dan diakhiri dengan karakter ``\texttt{\}}''. Diantara karkater ``\texttt{\{}'' dan ``\texttt{\}}'' dapat disisipkan sekumpulan pasangan ``\texttt{nama:nilai}'' yang dipisahkan dengan karakter ``\texttt{,}''.
+	\item Sekumpulan data terstruktur. Umumnya dikenal dengan sebutan \textit{array}. Sebuah \textit{array} dalam JSON dimulai dengan karakter ``\texttt{[}'' dan diakhiri dengan karakter ``\texttt{]}''. Diantara karkater ``\texttt{[}'' dan ``\texttt{]}'' dapat disisipkan sekumpulan data (dapat berupa nilai, objek atau \textit{array}) yang dipisahkan dengan karakter ``\texttt{,}''. Dalam \textit{array}. Setiap data dalam \textit{array} tidak harus sama jenisnya.
+\end{enumerate}
 
-\item \textbf{\textit{Regular Expression}}
+Nilai dalam JSON dapat berupa \textit{string} (sekumpulan karakter yang diapit dengan 2 tanda kutip ganda, contoh: ``\texttt{karakter}''), angka, \texttt{true}, \texttt{false}, atau \texttt{null}.
+
+Berikut adalah contoh sebuah data JSON:
+\begin{lstlisting}
+	{
+		"status":"error",
+		"message":"Value of userid is expected but not found"
+	}
+\end{lstlisting}
+
+Contoh kode di atas adalah sebuah objek (baris 1-4) yang memiliki 2 buah pasangan ``\texttt{nama:nilai}'' yang dipisahkan oleh karakter ``\texttt{,}'' (baris 2-3). Contoh di atas juga menggunakan \textit{string} sebagai nilainya (baris 2 dan 3).
+
 
 		\end{itemize}
 
