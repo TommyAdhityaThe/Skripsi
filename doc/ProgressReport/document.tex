@@ -79,11 +79,77 @@ Tipe Laporan : {\bf \tipePR} -
 \section{Detail Perkembangan Pengerjaan Skripsi}
 Detail bagian pekerjaan skripsi sesuai dengan rencan kerja/laporan perkembangan terkahir :
 	\begin{enumerate}
-		\item Mempelajari kode situs web KIRI \textit{Dashboard Server Side}(bahasa PHP).\\
-		{\bf status :} Ada sejak rencana kerja skripsi.\\
+		\item Mempelajari isi kode situs web KIRI secara umum, isi kode KIRI \textit{Dashboard}, dan isi kode KIRI \textit{Dashboard Server Side}.\\
+		{\bf status :} Ada sejak rencana kerja skripsi, kecuali isi kode situs web KIRI secara umum dan isi kode KIRI \textit{Dashboard}\\
 		{\bf hasil :}
 		
-		Berikut adalah kode situs web KIRI \textit{Dashboard Server Side}(bahasa PHP):
+Berdasarkan hasil analisa serta wawancara dengan kontributor kode KIRI, berikut adalah penjelasan secara umum mengenai isi kode KIRI (gambar \ref{fig:3_strukturkiri}):
+\begin{enumerate}
+	\item \textit{Folder} ``.settings'' merupakan \textit{folder} yang menyimpan \textit{file-file} pengaturan sistem KIRI untuk Eclipse. Eclipse adalah sebuah \textit{open source} IDE (\textit{Integrated Development Environment}) yang membantu programer dalam membangun suatu perangkat lunak\cite{eclipse}.
+	\item \textit{Folder} ``etc'' merupakan \textit{folder} yang menyimpan \textit{file-file} untuk membangun konstanta-konstanta dan fungsi-fungsi yang digunakan oleh sistem KIRI.
+	\item \textit{Folder} ``log'' merupakan \textit{folder} yang berisi \textit{file-file} untuk mencatat setiap kinerja sistem KIRI.
+	\item \textit{Folder} ``public\_html'' merupakan \textit{folder} yang berisi \textit{file-file} untuk membangun KIRI \textit{Front End}.
+	\item \textit{Folder} ``public\_html\_dev'' merupakan \textit{folder} yang berisi \textit{file-file} untuk membangun KIRI \textit{Dashboard}.
+	\item \textit{Folder} ``res'' merupakan \textit{folder} yang berisi \textit{file-file} yang bersifat publik seperti gambar, data XML, dll yang digunakan sebagai pendukung sistem KIRI.
+	\item \textit{Folder} ``sql'' merupakan \textit{folder} yang menyimpan \textit{file-file} untuk membangun \textit{database} sistem KIRI.
+	\item \textit{File} ``.buildpath'' dan ``.project'' merupakan \textit{file} yang menyimpan konfigurasi untuk Eclipse.
+	\item \textit{File} ``.gitignore'' merupakan \textit{file} yang menyimpan daftar \textit{file} yang tidak perlu dikirimkan ke tempat penyimpanan GitHub karena \textit{file-file} tersebut dibangkitkan oleh sistem. GitHub adalah sebuah tempat penyimpanan \textit{online} yang dikhususkan untuk menyimpan isi kode suatu perangkat lunak\cite{github}.
+	\item \textit{File} ``.gitmodules'' merupakan \textit{file} yang menyimpan alamat kode eksternal yang digunakan dalam sistem KIRI.
+	\item \textit{File} ``README.md'' merupakan \textit{file} yang berisi keterangan singkat mengenai proyek KIRI. Isi keterangan singkat tersebut digunakan untuk mencegah sembarang orang agar tidak membuka proyek KIRI di GitHub.
+	\item \textit{File} ``build.properties'' dan ``build.xml'' merupakan \textit{file} yang digunakan Ant untuk mendistribusikan program. Ant adalah sebuah perangkat yang dapat digunakan untuk menjalankan tes dan menjalankan aplikasi dalam bahasa Java\cite{ant}.
+\end{enumerate}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[scale=0.5]{Gambar/3_strukturkiri.png}
+	\caption{Struktur Kode KIRI}
+	\label{fig:3_strukturkiri}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[scale=0.5]{Gambar/3_public_html_dev.png}
+	\caption{Struktur \textit{folder} ``public\_html\_dev''}
+	\label{fig:3_public_html_dev}
+\end{figure}
+
+Penelitian ini berfokus pada pembahasan KIRI \textit{Dashboard}, untuk itu bagian yang akan dianalisa lebih mendalam adalah pada bagian ``public\_html\_dev'' (gambar \ref{fig:3_public_html_dev}) dan beberapa bagian-bagian pendukung untuk membangun KIRI \textit{Dashboard}. \textit{Folder} ``public\_html\_dev'' memiliki struktur sebagai berikut:
+\begin{enumerate}
+	\item \textit{Folder} ``bukitjarian'', berisi mengenai \textit{file-file} untuk membangun KIRI \textit{Dashboard} (gambar \ref{fig:3_bukit_jarian}).
+	\item \textit{Folder} ``docs'', berisi sebuah \textit{file} ``index.php'' yang bila dijalankan akan mengarahkan pengguna ke alamat \url{https://bitbucket.org/projectkiri/kiri_api/wiki/Home} (gambar \ref{fig:3_dokumentasi}). Halaman tersebut berisi mengenai dokumentasi sistem KIRI.
+	\item \textit{File} ``index.php'', bila \textit{file} ini dieksekusi maka akan mengarahkan pengguna ke alamat \url{http://static.kiri.travel/developer} (gambar \ref{fig:3_developer}). Halaman tersebut berisi informasi mengenai alamat KIRI \textit{Dashboard}, dokumentasi KIRI, dan halaman untuk memberikan masukan kepada kontributor sistem KIRI.
+\end{enumerate}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[scale=0.35]{Gambar/3_dokumentasi.png}
+	\caption{Halaman dokumentasi KIRI}
+	\label{fig:3_dokumentasi}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[scale=0.35]{Gambar/3_developer.png}
+	\caption{Halaman developer KIRI}
+	\label{fig:3_developer}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[scale=0.5]{Gambar/3_bukit_jarian.png}
+	\caption{Struktur \textit{folder} ``bukitjarian''}
+	\label{fig:3_bukit_jarian}
+\end{figure}
+
+Pada direktori ``public\_html\_dev/bukitjarian'' (gambar \ref{fig:3_bukit_jarian}) terdapat bermacam-macam \textit{file} dan \textit{folder}. Berdasarkan wawancara dengan kontributor kode, terdapat dua bagian \textit{file} dan \textit{folder} yang berperan penting dalam membangun KIRI \textit{Dashboard}:
+\begin{enumerate}
+	\item ``index.html'', ``bukitjariangwt/'', dan ``images/''. \textit{File} dan \textit{folder} ini dibangun dengan menggunakan perangkat lunak GWT. GWT (\textit{Google Web Toolkit}) adalah perangkat lunak yang digunakan untuk membangun dan melakukan optimasi suatu aplikasi berbasis web\cite{gwt}. Dengan GWT, pengguna tidak perlu ahli dalam menggunakan bahasa pemrograman berbasis web seperti JavaScript. GWT menggunakan bahasa Java dalam pembuatannya dan akan melakukan konversi kode Java tersebut menjadi HTML dan JavaScript. Hasil konversi menggunakan GWT akan mengalami \textit{obfuscate} (pengacakan) sehingga sulit untuk dianalisa. Namun demikian, \textit{file-file} ini bersifat statis dan tidak memerlukan operasi khusus di \textit{server}, sehingga dapat disalin (\textit{copy}) apa adanya. 
+	\item ``handle.php'' merupakan kode pada sisi \textit{server} yang bertugas untuk melayani permintaan-permintaan dari \textit{browser} yang dieksekusi oleh ``index.html''.
+\end{enumerate}
+
+Seperti disebutkan sebelumnya, \textit{file} ``handle.php'' berfungsi untuk melayani berbagai jenis permintaan yang dikirimkan oleh ``index.html''. \textit{File} ini dapat dibagi menjadi 16 bagian yang masing-masing melayani sebuah permintaan tertentu.
+
+Berikut adalah kode situs web KIRI \textit{Dashboard Server Side}:
 \begin{lstlisting}[language=PHP,basicstyle=\tiny,caption=handle.php,label={lst:handle.php}]
 <?php
 require_once '../../etc/utils.php';
@@ -521,8 +587,6 @@ function clean_temporary_files($path, $max_age) {
 ?>
 \end{lstlisting}
 
-		Berdasarkan hasil analisa dan wawancara dengan kontributor kode, kode situs web KIRI \textit{Dashboard Server Side}(bahasa PHP) terbagi dalam 16 bagian yang masing-masing melayani sebuah permintaan tertentu.
-
 \begin{itemize}
 \item \textbf{Bagian Pemeriksaan \textit{Login}}
 
@@ -624,7 +688,7 @@ Bagian ini diawali dengan memeriksa apakah pengguna memberikan \textit{password}
 
 		
 		\item Melakukan studi literatur tentang MySQL Spatial Extensions, JDBC, Play Framework, dan JSON.\\
-		{\bf status :} Ada sejak rencana kerja skripsi, kecuali JDBC, dan JSON\\
+		{\bf status :} Ada sejak rencana kerja skripsi, kecuali JDBC dan JSON\\
 		{\bf hasil :}
 		
 		\begin{itemize}
@@ -1006,7 +1070,59 @@ Contoh kode di atas adalah sebuah objek (baris 1-4) yang memiliki 2 buah pasanga
 
 		\item Menganalisis teori-teori untuk membangun KIRI \textit{Dashboard Server Side} dalam bahasa Java dengan menggunakan Play Framework.\\
 		{\bf status :} Ada sejak rencana kerja skripsi.\\
-		{\bf hasil :} Mengerti penggunaan \textit{controllers}, \textit{routes}, dan \textit{views} (sedikit). Mencoba membuat kode untuk fungsi CRUD (masih gagal).
+		{\bf hasil :}
+		
+Berdasarkan hasil analisa kode dan wawancara dengan kontributor kode didapatkan poin-poin bahwa:
+\begin{enumerate}
+	\item KIRI \textit{Dashboard} terdiri dari dua bagian penting, yaitu bagian pertama adalah \textit{file} dan \textit{folder} yang bersifat statis, yaitu: ``index.html'', ``bukitjariangwt/'', dan ``images/'', serta bagian kedua adalah ``handle.php'' yang bertugas menangani permintaan-permintaan (dari ``index.html'') pada sisi \textit{server}.
+	\item KIRI \textit{Dashboard server side} (\textit{file} ``handle.php'') terbagi menjadi 16 bagian dalam menangani permintaan.
+	\item Perangkat lunak pengolahan data yang digunakan oleh sistem KIRI adalah MySQL.
+	\item KIRI \textit{Dashboard server side} (\textit{file} ``handle.php'') akan mengirimkan data dalam format JSON dalam membalas permintaan dari ``index.html''.
+	\item KIRI \textit{Dashboard server side} (\textit{file} ``handle.php'') menggunakan \textit{framework} yang didapat dari http://www.openwall.com/phpass/ untuk melakukan fungsi \textit{hash} terhadap \textit{password} pada bagian \textit{register} dan bagian \textit{login}. \textit{Framework} tersebut terlalu rumit untuk diimplementasikan dan tidak tersedia di Java, maka untuk melakukan fungsi \textit{hash} terhadap \textit{password} akan menggunakan SHA (\textit{Secure Hash Algorithm}) yang disediakan oleh Java.
+	\item KIRI \textit{Dashboard server side} (\textit{file} ``handle.php'') menggunakan PHPMailer pada bagian \textit{register} untuk mengirimkan \textit{password} yang telah dibangun oleh sisi \textit{server}. PHPMailer terlalu rumit untuk diimplementasikan dan tidak tersedia di Java, maka untuk mengirimkan \textit{password} yang telah dibangun oleh sisi \textit{server} akan menggunakan JavaMail API Jar yang tersedia untuk Java.
+	
+\end{enumerate}
+
+Berdasarkan kebutuhan akan poin-poin di atas, maka dalam memodelkan KIRI \textit{Dashboard} dengan menggunakan Play Framework perlu memperhatikan beberapa hal, yaitu: bagian \textit{models}, \textit{views}, \textit{controllers}, \textit{routes}  dan \textit{libraries} yang digunakan.
+
+\begin{itemize}
+\item \textbf{Routes}
+
+Kebutuhan KIRI \textit{Dashboard} adalah pemetaan untuk ke 2 bagian, yaitu:
+\begin{enumerate}
+	\item Pemetaan URL untuk menangani tampilan KIRI \textit{Dashboard} (\textit{views}). Hanya 1 \textit{route} yang dibutuhkan untuk pemetaan terhadap bagian tampilan (walau fitur KIRI \textit{Dashboard} banyak) karena kode KIRI \textit{Dashboard} sistem kini telah menggunakan kombinasi JavaScript dan AJAX sedemikian rupa yang dapat mengubah tampilan KIRI \textit{Dashboard} sesuai dengan balasan permintaan dari sisi \textit{server}. AJAX (\textit{asynchronous JavaScript and XML}) adalah teknik yang memungkinkan suatu situs web melakukan permintaan ke sisi \textit{server} secara \textit{background}\cite{ajax}.
+	\item Pemetaan URL untuk menangani permintaan-permintaan dari tampilan ke sisi \textit{server}, yaitu KIRI \textit{Dashboard server side} (\textit{controllers}).
+\end{enumerate}
+
+\item \textbf{\textit{Views}}
+
+Seperti yang telah dijelaskan pada analisa sebelumnya bahwa bagian tampilan KIRI \textit{Dashboard} dibuat dengan menggunakan perangkat GWT dimana kode yang dihasilkan sangat sulit untuk dipelajari. Walau sulit dipelajari, bagian tampilan KIRI \textit{Dashboard} memiliki keuntungan sendiri karena bersifat statis (dijelaskan oleh kontributor kode). Sifat statis ini memudahkan pemodelan karena dengan begitu kode dapat disalin apa adanya ke sistem usulan. Pada Play Framework \textit{file-file} yang bersifat statis seperti ini dapat disimpan pada bagian \textit{folder} ``public/''.
+
+\item \textbf{\textit{Controllers}}
+
+Pada bagian ini akan dibuat sebuah metode yang akan menangani permintaan dari \textit{views} sistem usulan. Bagian ini berfungsi seperti ``handle.php'', yaitu menangani 16 jenis permintaan seperti yang telah dijelaskan pada subbab sebelumnya.
+
+\item \textbf{\textit{Models}}
+
+\textit{Models} adalah bagian yang paling bebas dan tidak memiliki aturan pembuatan khusus pada Play Framework. Pada bagian ini penulis memutuskan untuk membuat \textit{models} sesuai dengan diagram \textit{use case} KIRI \textit{Dashboard} (gambar \ref{fig:3_usecase}). Untuk setiap kemampuan pengguna yang dapat dilakukan pada diagram \textit{use case} (gambar \ref{fig:3_usecase}) akan dibuat kelas Java di bagian \textit{models} pada sistem usulan.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[scale=0.5]{Gambar/3_usecase.png}
+	\caption{Diagram \textit{use case} KIRI \textit{Dashboard}}
+	\label{fig:3_usecase}
+\end{figure}
+
+
+\item \textbf{\textit{Libraries}}
+
+Berikut adalah \textit{libraries} (sumber: http://mvnrepository.com/) yang akan digunakan untuk membangun KIRI \textit{Dashboard server side} sistem usulan:
+\begin{itemize}
+	\item Jackson Databind, digunakan untuk menangani pengiriman data dalam format JSON.
+	\item JavaMail API, digunakan untuk mengirimkan \textit{email}.
+	\item MySQL Connector/J, digunakan untuk melakukan hubungan koneksi dan eksekusi \textit{query} dengan \textit{database}. \textit{Library} MySQL Connector/J merupakan \textit{library} resmi JDBC driver untuk MySQL.
+\end{itemize}
+\end{itemize}
 
 		\item Merancang KIRI \textit{Dashboard Server Side} dalam bahasa Java dengan menggunakan Play Framework.\\
 		{\bf status :} Ada sejak rencana kerja skripsi.\\
@@ -1014,7 +1130,258 @@ Contoh kode di atas adalah sebuah objek (baris 1-4) yang memiliki 2 buah pasanga
 
 		\item Melakukan \textit{porting} kode situs web KIRI \textit{Dashboard Server Side} yang semula dalam bahasa PHP menjadi bahasa Java dengan menggunakan Play Framework.\\
 		{\bf status :} Ada sejak rencana kerja skripsi.\\
-		{\bf hasil :} belum ada perkembangan.
+		{\bf hasil :}
+		
+		Berikut adalah hasil kode \textit{porting} yang telah dilakukan beserta kode-kode pendukung:
+		
+\begin{lstlisting}[caption=build.sbt,label={lst:build.sbt}]
+name := """KIRI"""
+
+version := "1.0-SNAPSHOT"
+
+lazy val root = (project in file(".")).enablePlugins(PlayJava)
+
+scalaVersion := "2.11.6"
+
+libraryDependencies ++= Seq(
+  javaJdbc,
+  cache,
+  javaWs
+)
+
+// Play provides two styles of routers, one expects its actions to be injected, the
+// other, legacy style, accesses its actions statically.
+routesGenerator := InjectedRoutesGenerator
+
+//tambah database untuk mysql
+libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.18"
+//untuk pake json
+libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.6.3"
+//untuk pake Java Mail
+libraryDependencies += "com.sun.mail" % "javax.mail" % "1.5.4"
+\end{lstlisting}
+
+\textit{File} ``build.sbt'' digunakan untuk menambahkan SBT \textit{plugins} yang digunakan untuk aplikasi sistem usulan. Baris 20-24 kode di atas akan menambahkan \textit{libraries} yang diperlukan untuk aplikasi ini, yaitu: Jackson Databind, JavaMail API, dan MySQL Connector/J.
+
+\begin{lstlisting}[caption=application.conf,label={lst:application.conf}]
+# This is the main configuration file for the application.
+# ~~~~~
+
+# Secret key
+# ~~~~~
+# The secret key is used to secure cryptographics functions.
+#
+# This must be changed for production, but we recommend not changing it in this file.
+#
+# See http://www.playframework.com/documentation/latest/ApplicationSecret for more details.
+play.crypto.secret = "changeme"
+
+# The application languages
+# ~~~~~
+play.i18n.langs = [ "en" ]
+
+# Router
+# ~~~~~
+# Define the Router object to use for this application.
+# This router will be looked up first when the application is starting up,
+# so make sure this is the entry point.
+# Furthermore, it's assumed your route file is named properly.
+# So for an application router like `my.application.Router`,
+# you may need to define a router file `conf/my.application.routes`.
+# Default to Routes in the root package (and conf/routes)
+# play.http.router = my.application.Routes
+
+# Database configuration
+# ~~~~~
+# You can declare as many datasources as you want.
+# By convention, the default datasource is named `default`
+#
+db.default.driver=com.mysql.jdbc.Driver
+db.default.url="jdbc:mysql://localhost/tirtayasa"
+db.default.username=root
+
+# Evolutions
+# ~~~~~
+# You can disable evolutions if needed
+# play.evolutions.enabled=false
+
+# You can disable evolutions for a specific datasource if necessary
+# play.evolutions.db.default.enabled=false
+\end{lstlisting}
+
+Salah satu fungsi \textit{file} ``application.conf'' adalah digunakan untuk menentukan pengaturan untuk koneksi ke \textit{database}. Baris 33 menyatakan jenis \textit{driver} yang digunakan, baris 34 menyatakan alamat URL \textit{database} yang dituju, dan baris 35 menyatakan \textit{username} yang digunakan.
+
+\begin{lstlisting}[caption=routes,label={lst:routes}]
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET		/	 		 					 controllers.Application.index()
+GET		/testingdb	 					 controllers.Application.testingDB()
+POST	/bukitjarian/handle.php	 		 controllers.Application.handle()
+GET     /bukitjarian		             controllers.Application.index()
+GET     /bukitjarian/		             controllers.Assets.at(path ="/public/bukitjarian", file="index.html")
+GET     /bukitjarian/*file         		 controllers.Assets.at(path ="/public/bukitjarian", file)
+GET     /assets/*file               	 controllers.Assets.versioned(path="/public", file: Asset)
+
+# handle for page not found
+GET     /*other	         		 	     controllers.Application.pagenotfound(other: String)
+\end{lstlisting}
+
+Kode di atas menyatakan pemetaan yang akan dilakukan.
+
+\begin{lstlisting}[caption=Application.java,label={lst:aplication.java}]
+package controllers;
+
+//default import
+import play.*;
+import play.mvc.*;
+import views.html.*;
+
+//tambahan import
+import play.data.*;
+import play.db.*;
+import java.io.*;
+import java.sql.*;
+import java.util.Random;
+
+//untuk json
+import play.libs.Json;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+public class Application extends Controller {
+	DynamicForm requestData;
+    
+
+	public Result index(){
+		return redirect("/bukitjarian/");
+	}
+
+    public Result pagenotfound(String other){
+        return notFound("<h1>"+other+" not found</h1>").as("text/html");
+    }
+
+    public Result testingDB() throws IOException, SQLException{
+    	java.sql.Connection connection = DB.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet result = statement.executeQuery("select * from users;");
+        StringBuilder sb = new StringBuilder();
+        sb.append("LIST USERs Tirtayasa"+"\n");
+        while (result.next()) {
+            sb.append("userid: "+ result.getString("email") + "\npassword: " + result.getString("password")+"\n");
+        }
+        return ok(sb.toString());
+    }
+
+    public Result handle() throws IOException, SQLException{
+    	this.requestData = Form.form().bindFromRequest();
+    	String mode = this.requestData.get("mode");
+        if(mode.equals("login")){
+        	return this.login();
+        }
+        else if(mode.equals("register")){
+        	return this.register();
+        }
+        else{
+        	return badRequest("failed");
+        }
+    }
+
+    private Result login() throws IOException, SQLException{
+    	String userid = this.requestData.get("userid");
+    	String password = this.requestData.get("password");
+    	if (userid.length() > 128) {
+			return badRequest(this.return_invalid_credentials("User ID length is more than allowed (" + userid.length() + ")"));
+		}
+		if (password.length() > 32) {
+			return badRequest(this.return_invalid_credentials("Password length is more than allowed ("+ password.length() + ")"));
+		}
+
+        // Retrieve the user information
+        java.sql.Connection connection = DB.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet result = statement.executeQuery("SELECT * FROM users WHERE email='"+userid+"'");
+        if(!result.next()){
+            System.out.println("userid tidak ditemukan");
+            return badRequest(this.return_invalid_credentials(null));
+        }
+
+        String hasher=result.getString("password");
+        if(!hasher.equals(password)){
+            System.out.println("password salah");
+            return badRequest(this.return_invalid_credentials(null));
+        }
+        StringBuilder privileges= new StringBuilder();
+        if (result.getInt("privilegeRoute") != 0) {
+            privileges.append(",route");
+        }
+        if (result.getInt("privilegeApiUsage") != 0) {
+            privileges.append(",apiusage");
+        }
+        if (privileges.length() > 0) {
+            privileges=new StringBuilder(privileges.substring(1));
+        }
+        ObjectNode obj = Json.newObject();
+        obj.put("status", "ok");
+        obj.put("sessionid", "e27wy7s3f08fmu13");
+        obj.put("privileges", privileges.toString());
+        return ok(obj);
+    }
+    
+    private Result register() throws IOException, SQLException{
+        String email = this.requestData.get("userid");
+        String fullname = this.requestData.get("fullname");
+        String company = this.requestData.get("company");
+
+        // Check if the email has already been registered.
+        java.sql.Connection connection = DB.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet result = statement.executeQuery("SELECT email FROM users WHERE email='"+email+"'");
+        while (result.next()) {
+            return badRequest("udah ada usernya");
+        }
+
+        // Generate password tanpa fitur hash and send password (belum dilakukan)
+        String password = this.generate_password();
+        statement.executeUpdate("INSERT INTO users(email, password, privilegeApiUsage, fullName, company) VALUES('" + email + "', '" + password +"', 1, '" + fullname +"', '" + company +"');");
+        
+
+        return ok(this.well_done(null));
+    }
+
+
+    private String generate_password(){
+        return this.generate_random("abcdefghiklmnopqrstuvwxyz0123456789", 8);
+    }
+    
+    private String generate_random(String chars, int length){
+        int chars_size = chars.length();
+        Random random=new Random();
+        String string = "";
+        for (int i = 0; i < length; i++) {
+            string += chars.charAt(random.nextInt(chars_size));
+        }
+        return string;
+    }
+
+    private ObjectNode well_done(String message) {
+        ObjectNode obj = Json.newObject();
+        obj.put("status", "ok");
+        if (message != null) {
+            obj.put("status", message);
+        }
+        return obj;
+    }
+
+    public ObjectNode return_invalid_credentials(String logmessage) {
+        ObjectNode obj = Json.newObject();
+        obj.put("status", "credentialfail");
+        return obj;
+    }
+}
+\end{lstlisting}
+
 		
 		\item Melakukan pengujian terhadap fitur-fitur yang sudah dibuat\\
 		{\bf status :} Ada sejak rencana kerja skripsi.\\
@@ -1022,7 +1389,7 @@ Contoh kode di atas adalah sebuah objek (baris 1-4) yang memiliki 2 buah pasanga
 
 		\item Menulis dokumen skripsi.\\
 		{\bf status :} Ada sejak rencana kerja skripsi.\\
-		{\bf hasil :} Sudah menulis dokumen skripsi bab 1 dan bab 2.
+		{\bf hasil :} Sudah menulis dokumen hingga bab 3 sebagian.
 	\end{enumerate}
 
 \bibliographystyle{ieeetr}
@@ -1035,14 +1402,14 @@ Persentase penyelesaian skripsi sampai dengan dokumen ini dibuat dapat dilihat p
   \begin{tabular}{ | c | c | c | c | l | c |}
     \hline
     1*  & 2*(\%) & 3*(\%) & 4*(\%) &5* &6*(\%)\\ \hline \hline
-    1   & 10 & 10 &    &  & 6 \\ \hline
-    2   & 10 & 10 &    &  & 8 \\ \hline
-    3   & 15 & 15 &    &  & 3 \\ \hline
+    1   & 10 & 10 &    &  & 10 \\ \hline
+    2   & 10 & 10 &    &  & 10 \\ \hline
+    3   & 15 & 15 &    &  & 10 \\ \hline
     4   & 15 &    & 15 &  & 0 \\ \hline
-    5   & 15 &    & 15 &  & 0 \\ \hline
+    5   & 15 &    & 15 &  & 5 \\ \hline
     6   & 15 &    & 15 &  & 0 \\ \hline
-    7   & 20 & 5  & 15 & {\footnotesize penulisan skripsi hingga bab 3 pada S1} & 3 \\ \hline
-    Total  & 100  & 40  & 60 &  & 20\\ \hline
+    7   & 20 & 5  & 15 &  & 5 \\ \hline
+    Total  & 100  & 40  & 60 &  & 40\\ \hline
                           \end{tabular}
 \end{center}
 

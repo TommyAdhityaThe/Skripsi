@@ -20,4 +20,6 @@ routesGenerator := InjectedRoutesGenerator
 libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.18"
 //untuk pake json
 libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.6.3"
+//untuk pake Java Mail
+libraryDependencies += "com.sun.mail" % "javax.mail" % "1.5.4"
 
