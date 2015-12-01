@@ -1,6 +1,7 @@
 \documentclass[a4paper,twoside]{article}
 \usepackage[T1]{fontenc}
 \usepackage[bahasa]{babel}
+\usepackage{color} %warna
 \usepackage{graphicx}
 \usepackage{graphics}
 \usepackage{float}
@@ -9,9 +10,14 @@
 \usepackage{etoolbox}
 \usepackage{setspace} 
 \usepackage{lipsum} 
+\usepackage{listings} %source code
+\usepackage{lscape} %landscape untuk source code
+\usepackage{multicol} %multiple column
+\usepackage{ifthen} % if then
 \setlength{\headsep}{30pt}
 \usepackage[inner=2cm,outer=2.5cm,top=2.5cm,bottom=2cm]{geometry} %margin
 % \pagestyle{empty}
+\usepackage{url}
 
 \makeatletter
 \renewcommand{\@maketitle} {\begin{center} {\LARGE \textbf{ \textsc{\@title}} \par} \bigskip {\large \textbf{\textsc{\@author}} }\end{center} }
@@ -45,6 +51,15 @@
 
 \pagenumbering{arabic}
 
+\lstset{
+  numbers=left,
+  stepnumber=1,    
+  firstnumber=1,
+  numberfirstline=true
+}
+\lstset{basicstyle=\tiny, commentstyle=\color{blue}}
+\lstset{frame=leftline, tabsize=4, breaklines=true}
+
 \section{Data Skripsi} %TIDAK PERLU MENGUBAH BAGIAN INI !!!
 Pembimbing utama/tunggal: {\bf \pembA}\\
 Pembimbing pendamping: {\bf \pembB}\\
@@ -66,7 +81,110 @@ Detail bagian pekerjaan skripsi sesuai dengan rencan kerja/laporan perkembangan 
 	\begin{enumerate}
 		\item Mempelajari kode situs web KIRI \textit{Dashboard Server Side}(bahasa PHP).\\
 		{\bf status :} Ada sejak rencana kerja skripsi.\\
-		{\bf hasil :} Sudah melakukan instalasi kode situs web KIRI \textit{Dashboard} (sumber: https://github.com/pascalalfadian/TirtayasaGH) di laptop. Menambahkan \textit{database} ``TirtayasaGH'' ke MySQL yang ada di laptop. Sudah mempelajari bagaimana cara pembuatan \textit{id} dan \textit{password} \textit{administrator} untuk otentikasi KIRI \textit{Dashboard}. Berhasil melakukan otentikasi sebagai seorang \textit{administrator} pada KIRI \textit{Dashboard}. Mencoba fitur CRUD sebagai seorang \textit{administrator} untuk kasus rute angkutan umum dan mencoba fitur \textit{Create}, \textit{Read}, dan \textit{Update} untuk kasus API \textit{keys}. Mempelajari sebagian fungsi-fungsi file .php yang terdapat pada folder ``public\_html\_dev'' dan ``etc''. 
+		{\bf hasil :}
+		
+
+		Berdasarkan hasil analisa dan wawancara dengan kontributor kode, kode situs web KIRI \textit{Dashboard Server Side}(bahasa PHP) terbagi dalam 16 bagian yang masing-masing melayani sebuah permintaan tertentu.
+
+\begin{itemize}
+\item \textbf{Bagian Pemeriksaan \textit{Login}}
+
+Bagian ini terletak di baris 12-32 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi untuk semua ``\texttt{mode}'' pada permintaan POST kecuali ``\texttt{mode=login}'', ``\texttt{mode=logout}'', dan ``\texttt{mode=register}''. Bagian ini berfungsi untuk memeriksa apakah pengguna sudah melakukan \textit{login} terlebih dahulu untuk melakukan aksi-aksi tertentu.
+
+Bagian ini diawali dengan memeriksa apakah pengguna memberikan \textit{session id} pada permintaan atau tidak (baris 13). Setelah itu, program akan membersihkan sesi-sesi di \textit{database} yang sudah kadaluwarsa (baris 14-16). Baris 17-18 memeriksa apakah \textit{session} yang dikirimkan dari permintaan masih \textit{valid} di \textit{database} atau tidak. Jika tidak, maka bagian ini akan mengembalikan respon yang menyatakan bahwa sesi tidak \textit{valid} dan permintaan tidak dapat dilanjutkan (baris 19-27). Jika \textit{valid}, maka bagian ini akan menginisialisasi beberapa variabel yang menampung \textit{privilege} dari pengguna yang aktif (baris 28-31).
+
+\item \textbf{Bagian \textit{Login}}
+
+Bagian ini terletak di baris 34-89 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi hanya jika terdapat parameter ``\texttt{mode=login}'' pada permintaan POST. Bagian ini berfungsi untuk melakukan otentikasi pengguna terhadap \textit{server} KIRI \textit{Dashboard}. Bagian ini akan menentukan apakah pengguna memiliki hak akses terhadap KIRI \textit{Dashboard} apakah tidak.
+
+Bagian ini diawali dengan memeriksa apakah pengguna mengirimkan \textit{userid} dan \textit{password} dengan ukuran yang sesuai apa tidak (baris 35-42). Setelah itu, program akan mengambil data informasi pengguna (berdasarkan \textit{userid}) ke \textit{database} sistem (baris 45-51). Bila data pengguna tidak ditemukan maka program akan mengembalikan pesan kesalahan (baris 49). Jika informasi pengguna ditemukan, maka selanjutnya \textit{password} yang dikirimkan pengguna akan dicek kecocokannya dengan \textit{password} yang tersimpan dalam \textit{database} (baris 54-55). Hasil kecocokan tersebut akan dicatat ke dalam data statistik \textit{server} (baris 56 atau 61). Bila \textit{password} cocok, maka server akan membangun sebuah \textit{session id} (baris 64-66) dan memberikan hak akses tertentu kepada pengguna (baris 68-78). Terakhir, \textit{server} akan membangun data JSON (baris 81-85) untuk dikirimkan ke pengguna (baris 88) sebagai pesan keberhasilan pengguna dalam melakukan otentikasi terhadap \textit{server}.
+
+\item \textbf{Bagian \textit{Logout}}
+
+Bagian ini terletak di baris 89-97 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi hanya jika terdapat parameter ``\texttt{mode=logout}'' pada permintaan POST. Bagian ini berfungsi untuk menghentikan hubungan otentikasi dengan \textit{server} (menghilangkan hak akses). Hal tersebut bertujuan agar hak akses yang dimiliki pengguna tidak digunakan sembarangan oleh pengguna lain yang tidak berwenang.
+
+Bagian ini diawali dengan memeriksa apakah pengguna memberikan \textit{session id} pada permintaan atau tidak (baris 90). Setelah itu, program akan membersihkan sesi-sesi (sesuai dengan \textit{session id} pengguna) yang terdapat dalam \textit{database} (baris 93-95). Terakhir, \textit{server} akan mengirimkan pesan dalam format JSON (baris 96) sebagai penanda bahwa pengguna berhasil melakukan \textit{logout}.
+
+\item \textbf{Bagian Menambahkan Rute}
+
+Bagian ini terletak di baris 97-117 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi hanya jika terdapat parameter ``\texttt{mode=addtrack}'' pada permintaan POST. Bagian ini berfungsi untuk menambahkan sebuah rute jalan yang dapat ditempuh oleh kendaraan umum tertentu (contoh: angkot).
+
+Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses untuk menambahkan rute atau tidak (baris 98). Lalu memeriksa apakah pengguna mengirimkan data \textit{trackid}, \textit{trackname}, \textit{tracktype}, \textit{penalty}, dan \textit{internalinfo} pada permintaan atau tidak (baris 99-103). Setelah itu, program akan mengecek apakah rute jalan yang ingin ditambahkan pengguna sudah ada atau belum di \textit{database} (106-114). Bila rute jalan belum ada, maka rute jalan akan ditambahkan ke dalam \textit{database} (baris 109) dan \textit{server} akan mengirimkan pesan dalam format JSON (baris 116) sebagai penanda bahwa pengguna berhasil menambahkan rute jalan.
+
+\item \textbf{Bagian Mengubah Rute}
+
+Bagian ini terletak di baris 117-146 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi hanya jika terdapat parameter ``\texttt{mode=updatetrack}'' pada permintaan POST. Bagian ini berfungsi untuk mengubah data sebuah rute jalan yang dapat ditempuh oleh kendaraan umum tertentu (contoh: angkot).
+
+Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses untuk mengubah rute atau tidak (baris 118). Lalu memeriksa apakah pengguna mengirimkan data \textit{trackid}, \textit{newtrackid}, \textit{trackname}, \textit{tracktype}, \textit{penalty}, \textit{pathloop}, \textit{transfernodes}  dan \textit{internalinfo} pada permintaan atau tidak (baris 119-126). Setelah itu, \textit{server} akan mengecek apakah rute yang ingin diubah pengguna sudah memenuhi aturan (\textit{trackid} harus sama dengan \textit{newtrackid}) atau tidak (129-143). Bila rute yang ingin diubah maka \textit{server} akan mengirimkan pesan dalam format JSON sebagai penanda bahwa pengguna berhasil mengubah rute rute jalan.
+
+\item \textbf{Bagian Melihat Daftar Rute}
+
+Bagian ini terletak di baris 146-172 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi hanya jika terdapat parameter ``\texttt{mode=listtracks}'' pada permintaan POST. Bagian ini berfungsi untuk memberikan daftar rute jalan yang terdapat dalam \textit{database} sistem KIRI.
+
+Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap rute jalan atau tidak (baris 147). Setelah itu program akan mengambil data daftar rute jalan yang terdapat pada \textit{database} sistem KIRI (baris 149-154). Lalu program juga akan mengambil data daftar tipe rute jalan dari \textit{database} (baris 156-161). Data-data yang diperoleh program (rute jalan dan tipe rute jalan) akan diubah formatnya menjadi sebuah data JSON (baris 164-168). Terakhir, program akan mengirimkan data dalam format JSON tersebut ke pengguna (baris 171).
+
+\item \textbf{Bagian Melihat Informasi Rute secara Detail}
+
+Bagian ini terletak di baris 172-200 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi hanya jika terdapat parameter ``\texttt{mode=getdetailstrack}'' pada permintaan POST. Bagian ini berfungsi untuk memberikan informasi detail tentang suatu rute jalan.
+
+Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap rute jalan atau tidak (baris 173). Lalu program akan memeriksa apakah pengguna memberikan \textit{trackid} pada permintaan atau tidak (baris 174). Selanjutnya program akan mengambil data dari \textit{database} sistem KIRI (baris 177-184). Data yang diperoleh dari \textit{database} tersebut akan diubah formatnya ke dalam format JSON (baris 186-196). Terakhir, program akan mengirimkan data dalam format JSON tersebut ke pengguna (baris 199).
+
+\item \textbf{Bagian Menghapus Data Geografis suatu Rute}
+
+Bagian ini terletak di baris 200-209 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi hanya jika terdapat parameter ``\texttt{mode=cleargeodata}'' pada permintaan POST. Bagian ini berfungsi untuk menghapus data geografis suatu rute jalan yang terdapat dalam \textit{database} sistem KIRI.
+
+Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap rute jalan atau tidak (baris 201). Lalu program akan memeriksa apakah pengguna memberikan \textit{trackid} pada permintaan atau tidak (baris 202). Program akan langsung menghapus data geografis rute jalan sesuai dengan \textit{trackid} permintaan pengguna jika \textit{trackid} tersebut terdapat dalam \textit{database} sistem KIRI (baris 204-205). Terakhir, program akan mengirimkan pesan keberhasilan dalam format JSON kepada pengguna (baris 208).
+
+\item \textbf{Bagian Impor Data KML}
+
+Bagian ini terletak di baris 209-246 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi hanya jika terdapat parameter ``\texttt{mode=importkml}'' pada permintaan POST. Bagian ini berfungsi untuk menambahkan data geografis suatu rute dimana data yang ditambahkan berasal dari sebuah \textit{file} dengan format KML (\textit{Keyhole Markup Language}). KML adalah format \textit{file} yang digunakan untuk menampilkan data geografis dalam aplikasi pemetaan\cite{kml}. 
+
+Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap rute jalan atau tidak (baris 210). Lalu program akan memeriksa apakah pengguna memberikan \textit{trackid} pada permintaan atau tidak (baris 211). Selanjutnya program akan memeriksa apakah \textit{file} pengguna memberikan \textit{file} dengan format sesuai atau tidak (baris 213-218). Pada baris 219-228 program akan mengambil data LineString yang terdapat pada \textit{file} dengan menggunakan teknik \textit{regular expression} (baris 224, referensi subbab \ref{sec:regex}). Baris 231-239 program akan membangun data LineString yang semula dalam format KML menjadi format WKT (subbab \ref{sec:wktformat}). Program akan menambahkan data LineString dalam WKT tersebut ke dalam \textit{database} sesuai dengan \textit{trackid} yang diberikan pengguna (baris 241-243). Terakhir, program akan mengirimkan pesan dalam format JSON sebagai penanda bahwa pengguna berhasil melakukan import data KML (baris 245).
+
+\item \textbf{Bagian Menghapus Rute}
+
+Bagian ini terletak di baris 246-261 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi hanya jika terdapat parameter ``\texttt{mode=deletetrack}'' pada permintaan POST. Bagian ini berfungsi untuk menghapus suatu rute jalan yang terdapat dalam sistem KIRI.
+
+Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap rute jalan atau tidak (baris 247). Lalu program akan memeriksa apakah pengguna memberikan \textit{trackid} pada permintaan atau tidak (baris 248). Program akan memeriksa apakah terdapat {trackid} yang sesuai dengan {trackid} yang ada pada \textit{database} KIRI (baris 250-259). Bila terdapat \textit{trackid} yang sesuai, maka program akan menghapus rute jalan tersebut. Terakhir, program akan mengirimkan pesan keberhasilan dalam format JSON kepada pengguna (baris 260).
+
+\item \textbf{Bagian Melihat Daftar API \textit{Keys}}
+
+Bagian ini terletak di baris 261-279 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi hanya jika terdapat parameter ``\texttt{mode=listapikeys}'' pada permintaan POST. Bagian ini berfungsi untuk memberikan daftar API \textit{keys} yang terdapat dalam database sistem KIRI.
+
+Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap penggunaan API atau tidak (baris 262). Setelah itu program akan mengambil data daftar API \textit{keys} yang terdapat pada \textit{database} sistem KIRI (baris 264-269). Data-data yang diperoleh program akan diubah formatnya menjadi sebuah data JSON (baris 272-275). Terakhir, program akan mengirimkan data dalam format JSON tersebut ke pengguna (baris 278).
+
+\item \textbf{Bagian Menambahkan API \textit{Key}}
+
+Bagian ini terletak di baris 279-299 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi hanya jika terdapat parameter ``\texttt{mode=addapikey}'' pada permintaan POST. Bagian ini berfungsi untuk menambahkan sebuah data API \textit{key} ke dalam sistem KIRI.
+
+Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap API \textit{keys} atau tidak (baris 280). Lalu memeriksa apakah pengguna mengirimkan data \textit{domainfilter} dan \textit{description} pada permintaan atau tidak (baris 281-282). Setelah itu, program akan membangun sebuah API key secara acak (baris 283). Program akan menambahkan data API \textit{key} sesuai dengan data yang dikirimkan pengguna ke dalam \textit{database} KIRI (baris 286) dan mencatat proses penambahan tersebut ke dalam \textit{database} (baris 289). Terakhir, program akan membangun sebuah pesan keberhasilan dalam format JSON (baris 292-295) dan mengirimkan pesan tersebut kepada pengguna (baris 298).
+
+\item \textbf{Bagian Mengubah API \textit{Key}}
+
+Bagian ini terletak di baris 299-317 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi hanya jika terdapat parameter ``\texttt{mode=updateapikey}'' pada permintaan POST. Bagian ini berfungsi untuk mengubah data sebuah API \textit{key} pada \textit{database} sistem KIRI.
+
+Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap API \textit{keys} atau tidak (baris 300). Lalu memeriksa apakah pengguna mengirimkan data \textit{apikey}, \textit{domainfilter}, dan \textit{description} pada permintaan atau tidak (baris 301-303). Setelah itu, program akan memeriksa apakah pengguna yang bersangkutan adalah pemilik API \textit{key} yang ingin diubah atau bukan (baris 305-311). Lalu program mengubah data API \textit{key} yang terdapat dalam database (baris 312) sesuai dengan permintaan pengguna. Terakhir, program akan mengirimkan pesan dalam format JSON sebagai penanda bahwa pengguna berhasil mengubah rute jalan.
+
+\item \textbf{Bagian \textit{Register}}
+
+Bagian ini terletak di baris 317-341 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi hanya jika terdapat parameter ``\texttt{mode=register}'' pada permintaan POST. Bagian ini berfungsi untuk melakukan pendaftaran sebagai pengguna KIRI \textit{Dashboard}. Pendaftaran ini berguna agar pengguna bisa mendapatkan hak akses terhadap fitur-fitur yang terdapat dalam KIRI \textit{Dashboard}.
+
+Bagian ini diawali dengan memeriksa apakah pengguna memberikan \textit{email}, \textit{fullname}, dan \textit{company} pada permintaan atau tidak (baris 318-320). Setelah itu, program akan memeriksa \textit{database} apakah data pengguna yang ingin dibuat sudah ada atau belum (baris 323-327). Bila belum ada, maka program akan membangun sebuah sandi secara acak untuk pengguna (baris 330-332). Program akan menambahkan data pengguna beserta sandi yang telah dibangun ke dalam \textit{database} sistem KIRI (baris 333). Sandi yang telah dibangun program juga dikirimkan ke alamat \textit{email} pengguna (baris 335). Lalu program mencatat proses tersebut ke dalam statistik \textit{database} sistem KIRI. Terakhir, program akan mengirimkan pesan dalam format JSON sebagai penanda bahwa pengguna berhasil melakukan proses registrasi (baris 340).
+
+\item \textbf{Bagian Melihat Data Pribadi Pengguna}
+
+Bagian ini terletak di baris 341-362 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi hanya jika terdapat parameter ``\texttt{mode=getprofile}'' pada permintaan POST. Bagian ini berfungsi untuk memberikan informasi mengenai data pribadi pengguna.
+
+Bagian ini diawali dengan memeriksa apakah data pengguna dengan \textit{email} yang dimiliki pengguna pada saat sesi tersebut ada atau tidak (baris 344-345). Jika data pengguna ditemukan maka program akan mengambil dan membangun data pengguna (baris 346-351). Data pengguna yang dibangun tersebut kemudian diubah ke dalam format JSON (baris 355-359). Terakhir, program mengirimkan data dalam format JSON yang telah dibangun kepada pengguna (baris 361).
+
+\item \textbf{Bagian Mengubah Data Pribadi Pengguna}
+
+Bagian ini terletak di baris 362-380 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi hanya jika terdapat parameter ``\texttt{mode=updateprofile}'' pada permintaan POST. Bagian ini berfungsi untuk mengubah data pribadi pengguna yang sudah terdaftar dalam sistem KIRI.
+
+Bagian ini diawali dengan memeriksa apakah pengguna memberikan \textit{password}, \textit{fullname}, dan \textit{company} pada permintaan atau tidak (baris 364-366). Bila pengguna memberikan \textit{password} dengan nilai \texttt{NULL} maka program akan membangun \textit{password} secara acak dan menambahkan \textit{password} tersebut ke dalam \textit{database} sistem KIRI sesuai dengan \textit{email} pengguna pada saat sesi tersebut (kode 369-374). Lalu program akan mengubah semua data pribadi pengguna sesuai dengan data yang diberikan oleh pengguna (baris 375-376). Terakhir, program mengirimkan pesan keberhasilan dalam format JSON kepada pengguna (baris 379).
+
+\end{itemize}
+
 		
 		\item Melakukan studi literatur tentang MySQL Spatial Extensions dan Play Framework.\\
 		{\bf status :} Ada sejak rencana kerja skripsi.\\
@@ -93,8 +211,448 @@ Detail bagian pekerjaan skripsi sesuai dengan rencan kerja/laporan perkembangan 
 		{\bf hasil :} Sudah menulis dokumen skripsi bab 1 dan bab 2.
 	\end{enumerate}
 
+\begin{lstlisting}[language=PHP,basicstyle=\tiny,caption=handle.php,label={lst:handle.php}]
+<?php
+require_once '../../etc/utils.php';
+require_once '../../etc/constants.php';
+require_once '../../etc/PasswordHash.php';
+
+start_working();
+
+$mode = retrieve_from_post($proto_mode);
+
+// Initializes MySQL and check for session
+init_mysql();
+if ($mode != $proto_mode_login && $mode != $proto_mode_logout && $mode != $proto_mode_register) {
+	$sessionid = addslashes(retrieve_from_post($proto_sessionid));
+	// Clear expired sessions
+	mysqli_query($global_mysqli_link, "DELETE FROM sessions WHERE lastSeen < (NOW() - INTERVAL $session_expiry_interval_mysql)") or
+		die_nice('Failed to clean expired sessions: ' . mysqli_error($global_mysqli_link), true);
+	$result = mysqli_query($global_mysqli_link, "SELECT users.email, users.privilegeRoute, users.privilegeApiUsage FROM users LEFT JOIN sessions ON users.email = sessions.email WHERE sessions.sessionId = '$sessionid'") or
+		die_nice('Failed to get user session information: ' . mysqli_error($global_mysqli_link), true);
+	if (mysqli_num_rows($result) == 0) {
+		deinit_mysql();
+		// Construct json - session expired.
+		$json = array(
+			$proto_status => $proto_status_sessionexpired,
+		);
+		print(json_encode($json));
+		exit(0);
+	}
+	$columns = mysqli_fetch_row($result);
+	$active_userid = $columns[0]; 
+	$privilege_route = $columns[1] != '0';
+	$privilege_apiUsage = $columns[2] != '0';
+}
+
+if ($mode == $proto_mode_login) {
+	$userid = addslashes(retrieve_from_post($proto_userid));
+	$plain_password = addslashes(retrieve_from_post($proto_password));
+	if (strlen($userid) > $maximum_userid_length) {
+		return_invalid_credentials("User ID length is more than allowed (". strlen($userid) . ')');
+	}
+	if (strlen($plain_password) > $maximum_password_length) {
+		return_invalid_credentials('Password length is more than allowed ('. strlen($password) . ')');
+	}
+
+	// Retrieve the user information
+	$result = mysqli_query($global_mysqli_link, "SELECT * FROM users WHERE email='$userid'") or
+		die_nice('Failed to verify user id: ' . mysqli_error($global_mysqli_link), true);
+	if (mysqli_num_rows($result) == 0) {
+		deinit_mysql();
+		return_invalid_credentials("User id not found: $userid");
+	}
+	$userdata = mysqli_fetch_assoc($result);
+	
+	// Check against the stored hash.
+	$hasher = new PasswordHash($passwordhash_cost_log2, $passwordhash_portable);
+	if (!$hasher->CheckPassword($plain_password, $userdata['password'])) {
+		log_statistic("$apikey_kiri", 'LOGIN', $userid . '/FAIL');
+		deinit_mysql();
+		return_invalid_credentials("Password mismatch for $userid");
+	}
+	
+	log_statistic("$apikey_kiri", 'LOGIN', $userid . '/SUCCESS');
+	
+	// Create session id
+	$sessionid = generate_sessionid();
+	mysqli_query($global_mysqli_link, "INSERT INTO sessions (sessionId, email) VALUES ('$sessionid', '$userid')") or
+		die_nice('Failed to generate session: ' . mysqli_error($global_mysqli_link), true);
+
+	// Construct privilege lists
+	$privileges = '';
+	if ($userdata['privilegeRoute'] != 0) {
+		$privileges .= ",$proto_privilege_route";
+	}
+	if ($userdata['privilegeApiUsage'] != 0) {
+		$privileges .= ",$proto_privilege_apiUsage";
+	}
+	if (strlen($privileges) > 0) {
+		$privileges = substr($privileges, 1);
+	}
+	
+	// Construct json.
+	$json = array(
+			$proto_status => $proto_status_ok,
+			$proto_sessionid => $sessionid,
+			$proto_privileges => $privileges
+	);
+	
+	deinit_mysql();
+	print(json_encode($json));
+} elseif ($mode == $proto_mode_logout) {
+	$sessionid = addslashes(retrieve_from_post($proto_sessionid));
+
+	// Remove the session information
+	$result = mysqli_query($global_mysqli_link, "DELETE FROM sessions WHERE sessionId='$sessionid'") or
+		die_nice('Failed to logout sessionid $sessionid: ' . mysqli_error($global_mysqli_link), true);
+	deinit_mysql();
+	well_done();	
+} elseif ($mode == $proto_mode_add_track) {
+	check_privilege($privilege_route); 
+	$trackid = addslashes(retrieve_from_post($proto_trackid));
+	$trackname = addslashes(retrieve_from_post($proto_trackname));
+	$tracktype = addslashes(retrieve_from_post($proto_tracktype));
+	$penalty = addslashes(retrieve_from_post($proto_penalty));
+	$internalinfo = addslashes(retrieve_from_post($proto_internalinfo, false)) or $internalinfo = '';
+	
+	// Check if the id is already existed
+	$result = mysqli_query($global_mysqli_link, "SELECT trackId FROM tracks WHERE trackId='$trackid'") or
+		die_nice('Failed to check trackid existence: ' . mysqli_error($global_mysqli_link), true);
+	if (mysqli_num_rows($result) == 0) {
+		mysqli_query($global_mysqli_link, "INSERT INTO tracks (trackId, trackTypeId, trackName, penalty, internalInfo) VALUES ('$trackid','$tracktype','$trackname','$penalty','$internalinfo')") or
+			die_nice('Failed to add a new track: ' . mysqli_error($global_mysqli_link), true);
+		update_trackversion();
+	} else {
+		die_nice("The trackId '$trackid' already existed.", true);
+	}
+	deinit_mysql();
+	well_done();
+} elseif ($mode == $proto_mode_update_track) {
+	check_privilege($privilege_route);
+	$trackid = addslashes(retrieve_from_post($proto_trackid));
+	$newtrackid = addslashes(retrieve_from_post($proto_new_trackid));
+	$tracktype = addslashes(retrieve_from_post($proto_tracktype));
+	$trackname = addslashes(retrieve_from_post($proto_trackname));
+	$internalinfo = addslashes(retrieve_from_post($proto_internalinfo, false)) or $internalinfo = '';
+	$pathloop = retrieve_from_post($proto_pathloop) == 'true' ? 1 : 0;
+	$penalty = addslashes(retrieve_from_post($proto_penalty));
+	$transfernodes = retrieve_from_post($proto_transfernodes, false);
+	
+	// When changed, check if the id is already existed
+	if ($newtrackid != $trackid) {
+		$result = mysqli_query($global_mysqli_link, "SELECT trackId FROM tracks WHERE trackId='$newtrackid'") or
+			die_nice('Failed to check trackid existence: ' . mysqli_error($global_mysqli_link), true);
+		if (mysqli_num_rows($result) != 0) {
+			die_nice("The new trackId '$newtrackid' already existed.", true);
+		}
+	}
+	mysqli_query($global_mysqli_link, "UPDATE tracks SET trackTypeId='$tracktype', trackId='$newtrackid', trackName='$trackname', internalInfo='$internalinfo', pathloop='$pathloop', penalty='$penalty' WHERE trackId='$trackid'") or
+		die_nice('Failed to update the track: ' . mysqli_error($global_mysqli_link));
+	if (!is_null($transfernodes)) {
+		$transfernodes = addslashes($transfernodes);
+		mysqli_query($global_mysqli_link, "UPDATE tracks SET transferNodes='$transfernodes'WHERE trackId='$trackid'") or
+			die_nice('Failed to update the track: ' . mysqli_error($global_mysqli_link));
+	}
+	update_trackversion();
+	deinit_mysql();
+	well_done();
+} elseif ($mode == $proto_mode_list_tracks) {
+	check_privilege($privilege_route);
+	// Retrieve track list from database
+	$result = mysqli_query($global_mysqli_link, 'SELECT trackTypeId, trackId, trackName FROM tracks ORDER BY trackTypeId, trackId') or
+		die('Cannot retrieve the track names from database');
+	$track_list = array();	
+	while ($row = mysqli_fetch_row($result)) {
+		$track_list[] = array($row[1], htmlspecialchars($row[0] . '/' . $row[2]));
+	}
+	// Retrieve track types list result from database
+	$result = mysqli_query($global_mysqli_link, 'SELECT trackTypeId, name FROM tracktypes ORDER BY trackTypeId') or
+		die_nice('Cannot retrieve the track types from database');
+	$tracktype_list = array();
+	while ($row = mysqli_fetch_row($result)) {
+		$tracktype_list[] = array($row[0], htmlspecialchars($row[1]));
+	}
+	
+	// Construct json.
+	$json = array(
+		$proto_status => $proto_status_ok,
+		$proto_trackslist => $track_list,
+		$proto_tracktypeslist => $tracktype_list
+	);
+	
+	deinit_mysql();
+	print(json_encode($json));
+} elseif ($mode == $proto_mode_getdetails_track) {
+	check_privilege($privilege_route);
+	$trackid = addslashes(retrieve_from_post($proto_trackid));
+
+	// Retrieve result from database and construct in XML format
+	$result = mysqli_query($global_mysqli_link, "SELECT trackTypeId, trackName, internalInfo, AsText(geodata), pathloop, penalty, transferNodes FROM tracks WHERE trackId='$trackid'") or
+		die_nice("Can't retrieve the track details from database: " . mysqli_error($global_mysqli_link), true);
+	$i = 0;
+	$row = mysqli_fetch_row($result);
+	if ($row == FALSE) {
+		die_nice("Can't find track information for '$trackid'", true);
+	}
+	$geodata = lineStringToLatLngArray($row[3]);
+	// Construct json.
+	$json = array(
+		$proto_status => $proto_status_ok,
+		$proto_trackid => $trackid,
+		$proto_tracktype => $row[0],
+		$proto_trackname => $row[1],
+		$proto_internalinfo => $row[2],
+		$proto_geodata => $geodata,
+		$proto_pathloop => ($row[4] > 0 ? true : false),
+		$proto_penalty => doubleval($row[5]),
+		$proto_transfernodes => is_null($row[6]) ? array('0-' . (count($geodata) - 1)) : split(',', $row[6]), 
+	);
+	
+	deinit_mysql();
+	print(json_encode($json));
+} elseif ($mode == $proto_mode_cleargeodata) {
+	check_privilege($privilege_route);
+	$trackid = addslashes(retrieve_from_post($proto_trackid));
+	
+	mysqli_query($global_mysqli_link, "UPDATE tracks SET geodata=NULL, transferNodes=NULL WHERE trackId='$trackid'") or
+		die_nice('Failed to clear the geodata: ' . mysqli_error($global_mysqli_link), true);
+	
+	deinit_mysql();
+	well_done();
+} elseif ($mode == $proto_mode_importkml) {
+	check_privilege($privilege_route);
+	$trackid = addslashes(retrieve_from_post($proto_trackid));
+	// Import KML file into a geodata in database
+	if ($_FILES[$proto_uploadedfile]['error'] != UPLOAD_ERR_OK) {
+		die_nice("Server script is unable to retrieve the file, with PHP's UPLOAD_ERR_xxx code: " . $_FILES[$proto_uploadedfile]['error'], true);
+	}
+	if ($_FILES[$proto_uploadedfile]['size'] > $max_filesize) {
+		die_nice("Uploaded file size is greater than maximum size allowed ($max_filesize)", true);
+	}
+	$file = fopen($_FILES[$proto_uploadedfile]['tmp_name'], "r") or die_nice('Unable to open uploaded file', true);
+	$haystack = '';
+	while ($line = fgets($file)) {
+		$haystack .= trim($line);
+	}
+	$num_matches = preg_match_all("/<LineString>.*<coordinates>(.*)<\/coordinates>.*<\/LineString>/i", $haystack, $matches, PREG_PATTERN_ORDER);
+	if ($num_matches != 1) {
+		die_nice("The KML file must contain exactly one <coordinate> tag inside one <LineString> tag. But I found $num_matches occurences", true);
+	}
+	fclose($file);
+	
+	// Start constructing output
+	$output = 'LINESTRING(';
+	$points = preg_split('/\s+/', $matches[1][0]);
+	for ($i = 0, $size = sizeof($points); $i < $size; $i++) {
+		list($x, $y, $z) = preg_split('/\s*,\s*/', $points[$i]);
+		if ($i > 0) {
+			$output .= ',';
+		}
+		$output .= "$x $y";
+	}
+	$output .= ')';
+	mysqli_query($global_mysqli_link, "UPDATE tracks SET geodata=GeomFromText('$output'), transferNodes=NULL WHERE trackId='$trackid'") or
+		die_nice("Error updating the goedata: " . mysqli_error($global_mysqli_link), true);
+	update_trackversion();
+	deinit_mysql();
+	well_done();
+} elseif ($mode == $proto_mode_delete_track) {
+	check_privilege($privilege_route);
+	$trackid = addslashes(retrieve_from_post($proto_trackid));
+	
+	init_mysql();
+	
+	// Check if the id is already existed
+	mysqli_query($global_mysqli_link, "DELETE FROM tracks WHERE trackId='$trackid'") or
+		die_nice('Failed to delete track $trackid: ' . mysqli_error($global_mysqli_link), true);
+	if (mysqli_affected_rows($global_mysqli_link) == 0) {
+		die_nice("The track $trackid was not found in the database", true);
+	}
+	update_trackversion();
+	deinit_mysql();
+	well_done();	
+} elseif ($mode == $proto_mode_list_apikeys) {
+	check_privilege($privilege_apiUsage);
+	// Retrieve api key list from database
+	$result = mysqli_query($global_mysqli_link, "SELECT verifier, domainFilter, description FROM apikeys WHERE email='$active_userid' ORDER BY verifier") or
+		die_nice('Cannot retrieve the API keys list from database: ' . mysqli_error($global_mysqli_link));
+	$apikey_list = array();	
+	while ($row = mysqli_fetch_row($result)) {
+		$apikey_list[] = array($row[0], $row[1], $row[2]);
+	}
+	
+	// Construct json.
+	$json = array(
+		$proto_status => $proto_status_ok,
+		$proto_apikeys_list => $apikey_list,
+	);
+	
+	deinit_mysql();
+	print(json_encode($json));
+} elseif ($mode == $proto_mode_add_apikey) {
+	check_privilege($privilege_apiUsage);
+	$domainfilter = addslashes(retrieve_from_post($proto_domainfilter));
+	$description = addslashes(retrieve_from_post($proto_description));
+	$apikey = generate_apikey();
+	
+	// Retrieve api key list from database
+	$result = mysqli_query($global_mysqli_link, "INSERT INTO apikeys(verifier, email, domainFilter, description) VALUES('$apikey', '$active_userid', '$domainfilter', '$description')") or
+		die_nice('Cannot insert a new api key: ' . mysqli_error($global_mysqli_link));
+
+	log_statistic("$apikey_kiri", 'ADDAPIKEY', $userid . $apikey);
+	
+	// Construct json.
+	$json = array(
+			$proto_status => $proto_status_ok,
+			$proto_verifier => $apikey,
+	);
+	
+	deinit_mysql();
+	print(json_encode($json));
+} elseif ($mode == $proto_mode_update_apikey) {
+	check_privilege($privilege_apiUsage);
+	$apikey = addslashes(retrieve_from_post($proto_verifier));
+	$domainfilter = addslashes(retrieve_from_post($proto_domainfilter));
+	$description = addslashes(retrieve_from_post($proto_description));
+	// Ensure that this user has access to the apikey
+	$result = mysqli_query($global_mysqli_link, "SELECT email FROM apikeys WHERE verifier='apikey'") or
+		die_nice('Cannot check API key owner: ' . mysqli_error($global_mysqli_link));
+	while ($row = mysqli_fetch_row($result)) {
+		if ($row[0] != $active_userid) {
+			die_nice("User $active_userid does not have privilege to update API Key $apikey");
+		}
+	}
+	mysqli_query($global_mysqli_link, "UPDATE apikeys SET domainFilter='$domainfilter', description='$description' WHERE verifier='$apikey'") or
+		die_nice('Failed to update API Key: ' . mysqli_error($global_mysqli_link));
+	
+	deinit_mysql();
+	well_done();
+} elseif ($mode == $proto_mode_register) {
+	$email = addslashes(retrieve_from_post($proto_userid));
+	$fullname = addslashes(retrieve_from_post($proto_fullname));
+	$company = addslashes(retrieve_from_post($proto_company));
+
+	// Check if the email has already been registered.
+	$result = mysqli_query($global_mysqli_link, "SELECT email FROM users WHERE email='$email'") or
+		die_nice('Cannot check user id existence: ' . mysqli_error($global_mysqli_link));
+	if (mysqli_num_rows($result) > 0) {
+		die_nice("Ooops! Email $email has already registered. Please check your mailbox or contact hello@kiri.travel");
+	}
+
+	// Generate and send password
+	$password = generate_password();
+	$hasher = new PasswordHash($passwordhash_cost_log2, $passwordhash_portable);
+	$passwordHash = $hasher->HashPassword($password); 
+	mysqli_query($global_mysqli_link, "INSERT INTO users(email, password, privilegeApiUsage, fullName, company) VALUES('$email', '$passwordHash', 1, '$fullname', '$company')") or
+		die_nice('Cannot add new user $email: ' . mysqli_error($global_mysqli_link));	
+	sendPassword($email, $password, $fullname);
+
+	log_statistic("$apikey_kiri", 'REGISTER', "$email/$fullname/$company");
+	
+	deinit_mysql();
+	well_done();
+} elseif ($mode == $proto_mode_getprofile) {
+		$email = $active_userid;
+	
+		$result = mysqli_query($global_mysqli_link, "SELECT fullName, company FROM users WHERE email='$email'") or
+			die_nice('Cannot retrieve user details: ' . mysqli_error($global_mysqli_link));
+		if ($row = mysqli_fetch_row($result)) {
+			$fullname = $row[0];
+			$company = $row[1];
+		} else {
+			die_nice("User $email not found in database.");
+		} 
+	
+		deinit_mysql();
+		// Construct json.
+		$json = array(
+				$proto_status => $proto_status_ok,
+				$proto_fullname => $fullname,
+				$proto_company => $company
+		);
+		
+		print(json_encode($json));
+} elseif ($mode == $proto_mode_update_profile) {
+	$email = $active_userid;
+	$password = addslashes(retrieve_from_post($proto_password, false));
+	$fullname = addslashes(retrieve_from_post($proto_fullname));
+	$company = addslashes(retrieve_from_post($proto_company));
+
+	// Updates password if necessary
+	if (!is_null($password) && $password != "") {		
+		$hasher = new PasswordHash($passwordhash_cost_log2, $passwordhash_portable);
+		$passwordHash = $hasher->HashPassword($password);
+		mysqli_query($global_mysqli_link, "UPDATE users SET password='$passwordHash' WHERE email='$email'") or
+			die_nice('Cannot update password for $email: ' . mysqli_error($global_mysqli_link));
+	}
+	mysqli_query($global_mysqli_link, "UPDATE users SET fullName='$fullname', company='$company' WHERE email='$email'") or
+		die_nice('Cannot update profile for $email: ' . mysqli_error($global_mysqli_link));
+
+	deinit_mysql();
+	well_done();
+} else {
+	die_nice("Mode not understood: \"" . $mode . "\"", true);
+}
+
+/**
+ * Return invalid credential error, close mysql connection, and exit.
+ * @param string $logmessage the message to record in the log file.
+ */
+function return_invalid_credentials($logmessage) {
+	global $proto_status, $proto_status_credentialfail, $errorlog_file, $global_mysqli_link;
+	$ip_address = $_SERVER['REMOTE_ADDR'];
+	log_error("Login failed (IP=$ip_address): $logmessage", '../' . $errorlog_file);
+	$json = array(
+		$proto_status => $proto_status_credentialfail);
+	print(json_encode($json));
+	mysqli_close($global_mysqli_link);
+	exit(0);
+}
+
+/**
+ * 
+ * Simply checks the input parameter, when false do default action
+ * to return "user does not have privilege"
+ * @param boolean $privilege if false will return error
+ */
+function check_privilege($privilege) {
+	if (!$privilege) {
+		die_nice("User doesn't have enough privilege to perform the action.", true);
+	}
+}
+
+/**
+ * Scans a directory and remove files that have not been modified for max_age
+ * @param string $path the path to the directory to clean 
+ * @param int $max_age maximum age of the file in seconds
+ * @return boolean true if okay, false if there's an error.
+ */
+function clean_temporary_files($path, $max_age) {
+	$currenttime = time();
+	if ($dirhandle = opendir($path)) {
+		while (($file = readdir($dirhandle)) != FALSE) {
+			$fullpath = "$path/$file";
+			if (is_file($fullpath) && $currenttime - filemtime($fullpath) > $max_age) {
+				if (!unlink($fullpath)) {
+					return FALSE;
+				}
+			}
+		}
+		return TRUE;
+	} else {
+		return FALSE;
+	}
+}
+
+?>
+\end{lstlisting}
+
 \section{Pencapaian Rencana Kerja}
 Persentase penyelesaian skripsi sampai dengan dokumen ini dibuat dapat dilihat pada tabel berikut :
+
+\bibliographystyle{ieeetr}
+\bibliography{pustaka}
 
 \begin{center}
   \begin{tabular}{ | c | c | c | c | l | c |}
@@ -119,15 +677,6 @@ Keterangan (*)\\
 5 : Penjelasan singkat apa yang dilakukan di S1 (Skripsi 1) atau S2 (skripsi 2)\\
 6 : Persentase yang sidah diselesaikan sampai saat ini 
 
-\section{Kendala yang dihadapi}
-%TULISKAN BAGIAN INI JIKA DOKUMEN ANDA TIPE A ATAU C
-Kendala - kendala yang dihadapi selama mengerjakan skripsi :
-\begin{itemize}
-	\item Terlalu banyak melakukan prokratinasi
-	\item Terlalu banyak godaan berupa hiburan (game, film, dll)
-	\item Pembagian waktu dengan mata kuliah lain masih belum baik (banyak tugas-tugas dari mata kuliah lain yang diambil pada semester ini)
-\end{itemize}
-
 \vspace{1cm}
 \centering Bandung, \tanggal\\
 \vspace{2cm} \nama \\ 
@@ -150,6 +699,5 @@ Menyetujui, \\
 % \centering Bandung, \makebox[0.5cm]{\hrulefill}/\makebox[0.5cm]{\hrulefill}/2013\\
 \vspace{2cm} Nama: \pembA \\ Pembimbing Tunggal
 }
-`
 \end{document}
 
