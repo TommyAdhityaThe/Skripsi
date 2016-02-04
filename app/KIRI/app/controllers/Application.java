@@ -16,8 +16,14 @@ import java.util.Random;
 import play.libs.Json;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+//model yang dipake
+import models.Message;
+import models.RegisterManager;
+import models.LoginManager;
+
 public class Application extends Controller {
 	DynamicForm requestData;
+    Message message;
     
 
 	public Result index(){
@@ -40,21 +46,85 @@ public class Application extends Controller {
         return ok(sb.toString());
     }
 
+
     public Result handle() throws IOException, SQLException{
     	this.requestData = Form.form().bindFromRequest();
     	String mode = this.requestData.get("mode");
-        if(mode.equals("login")){
-        	return this.login();
+        if(!mode.equals("login") && !mode.equals("register") && !mode.equals("logout")){
+            this.checkLogin();
         }
-        else if(mode.equals("register")){
-        	return this.register();
-        }
-        else{
-        	return badRequest("failed");
-        }
+        switch(mode){
+            case "login":
+                message = this.login();
+                break;
+            case "register":
+                message = this.register();
+                break;
+            case "listtracks":
+                
+                break;
+            case "listapikeys":
+                
+                break;
+            default:
+                ObjectNode obj = Json.newObject();
+                obj.put("status", "mode not found");
+                this.message=new Message("badrequest", obj);
+                break;
+       }
+       switch(message.getHttpcode()){
+            case "ok":
+                return ok(message.getAlert());
+            case "badrequest":
+                return badRequest(message.getAlert());
+            default:
+                return badRequest("ERROR");
+
+       }
     }
 
-    private Result login() throws IOException, SQLException{
+    private Message login() throws IOException, SQLException{
+        String userid = this.requestData.get("userid");
+        String password = this.requestData.get("password");
+        LoginManager manager = new LoginManager();
+        return manager.doLogin(userid,password);
+    }
+
+    private Message register() throws IOException, SQLException{
+        String email = this.requestData.get("userid");
+        String fullname = this.requestData.get("fullname");
+        String company = this.requestData.get("company");
+        RegisterManager manager = new RegisterManager();
+        return manager.doRegister(email,fullname,company);
+    }
+
+    private Result checkLogin(){
+        return ok("To be Created");
+
+    }
+
+    private Result getListTracks(){
+        return ok("To be Created");
+
+    }
+
+    private Result getListApiKeys(){
+        return ok("To be Created");
+
+    }
+
+    /**
+    private Result cobaLogin() throws IOException, SQLException{
+        PengelolaLogin pengelola= new PengelolaLogin();
+        String userid = this.requestData.get("userid");
+        String password = this.requestData.get("password");
+        return pengelola.lakukanLogin(userid,password);
+    }
+    */
+
+    
+
+    private Result oldLogin() throws IOException, SQLException{
     	String userid = this.requestData.get("userid");
     	String password = this.requestData.get("password");
     	if (userid.length() > 128) {
@@ -92,10 +162,11 @@ public class Application extends Controller {
         obj.put("status", "ok");
         obj.put("sessionid", "e27wy7s3f08fmu13");
         obj.put("privileges", privileges.toString());
+        System.out.println(obj);
         return ok(obj);
     }
     
-    private Result register() throws IOException, SQLException{
+    private Result oldRegister() throws IOException, SQLException{
         String email = this.requestData.get("userid");
         String fullname = this.requestData.get("fullname");
         String company = this.requestData.get("company");
