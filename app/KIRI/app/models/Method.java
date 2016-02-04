@@ -19,18 +19,18 @@ public class Method{
         return string;
     }
 
-    protected ObjectNode well_done(String message) {
+    protected Message well_done(String message) {
         ObjectNode obj = Json.newObject();
         obj.put("status", "ok");
         if (message != null) {
             obj.put("status", message);
         }
-        return obj;
+        return new Message("ok",obj);
     }
 
-    protected ObjectNode return_invalid_credentials(String logmessage) {
+    protected Message return_invalid_credentials(String logmessage) {
         ObjectNode obj = Json.newObject();
         obj.put("status", "credentialfail");
-        return obj;
+        return new Message("badrequest",obj);
     }
 }

@@ -19,11 +19,11 @@ public class RegisterManager extends Method{
         Statement statement = connection.createStatement();
         ResultSet result = statement.executeQuery("SELECT email FROM users WHERE email='"+email+"'");
         while (result.next()) {
-            return new Message("badrequest", this.well_done("sudah ada usernya"));
+            return this.well_done("sudah ada usernya");
         }
         // Generate password tanpa fitur hash and send password (belum dilakukan)
         String password = this.generate_password();
         statement.executeUpdate("INSERT INTO users(email, password, privilegeApiUsage, fullName, company) VALUES('" + email + "', '" + password +"', 1, '" + fullname +"', '" + company +"');");
-        return new Message("ok", this.well_done(null));
+        return this.well_done(null);
     }
 }

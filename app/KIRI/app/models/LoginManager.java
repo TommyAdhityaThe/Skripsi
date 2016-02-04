@@ -11,6 +11,7 @@ import java.io.*;
 import java.sql.*;
 import play.libs.Json;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 /**
  *
  * @author Tommy Adhitya The
@@ -18,10 +19,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 public class LoginManager extends Method{
     public Message doLogin(String userid,String password) throws IOException, SQLException{
         if (userid.length() > 128) {
-            return new Message("badrequest",this.return_invalid_credentials("User ID length is more than allowed (" + userid.length() + ")"));
+            return this.return_invalid_credentials("User ID length is more than allowed (" + userid.length() + ")");
         }
         if (password.length() > 32) {
-            return new Message("badrequest",this.return_invalid_credentials("Password length is more than allowed ("+ password.length() + ")"));
+            return this.return_invalid_credentials("Password length is more than allowed ("+ password.length() + ")");
         }
 
         // Retrieve the user information
@@ -30,13 +31,13 @@ public class LoginManager extends Method{
         ResultSet result = statement.executeQuery("SELECT * FROM users WHERE email='"+userid+"'");
         if(!result.next()){
             System.out.println("userid tidak ditemukan");
-            return new Message("badrequest", this.return_invalid_credentials("userid tidak ditemukan"));
+            return this.return_invalid_credentials("userid tidak ditemukan");
         }
 
         String hasher=result.getString("password");
         if(!hasher.equals(password)){
             System.out.println("password salah");
-            return new Message("badrequest", this.return_invalid_credentials("password salah"));
+            return this.return_invalid_credentials("password salah");
         }
         StringBuilder privileges= new StringBuilder();
         if (result.getInt("privilegeRoute") != 0) {
