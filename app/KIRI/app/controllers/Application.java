@@ -17,13 +17,12 @@ import play.libs.Json;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 //model yang dipake
-import models.Message;
-import models.RegisterManager;
-import models.LoginManager;
+import models.AuthenticationManager;
+
 
 public class Application extends Controller {
-	DynamicForm requestData;
-    Message message;
+	
+    
     
 
 	public Result index(){
@@ -48,53 +47,51 @@ public class Application extends Controller {
 
 
     public Result handle() throws IOException, SQLException{
-    	this.requestData = Form.form().bindFromRequest();
-    	String mode = this.requestData.get("mode");
-        if(!mode.equals("login") && !mode.equals("register") && !mode.equals("logout")){
-            
+        ObjectNode response=Json.newObject();
+        try {
+            DynamicForm requestData=Form.form().bindFromRequest();
+            String mode = requestData.get("mode");
+            if(!mode.equals("login") && !mode.equals("register") && !mode.equals("logout")){
+                
+            }
+            switch(mode){
+                case "login":
+                    response=this.login(requestData.get("userid"),requestData.get("password"));
+                    break;
+                case "register":
+                    response=this.register(requestData.get("userid"), requestData.get("fullname"),requestData.get("company"));
+                    break;
+                case "logout":
+                    response=this.logout(requestData.get("sessionid"));
+                    break;
+                case "listtracks": 
+                    break;
+                case "listapikeys":
+                    break;
+                default:
+                    throw new IOException("Mode Not Found");
+            }
+            return ok(response);
+        } catch (Exception e) {
+            response.put("status",e.getMessage());
+            return badRequest(response);
         }
-        switch(mode){
-            case "login":
-                message = this.login();
-                break;
-            case "register":
-                message = this.register();
-                break;
-            case "listtracks":
-                
-                break;
-            case "listapikeys":
-                
-                break;
-            default:
-                ObjectNode obj = Json.newObject();
-                obj.put("status", "mode not found");
-                this.message=new Message("badrequest", obj);
-                break;
-       }
-       switch(message.getHttpcode()){
-            case "ok":
-                return ok(message.getAlert());
-            case "badrequest":
-                return badRequest(message.getAlert());
-            default:
-                return notFound("ERROR");
-
-       }
+        
+       
     }
 
-    private Message login() throws IOException, SQLException{
-        String userid = this.requestData.get("userid");
-        String password = this.requestData.get("password");
-        LoginManager manager = new LoginManager();
-        return manager.doLogin(userid,password);
+    private ObjectNode login(String userid, String password) throws IOException, SQLException{
+        AuthenticationManager manager = new AuthenticationManager();
+        return manager.login(userid,password);
     }
 
-    private Message register() throws IOException, SQLException{
-        String email = this.requestData.get("userid");
-        String fullname = this.requestData.get("fullname");
-        String company = this.requestData.get("company");
-        RegisterManager manager = new RegisterManager();
-        return manager.doRegister(email,fullname,company);
+    private ObjectNode register(String email, String fullname, String company) throws IOException, SQLException{
+        AuthenticationManager manager = new AuthenticationManager();
+        return manager.register(email,fullname,company);
+    }
+
+    private ObjectNode logout(String sessionid) throws IOException, SQLException{
+        AuthenticationManager manager = new AuthenticationManager();
+        return manager.logout(sessionid);
     }
 }
