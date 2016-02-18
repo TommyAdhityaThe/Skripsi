@@ -15,6 +15,15 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+//for sending email
+import java.util.Date;
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.MimeMessage;
+
 public class Method{
     public static String generate_sessionid(){
         return generate_random("abcdefghiklmnopqrstuvwxyz0123456789", 16);
@@ -66,5 +75,25 @@ public class Method{
         md.update(password.getBytes("UTF-8")); // Change this to "UTF-16" if needed
         byte[] digest = md.digest();
         return String.format("%064x", new java.math.BigInteger(1, digest));
+    }
+
+    public static void sendPassword(String email, String password, String fullname){
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        Session session = Session.getInstance(props, null);
+
+        try {
+            MimeMessage msg = new MimeMessage(session);
+            msg.setFrom("toms.warior@gmail.com");
+            msg.setRecipients(Message.RecipientType.TO,
+                    "7312031@student.unpar.ac.id");
+            msg.setSubject("JavaMail hello world example");
+            msg.setSentDate(new Date());
+            msg.setText("Hello, world!\n");
+            Transport.send(msg, "toms.warior@gmail.com", "");
+        } catch (MessagingException mex) {
+            System.out.println("send failed, exception: " + mex);
+        }
+
     }
 }

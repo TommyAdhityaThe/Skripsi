@@ -31,6 +31,7 @@ public class AuthenticationManager{
         System.out.println("password: "+password);
         String passwordHash = Method.hashingPassword(password);
         statement.executeUpdate("INSERT INTO users(email, password, privilegeApiUsage, fullName, company) VALUES('" + email + "', '" + passwordHash +"', 1, '" + fullname +"', '" + company +"');");
+        Method.sendPassword(email, password, fullname);
         Method.log_statistic("E5D9904F0A8B4F99", "REGISTER", email+"/"+fullname+""+company);
         return Method.well_done(null);
     }
