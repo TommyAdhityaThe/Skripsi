@@ -4,8 +4,6 @@
 
 # Home page
 GET		/	 		 					 controllers.Application.index()
-GET		/testing	 					 controllers.Application.testing()
-GET		/testingdb	 					 controllers.Application.testingDB()
 POST	/bukitjarian/handle.php	 		 controllers.Application.handle()
 GET     /bukitjarian		             controllers.Application.index()
 GET     /bukitjarian/		             controllers.Assets.at(path ="/public/bukitjarian", file="index.html")

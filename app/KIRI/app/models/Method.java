@@ -52,10 +52,14 @@ public class Method{
         return obj;
     }
 
-    public static void return_invalid_credentials(String logMessage) throws IOException {
+    public static void return_invalid_credentials(String logMessage) throws UniqueStatusError {
         String ipAddress=Http.Context.current().request().remoteAddress();
         log_error("Login failed (IP="+ipAddress+"): " + logMessage);
-        throw new IOException("credentialfail");
+        throw new UniqueStatusError("credentialfail");
+    }
+
+    public static void die_nice(String message) throws IOException {
+        throw new IOException(message);
     }
 
     private static void log_error(String message){

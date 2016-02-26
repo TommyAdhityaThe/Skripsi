@@ -20,6 +20,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class AuthenticationManager{
     public ObjectNode register(String email, String fullname, String company) throws IOException, SQLException,NoSuchAlgorithmException, UnsupportedEncodingException{
+        
         java.sql.Connection connection = DB.getConnection();
         Statement statement = connection.createStatement();
         ResultSet result = statement.executeQuery("SELECT email FROM users WHERE email='"+email+"'");
@@ -36,7 +37,7 @@ public class AuthenticationManager{
         return Method.well_done(null);
     }
 
-    public ObjectNode login(String userid,String password) throws IOException, SQLException,NoSuchAlgorithmException, UnsupportedEncodingException{
+    public ObjectNode login(String userid,String password) throws UniqueStatusError, SQLException,NoSuchAlgorithmException, UnsupportedEncodingException{
         if (userid.length() > 128) {
             Method.return_invalid_credentials("User ID length is more than allowed (" + userid.length() + ")");
         }
@@ -86,10 +87,9 @@ public class AuthenticationManager{
         return obj;
     }
 
-    public ObjectNode logout(String sessionid) throws IOException, SQLException{
+    public void logout(String sessionid) throws IOException, SQLException{
         java.sql.Connection connection = DB.getConnection();
         Statement statement = connection.createStatement();
         statement.executeUpdate("DELETE FROM sessions WHERE sessionId='"+sessionid+"'");        
-        return Method.well_done(null);
     }
 }
