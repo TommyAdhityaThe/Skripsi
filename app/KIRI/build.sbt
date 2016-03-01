@@ -22,4 +22,10 @@ libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.18"
 libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.6.3"
 //untuk pake Java Mail
 libraryDependencies += "com.sun.mail" % "javax.mail" % "1.5.4"
+//untuk htmlspecialchars
+libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.4"
 
+
+// untuk eclipse
+// Compile the project before generating Eclipse files, so that generated .scala or .class files for views and routes are present
+EclipseKeys.preTasks := Seq(compile in Compile)
