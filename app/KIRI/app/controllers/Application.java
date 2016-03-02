@@ -59,7 +59,7 @@ public class Application extends Controller {
 						requestData.get("company"));
 				break;
 			case "listapikeys":
-				response = this.getListApiKeys(user);
+				response = this.getListOfApiKeys(user);
 				break;
 			case "addapikey":
 				response = this.addApiKey(user, requestData.get("domainfilter"), requestData.get("description"));
@@ -69,8 +69,15 @@ public class Application extends Controller {
 						requestData.get("description"));
 				break;
 			case "listtracks":
-				response = this.getListTracks(user);
+				response = this.getListOfTracks(user);
 				break;
+			case "getdetailstrack":
+				response = this.getDetailsTrack(user, requestData.get("trackid"));
+				break;
+			// case "updatetrack":
+			// response =
+			// this.updateTrack(user,requestData.get("trackid"),requestData.get("newtrackid"),requestData.get("tracktype"),requestData.get("trackname"),requestData.get("internalinfo"),requestData.get("loop"),requestData.get("penalty"),requestData.get("transfernodes"));
+			// break;
 			default:
 				throw new IOException("Mode Not Found");
 			}
@@ -86,8 +93,6 @@ public class Application extends Controller {
 			return badRequest(response);
 		}
 	}
-
-	
 
 	private ObjectNode login(String userid, String password) throws UniqueStatusError, IOException, SQLException,
 			NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -117,9 +122,9 @@ public class Application extends Controller {
 		return Method.well_done(null);
 	}
 
-	private ObjectNode getListApiKeys(User user) throws SQLException, IOException {
+	private ObjectNode getListOfApiKeys(User user) throws SQLException, IOException {
 		ApiKeysManager manager = new ApiKeysManager();
-		return manager.getListApiKeys(user);
+		return manager.getListOfApiKeys(user);
 	}
 
 	private ObjectNode addApiKey(User user, String domainFilter, String description) throws SQLException, IOException {
@@ -133,9 +138,14 @@ public class Application extends Controller {
 		manager.updateApiKey(user, apiKey, domainFilter, description);
 		return Method.well_done(null);
 	}
-	
-	private ObjectNode getListTracks(User user) throws SQLException, IOException {
+
+	private ObjectNode getListOfTracks(User user) throws SQLException, IOException {
 		TracksManager manager = new TracksManager();
-		return manager.getListTracks(user);
+		return manager.getListOfTracks(user);
+	}
+
+	private ObjectNode getDetailsTrack(User user, String trackID) throws IOException, SQLException {
+		TracksManager manager = new TracksManager();
+		return manager.getDetailsTrack(user, trackID);
 	}
 }

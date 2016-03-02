@@ -10,16 +10,16 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 public class ApiKeysManager {
 
 	// blom beres
-	public ObjectNode getListApiKeys(User user) throws SQLException, IOException {
+	public ObjectNode getListOfApiKeys(User user) throws SQLException, IOException {
 		this.checkPrivilege(user.isPrivilegeApiUsage());
 		java.sql.Connection connection = DB.getConnection();
 		Statement statement = connection.createStatement();
 		ResultSet result = statement
 				.executeQuery("SELECT verifier, domainFilter, description FROM apikeys WHERE email='"
 						+ user.getActiveUserID() + "' ORDER BY verifier");
-		ArrayNode listApiKeys=Json.newArray();
+		ArrayNode listApiKeys = Json.newArray();
 		while (result.next()) {
-			ArrayNode apiKeyValue=Json.newArray();
+			ArrayNode apiKeyValue = Json.newArray();
 			apiKeyValue.add(result.getString("verifier"));
 			apiKeyValue.add(result.getString("domainFilter"));
 			apiKeyValue.add(result.getString("description"));
@@ -57,7 +57,8 @@ public class ApiKeysManager {
 						"User " + user.getActiveUserID() + " does not have privilege to update API Key " + apiKey + "");
 			}
 		}
-		statement.executeUpdate("UPDATE apikeys SET domainFilter='"+domainFilter+"', description='"+description+"' WHERE verifier='"+apiKey+"'");
+		statement.executeUpdate("UPDATE apikeys SET domainFilter='" + domainFilter + "', description='" + description
+				+ "' WHERE verifier='" + apiKey + "'");
 	}
 
 	private void checkPrivilege(boolean privilegeApiUsage) throws IOException {
