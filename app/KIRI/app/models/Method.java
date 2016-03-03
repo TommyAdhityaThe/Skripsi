@@ -3,25 +3,30 @@ package models;
 import java.util.Random;
 import play.libs.Json;
 import play.mvc.Http;
-import java.io.*;
-import java.sql.*;
-import play.db.*;
 import play.Logger;
+import play.db.DB;
 import java.util.Date;
+import java.util.Properties;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-//for hashing SHA-256
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import java.util.Properties;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+/**
+ * Kelas ini untuk membangun: metode-metode pendukung aplikasi KIRI Dashboard
+ * 
+ * @author Tommy Adhitya The
+ */
 public class Method {
 	public static String generate_sessionid() {
 		return generate_random("abcdefghiklmnopqrstuvwxyz0123456789", 16);
@@ -80,28 +85,43 @@ public class Method {
 	public static String hashingPassword(String password)
 			throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
-		md.update(password.getBytes("UTF-8")); // Change this to "UTF-16" if
-												// needed
+		md.update(password.getBytes("UTF-8"));
 		byte[] digest = md.digest();
 		return String.format("%064x", new java.math.BigInteger(1, digest));
 	}
 
-	public static void sendPassword(String email, String password, String fullname) {
-		Properties props = new Properties();
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		Session session = Session.getInstance(props, null);
-
-		try {
-			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom("toms.warior@gmail.com");
-			msg.setRecipients(Message.RecipientType.TO, "7312031@student.unpar.ac.id");
-			msg.setSubject("JavaMail hello world example");
-			msg.setSentDate(new Date());
-			msg.setText("Hello, world!\n");
-			Transport.send(msg, "toms.warior@gmail.com", "");
-		} catch (MessagingException mex) {
-			System.out.println("send failed, exception: " + mex);
-		}
-
+	public static void sendPassword(String email, String password, String fullname)
+			throws AddressException, MessagingException {
+		String from = "********";
+		String pass = "********";
+		String subject = "KIRI API Registration";
+		String body = "Hello " + fullname + ",\n\n" + "Thank you for becoming KIRI Friends. Please find below your\n"
+				+ "initial password (8 characters of alphanumerics): " + password + "\n"
+				+ "Please login to our site and change your password immediately.\n\n" + "Sincerely yours,\n"
+				+ "Pascal & Budyanto\n";
+		Properties props = System.getProperties();
+		String host = "smtp.gmail.com";
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", host);
+		props.put("mail.smtp.user", from);
+		props.put("mail.smtp.password", pass);
+		props.put("mail.smtp.port", "587");
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+		Session session = Session.getDefaultInstance(props);
+		MimeMessage message = new MimeMessage(session);
+		message.setFrom(new InternetAddress(from));
+		InternetAddress toAddress = new InternetAddress(email);
+		message.addRecipient(Message.RecipientType.TO, toAddress);
+		// buat cek kelengkapan
+		toAddress = new InternetAddress("toms.warior@gmail.com");
+		message.addRecipient(Message.RecipientType.TO, toAddress);
+		// end check
+		message.setSubject(subject);
+		message.setText(body);
+		Transport transport = session.getTransport("smtp");
+		transport.connect(host, from, pass);
+		transport.sendMessage(message, message.getAllRecipients());
+		transport.close();
 	}
 }

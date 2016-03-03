@@ -4,17 +4,18 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import org.apache.commons.lang3.StringEscapeUtils;
-
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import play.db.DB;
 import play.libs.Json;
 
+/**
+ * Kelas ini untuk menangani kasus: pengelolaan rute angkutan umum KIRI
+ * 
+ * @author Tommy Adhitya The
+ */
 public class TracksManager {
-
 	public ObjectNode getListOfTracks(User user) throws SQLException, IOException {
 		this.checkPrivilege(user.isPrivilegeRoute());
 		java.sql.Connection connection = DB.getConnection();

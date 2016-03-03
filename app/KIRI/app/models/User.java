@@ -1,14 +1,22 @@
 package models;
 
-import play.db.*;
-import java.sql.*;
-import java.io.*;
+import play.db.DB;
 import play.libs.Json;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+/**
+ * Kelas ini untuk menangani kasus: pemeriksaan login, update profil dan
+ * permintaan data profil
+ * 
+ * @author Tommy Adhitya The
+ */
 public class User {
-
 	private String sessionID;
 	private String activeUserID;
 	private boolean privilegeRoute;

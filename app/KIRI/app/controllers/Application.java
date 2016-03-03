@@ -1,27 +1,29 @@
 package controllers;
 
-import play.mvc.*;
-
-//models
+import play.mvc.Controller;
+import play.mvc.Result;
 import models.Method;
 import models.TracksManager;
 import models.User;
 import models.ApiKeysManager;
 import models.AuthenticationManager;
 import models.UniqueStatusError;
-
-//tambahan import
-import play.data.*;
-import java.io.*;
-import java.sql.*;
-
-//untuk json
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import play.data.DynamicForm;
+import play.data.Form;
 import play.libs.Json;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-//exception
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 
+/**
+ * Kelas ini untuk menangani permintaan-permintaan dari bagian View
+ * 
+ * @author Tommy Adhitya The
+ */
 public class Application extends Controller {
 	public Result index() {
 		return redirect("/bukitjarian/");
@@ -100,8 +102,8 @@ public class Application extends Controller {
 		return manager.login(userid, password);
 	}
 
-	private ObjectNode register(String email, String fullname, String company)
-			throws IOException, SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	private ObjectNode register(String email, String fullname, String company) throws IOException, SQLException,
+			NoSuchAlgorithmException, UnsupportedEncodingException, AddressException, MessagingException {
 		AuthenticationManager manager = new AuthenticationManager();
 		return manager.register(email, fullname, company);
 	}

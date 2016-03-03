@@ -1,15 +1,20 @@
 package models;
 
-import play.db.*;
-import java.sql.*;
-import java.io.*;
+import play.db.DB;
 import play.libs.Json;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+/**
+ * Kelas ini untuk menangani kasus: pengelolaan Api Keys
+ * 
+ * @author Tommy Adhitya The
+ */
 public class ApiKeysManager {
-
-	// blom beres
 	public ObjectNode getListOfApiKeys(User user) throws SQLException, IOException {
 		this.checkPrivilege(user.isPrivilegeApiUsage());
 		java.sql.Connection connection = DB.getConnection();

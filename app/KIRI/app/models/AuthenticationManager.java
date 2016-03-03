@@ -1,25 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package models;
 
-import play.db.*;
-import java.io.*;
-import java.sql.*;
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import play.db.DB;
 import play.libs.Json;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
- *
+ * Kelas ini untuk menangani kasus: otentikasi
+ * 
  * @author Tommy Adhitya The
  */
 public class AuthenticationManager {
-	public ObjectNode register(String email, String fullname, String company)
-			throws IOException, SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public ObjectNode register(String email, String fullname, String company) throws IOException, SQLException,
+			NoSuchAlgorithmException, UnsupportedEncodingException, AddressException, MessagingException {
 
 		java.sql.Connection connection = DB.getConnection();
 		Statement statement = connection.createStatement();
@@ -28,10 +28,7 @@ public class AuthenticationManager {
 			return Method.well_done("Ooops! Email " + email
 					+ " has already registered. Please check your mailbox or contact hello@kiri.travel");
 		}
-		// Generate password tanpa fitur hash and send password (belum
-		// dilakukan)
 		String password = Method.generate_password();
-		System.out.println("password: " + password);
 		String passwordHash = Method.hashingPassword(password);
 		statement.executeUpdate("INSERT INTO users(email, password, privilegeApiUsage, fullName, company) VALUES('"
 				+ email + "', '" + passwordHash + "', 1, '" + fullname + "', '" + company + "');");
@@ -48,43 +45,34 @@ public class AuthenticationManager {
 		if (password.length() > 32) {
 			Method.return_invalid_credentials("Password length is more than allowed (" + password.length() + ")");
 		}
-
-		// Retrieve the user information
 		java.sql.Connection connection = DB.getConnection();
 		Statement statement = connection.createStatement();
 		ResultSet result = statement.executeQuery("SELECT * FROM users WHERE email='" + userid + "'");
 		if (!result.next()) {
 			Method.return_invalid_credentials("User id not found: " + userid);
 		}
-
 		String userDataPassword = result.getString("password");
 		String passwordHash = Method.hashingPassword(password);
-
 		if (!passwordHash.equals(userDataPassword)) {
 			Method.log_statistic("E5D9904F0A8B4F99", "LOGIN", userid + "/FAIL");
 			Method.return_invalid_credentials("Password mismatch for " + userid);
 		}
-
 		Method.log_statistic("E5D9904F0A8B4F99", "LOGIN", userid + "/SUCCESS");
 		int privilegeRoute = result.getInt("privilegeRoute");
 		int privilegeApiUsage = result.getInt("privilegeApiUsage");
-
 		String sessionid = Method.generate_sessionid();
 		statement.executeUpdate(
 				"INSERT INTO sessions (sessionId, email) VALUES ('" + sessionid + "', '" + userid + "')");
-
 		StringBuilder privileges = new StringBuilder();
 		if (privilegeRoute != 0) {
 			privileges.append(",route");
 		}
-
 		if (privilegeApiUsage != 0) {
 			privileges.append(",apiusage");
 		}
 		if (privileges.length() > 0) {
 			privileges = new StringBuilder(privileges.substring(1));
 		}
-
 		ObjectNode obj = Json.newObject();
 		obj.put("status", "ok");
 		obj.put("sessionid", sessionid);
