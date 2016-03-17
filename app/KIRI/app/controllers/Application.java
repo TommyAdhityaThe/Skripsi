@@ -1,6 +1,8 @@
 package controllers;
 
 import play.mvc.Controller;
+import play.mvc.Http.MultipartFormData;
+import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import models.Method;
 import models.TracksManager;
@@ -14,6 +16,8 @@ import play.data.DynamicForm;
 import play.data.Form;
 import play.libs.Json;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -76,19 +80,43 @@ public class Application extends Controller {
 			case "getdetailstrack":
 				response = this.getDetailsTrack(user, requestData.get("trackid"));
 				break;
-			// case "updatetrack":
-			// response =
-			// this.updateTrack(user,requestData.get("trackid"),requestData.get("newtrackid"),requestData.get("tracktype"),requestData.get("trackname"),requestData.get("internalinfo"),requestData.get("loop"),requestData.get("penalty"),requestData.get("transfernodes"));
-			// break;
+			case "deletetrack":
+				response = this.deleteTrack(user, requestData.get("trackid"));
+				break;
+			case "addtrack":
+				response = this.addTrack(user, requestData.get("trackid"), requestData.get("trackname"),
+						requestData.get("tracktype"), requestData.get("penalty"), requestData.get("internalinfo"));
+				break;
+			case "updatetrack":
+				response = this.updateTrack(user, requestData.get("trackid"), requestData.get("newtrackid"),
+						requestData.get("tracktype"), requestData.get("trackname"), requestData.get("internalinfo"),
+						requestData.get("loop"), requestData.get("penalty"), requestData.get("transfernodes"));
+				break;
+			case "cleargeodata":
+				response = this.clearGeoData(user, requestData.get("trackid"));
+				break;
+			case "importkml":
+				File dataKML = null;
+				MultipartFormData body = request().body().asMultipartFormData();
+			    FilePart uploadedFile = body.getFile("uploadedfile");
+			    if (uploadedFile != null) {
+			        dataKML = uploadedFile.getFile();
+			    } else {
+			        Method.dieNice("Server script is unable to retrieve the file");
+			    }
+				response = this.importKML(user, requestData.get("trackid"),dataKML);
+				break;
 			default:
 				throw new IOException("Mode Not Found");
 			}
 			return ok(response);
 		} catch (UniqueStatusError e) {
+			e.printStackTrace();
 			response = Json.newObject();
 			response.put("status", e.getStatus());
 			return badRequest(response);
 		} catch (Exception e) {
+			e.printStackTrace();
 			response = Json.newObject();
 			response.put("status", "error");
 			response.put("message", e.getMessage());
@@ -111,7 +139,7 @@ public class Application extends Controller {
 	private ObjectNode logout(String sessionid) throws IOException, SQLException {
 		AuthenticationManager manager = new AuthenticationManager();
 		manager.logout(sessionid);
-		return Method.well_done(null);
+		return Method.wellDone(null);
 	}
 
 	private ObjectNode getProfile(User user) throws IOException, SQLException {
@@ -121,7 +149,7 @@ public class Application extends Controller {
 	private ObjectNode updateProfile(User user, String newPassword, String newFullName, String newCompany)
 			throws NoSuchAlgorithmException, SQLException, UnsupportedEncodingException {
 		user.updateProfile(newPassword, newFullName, newFullName);
-		return Method.well_done(null);
+		return Method.wellDone(null);
 	}
 
 	private ObjectNode getListOfApiKeys(User user) throws SQLException, IOException {
@@ -138,7 +166,7 @@ public class Application extends Controller {
 			throws IOException, SQLException {
 		ApiKeysManager manager = new ApiKeysManager();
 		manager.updateApiKey(user, apiKey, domainFilter, description);
-		return Method.well_done(null);
+		return Method.wellDone(null);
 	}
 
 	private ObjectNode getListOfTracks(User user) throws SQLException, IOException {
@@ -150,4 +178,38 @@ public class Application extends Controller {
 		TracksManager manager = new TracksManager();
 		return manager.getDetailsTrack(user, trackID);
 	}
+
+	private ObjectNode deleteTrack(User user, String trackID) throws IOException, SQLException {
+		TracksManager manager = new TracksManager();
+		manager.deleteTrack(user, trackID);
+		return Method.wellDone(null);
+	}
+
+	private ObjectNode addTrack(User user, String trackID, String trackName, String trackType, String penalty,
+			String internalInfo) throws IOException, SQLException {
+		TracksManager manager = new TracksManager();
+		manager.addTrack(user, trackID, trackName, trackType, penalty, internalInfo);
+		return Method.wellDone(null);
+	}
+
+	private ObjectNode updateTrack(User user, String trackID, String newTrackID, String trackType, String trackName,
+			String internalInfo, String loop, String penalty, String transferNodes) throws SQLException, IOException {
+		TracksManager manager = new TracksManager();
+		manager.updateTrack(user, trackID, newTrackID, trackType, trackName, internalInfo, loop, penalty,
+				transferNodes);
+		return Method.wellDone(null);
+	}
+
+	private ObjectNode clearGeoData(User user, String trackID) throws IOException, SQLException {
+		TracksManager manager = new TracksManager();
+		manager.clearGeoData(user, trackID);
+		return Method.wellDone(null);
+	}
+	
+	private ObjectNode importKML(User user, String trackID, File dataKML) throws IOException, SQLException {
+		TracksManager manager = new TracksManager();
+		manager.importKML(user,trackID,dataKML);
+		return Method.wellDone(null);
+	}
+
 }

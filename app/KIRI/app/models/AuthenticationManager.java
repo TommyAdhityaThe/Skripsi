@@ -24,43 +24,47 @@ public class AuthenticationManager {
 		java.sql.Connection connection = DB.getConnection();
 		Statement statement = connection.createStatement();
 		ResultSet result = statement.executeQuery("SELECT email FROM users WHERE email='" + email + "'");
-		while (result.next()) {
-			return Method.well_done("Ooops! Email " + email
+		if(result.next()) {
+			connection.close();
+			Method.dieNice("Ooops! Email " + email
 					+ " has already registered. Please check your mailbox or contact hello@kiri.travel");
 		}
-		String password = Method.generate_password();
+		String password = Method.generatePassword();
 		String passwordHash = Method.hashingPassword(password);
 		statement.executeUpdate("INSERT INTO users(email, password, privilegeApiUsage, fullName, company) VALUES('"
 				+ email + "', '" + passwordHash + "', 1, '" + fullname + "', '" + company + "');");
-		Method.sendPassword(email, password, fullname);
-		Method.log_statistic("E5D9904F0A8B4F99", "REGISTER", email + "/" + fullname + "" + company);
-		return Method.well_done(null);
+		Method.sendPassword(email, password, fullname); 
+		Method.logStatistic(Constant.APIKEY_KIRI, "REGISTER", email + "/" + fullname + "" + company);
+		connection.close();
+		return Method.wellDone(null);
 	}
 
 	public ObjectNode login(String userid, String password)
 			throws UniqueStatusError, SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		if (userid.length() > 128) {
-			Method.return_invalid_credentials("User ID length is more than allowed (" + userid.length() + ")");
+			Method.returnInvalidCredentials("User ID length is more than allowed (" + userid.length() + ")");
 		}
 		if (password.length() > 32) {
-			Method.return_invalid_credentials("Password length is more than allowed (" + password.length() + ")");
+			Method.returnInvalidCredentials("Password length is more than allowed (" + password.length() + ")");
 		}
 		java.sql.Connection connection = DB.getConnection();
 		Statement statement = connection.createStatement();
 		ResultSet result = statement.executeQuery("SELECT * FROM users WHERE email='" + userid + "'");
 		if (!result.next()) {
-			Method.return_invalid_credentials("User id not found: " + userid);
+			connection.close();
+			Method.returnInvalidCredentials("User id not found: " + userid);
 		}
-		String userDataPassword = result.getString("password");
+		String userDataPassword = result.getString(2);
 		String passwordHash = Method.hashingPassword(password);
 		if (!passwordHash.equals(userDataPassword)) {
-			Method.log_statistic("E5D9904F0A8B4F99", "LOGIN", userid + "/FAIL");
-			Method.return_invalid_credentials("Password mismatch for " + userid);
+			connection.close();
+			Method.logStatistic(Constant.APIKEY_KIRI, "LOGIN", userid + "/FAIL");
+			Method.returnInvalidCredentials("Password mismatch for " + userid);
 		}
-		Method.log_statistic("E5D9904F0A8B4F99", "LOGIN", userid + "/SUCCESS");
-		int privilegeRoute = result.getInt("privilegeRoute");
-		int privilegeApiUsage = result.getInt("privilegeApiUsage");
-		String sessionid = Method.generate_sessionid();
+		Method.logStatistic(Constant.APIKEY_KIRI, "LOGIN", userid + "/SUCCESS");
+		int privilegeRoute = result.getInt(5);
+		int privilegeApiUsage = result.getInt(6);
+		String sessionid = Method.generateSessionID();
 		statement.executeUpdate(
 				"INSERT INTO sessions (sessionId, email) VALUES ('" + sessionid + "', '" + userid + "')");
 		StringBuilder privileges = new StringBuilder();
@@ -77,6 +81,7 @@ public class AuthenticationManager {
 		obj.put("status", "ok");
 		obj.put("sessionid", sessionid);
 		obj.put("privileges", privileges.toString());
+		connection.close();
 		return obj;
 	}
 
@@ -84,5 +89,6 @@ public class AuthenticationManager {
 		java.sql.Connection connection = DB.getConnection();
 		Statement statement = connection.createStatement();
 		statement.executeUpdate("DELETE FROM sessions WHERE sessionId='" + sessionid + "'");
+		connection.close();
 	}
 }

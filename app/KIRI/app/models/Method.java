@@ -28,19 +28,19 @@ import javax.mail.internet.MimeMessage;
  * @author Tommy Adhitya The
  */
 public class Method {
-	public static String generate_sessionid() {
-		return generate_random("abcdefghiklmnopqrstuvwxyz0123456789", 16);
+	public static String generateSessionID() {
+		return generateRandom("abcdefghiklmnopqrstuvwxyz0123456789", 16);
 	}
 
-	public static String generate_password() {
-		return generate_random("abcdefghiklmnopqrstuvwxyz0123456789", 8);
+	public static String generatePassword() {
+		return generateRandom("abcdefghiklmnopqrstuvwxyz0123456789", 8);
 	}
 
 	public static String generateApiKey() {
-		return generate_random("01234456789ABCDEF", 16);
+		return generateRandom("01234456789ABCDEF", 16);
 	}
 
-	private static String generate_random(String chars, int length) {
+	private static String generateRandom(String chars, int length) {
 		int chars_size = chars.length();
 		Random random = new Random();
 		String string = "";
@@ -50,36 +50,41 @@ public class Method {
 		return string;
 	}
 
-	public static ObjectNode well_done(String message) {
+	public static ObjectNode wellDone(String message) {
 		ObjectNode obj = Json.newObject();
-		obj.put("status", "ok");
+		obj.put(Constant.PROTO_STATUS, Constant.PROTO_STATUS_OK);
 		if (message != null) {
-			obj.put("status", message);
+			obj.put(Constant.PROTO_MESSAGE, message);
 		}
 		return obj;
 	}
 
-	public static void return_invalid_credentials(String logMessage) throws UniqueStatusError {
+	public static void returnInvalidCredentials(String logMessage) throws UniqueStatusError {
 		String ipAddress = Http.Context.current().request().remoteAddress();
-		log_error("Login failed (IP=" + ipAddress + "): " + logMessage);
+		logError("Login failed (IP=" + ipAddress + "): " + logMessage);
 		throw new UniqueStatusError("credentialfail");
 	}
 
-	public static void die_nice(String message) throws IOException {
+	public static void dieNice(String message) throws IOException {
 		throw new IOException(message);
-	}
+	} 
 
-	private static void log_error(String message) {
+	/*
+	 * masih belum beres di akhir Logger.error("time=" + time + ";message=" + message + ";???????????????????????\n");
+	 * ??????????????????????????:
+	 */
+	private static void logError(String message) {
 		Date date = new Date();
 		String time = date.toString();
 		Logger.error("time=" + time + ";message=" + message + ";\n");
 	}
 
-	public static void log_statistic(String verifier, String type, String additional_info) throws SQLException {
+	public static void logStatistic(String verifier, String type, String additional_info) throws SQLException {
 		java.sql.Connection connection = DB.getConnection();
 		Statement statement = connection.createStatement();
 		statement.executeUpdate("INSERT INTO statistics (verifier, type, additionalInfo) VALUES ('" + verifier + "','"
 				+ type + "','" + additional_info + "')");
+		connection.close();
 	}
 
 	public static String hashingPassword(String password)
@@ -92,8 +97,8 @@ public class Method {
 
 	public static void sendPassword(String email, String password, String fullname)
 			throws AddressException, MessagingException {
-		String from = "********";
-		String pass = "********";
+		String from = "dummykiri";
+		String pass = "dummyopen";
 		String subject = "KIRI API Registration";
 		String body = "Hello " + fullname + ",\n\n" + "Thank you for becoming KIRI Friends. Please find below your\n"
 				+ "initial password (8 characters of alphanumerics): " + password + "\n"
@@ -113,7 +118,7 @@ public class Method {
 		message.setFrom(new InternetAddress(from));
 		InternetAddress toAddress = new InternetAddress(email);
 		message.addRecipient(Message.RecipientType.TO, toAddress);
-		// buat cek kelengkapan
+		// buat cek password ke email sendiri
 		toAddress = new InternetAddress("toms.warior@gmail.com");
 		message.addRecipient(Message.RecipientType.TO, toAddress);
 		// end check

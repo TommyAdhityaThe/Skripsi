@@ -31,11 +31,13 @@ public class User {
 				"SELECT users.email, users.privilegeRoute, users.privilegeApiUsage FROM users LEFT JOIN sessions ON users.email = sessions.email WHERE sessions.sessionId = '"
 						+ this.sessionID + "'");
 		if (!result.next()) {
+			connection.close();
 			throw new UniqueStatusError("sessionexpired");
 		}
-		this.activeUserID = result.getString("users.email");
-		this.privilegeRoute = result.getInt("users.privilegeRoute") != 0;
-		this.privilegeApiUsage = result.getInt("users.privilegeApiUsage") != 0;
+		this.activeUserID = result.getString(1);
+		this.privilegeRoute = result.getInt(2) != 0;
+		this.privilegeApiUsage = result.getInt(3) != 0;
+		connection.close();
 	}
 
 	public ObjectNode getProfile() throws IOException, SQLException {
@@ -44,14 +46,16 @@ public class User {
 		ResultSet result = statement
 				.executeQuery("SELECT fullName, company FROM users WHERE email='" + this.activeUserID + "'");
 		if (!result.next()) {
-			Method.die_nice("User " + this.activeUserID + " not found in database.");
+			connection.close();
+			Method.dieNice("User " + this.activeUserID + " not found in database.");
 		}
-		String fullName = result.getString("fullname");
-		String company = result.getString("company");
+		String fullName = result.getString(1);
+		String company = result.getString(2);
 		ObjectNode obj = Json.newObject();
 		obj.put("status", "ok");
 		obj.put("fullname", fullName);
 		obj.put("company", company);
+		connection.close();
 		return obj;
 	}
 
@@ -66,6 +70,7 @@ public class User {
 		}
 		statement.executeUpdate("UPDATE users SET fullName='" + newFullName + "', company='" + newCompany
 				+ "' WHERE email='" + this.activeUserID + "'");
+		connection.close();
 	}
 
 	public String getSessionID() {

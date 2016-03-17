@@ -25,14 +25,15 @@ public class ApiKeysManager {
 		ArrayNode listApiKeys = Json.newArray();
 		while (result.next()) {
 			ArrayNode apiKeyValue = Json.newArray();
-			apiKeyValue.add(result.getString("verifier"));
-			apiKeyValue.add(result.getString("domainFilter"));
-			apiKeyValue.add(result.getString("description"));
+			apiKeyValue.add(result.getString(1));
+			apiKeyValue.add(result.getString(2));
+			apiKeyValue.add(result.getString(3));
 			listApiKeys.add(apiKeyValue);
 		}
 		ObjectNode obj = Json.newObject();
 		obj.put("status", "ok");
 		obj.putArray("apikeyslist").addAll(listApiKeys);
+		connection.close();
 		return obj;
 	}
 
@@ -43,10 +44,11 @@ public class ApiKeysManager {
 		Statement statement = connection.createStatement();
 		statement.executeUpdate("INSERT INTO apikeys(verifier, email, domainFilter, description) VALUES('" + apiKey
 				+ "', '" + user.getActiveUserID() + "', '" + domainFilter + "', '" + description + "')");
-		Method.log_statistic("E5D9904F0A8B4F99", "ADDAPIKEY", user.getActiveUserID() + apiKey);
+		Method.logStatistic(Constant.APIKEY_KIRI, "ADDAPIKEY", user.getActiveUserID() + apiKey);
 		ObjectNode obj = Json.newObject();
 		obj.put("status", "ok");
 		obj.put("verifier", apiKey);
+		connection.close();
 		return obj;
 	}
 
@@ -57,18 +59,20 @@ public class ApiKeysManager {
 		Statement statement = connection.createStatement();
 		ResultSet result = statement.executeQuery("SELECT email FROM apikeys WHERE verifier='" + apiKey + "'");
 		while (result.next()) {
-			if (!result.getString("email").equals(user.getActiveUserID())) {
-				Method.die_nice(
+			if (!result.getString(1).equals(user.getActiveUserID())) {
+				connection.close();
+				Method.dieNice(
 						"User " + user.getActiveUserID() + " does not have privilege to update API Key " + apiKey + "");
 			}
 		}
 		statement.executeUpdate("UPDATE apikeys SET domainFilter='" + domainFilter + "', description='" + description
 				+ "' WHERE verifier='" + apiKey + "'");
+		connection.close();
 	}
 
 	private void checkPrivilege(boolean privilegeApiUsage) throws IOException {
 		if (!privilegeApiUsage) {
-			Method.die_nice("User doesn't have enough privilege to perform the action.");
+			Method.dieNice("User doesn't have enough privilege to perform the action.");
 		}
 	}
 
