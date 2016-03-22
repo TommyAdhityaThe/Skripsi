@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -148,22 +151,53 @@ public class TracksManager {
 		connection.close();
 	}
 
-	//belum beress
+	// belum beress
 	public void importKML(User user, String trackID, File dataKML) throws IOException, SQLException {
 		this.checkPrivilege(user.isPrivilegeRoute());
-		if(dataKML.length()>Constant.MAX_FILE_SIZE){
-			Method.dieNice("Uploaded file size is greater than maximum size allowed ("+Constant.MAX_FILE_SIZE+")");
+		if (dataKML.length() > Constant.MAX_FILE_SIZE) {
+			Method.dieNice("Uploaded file size is greater than maximum size allowed (" + Constant.MAX_FILE_SIZE + ")");
 		}
 		BufferedReader br = null;
 		br = new BufferedReader(new FileReader(dataKML));
-		String sCurrentLine;
-		StringBuilder sb = new StringBuilder();
-		while ((sCurrentLine = br.readLine()) != null) {
-			sb.append(sCurrentLine.trim());
+		String line;
+		StringBuilder hayStack = new StringBuilder();
+		while ((line = br.readLine()) != null) {
+			hayStack.append(line.trim());
 		}
-		System.out.println(sb.toString());
 		br.close();
-		
+		Pattern patt = Pattern.compile("(?i)<LineString>.*?<coordinates>(.*?)</coordinates>.*?</LineString>");
+		Matcher match = patt.matcher(hayStack.toString());
+		int numMatches = 0;
+		while (match.find()) {
+			numMatches++;
+		}
+		if (numMatches != 1) {
+			Method.dieNice(
+					"The KML file must contain exactly one <coordinate> tag inside one <LineString> tag. But I found "
+							+ numMatches + " occurences");
+		}
+		match.reset();
+		match.find();
+		StringBuilder output = new StringBuilder("LINESTRING(");
+		String[] points = match.group(1).split("\\s+");
+		int i = 0;
+		for (String string : points) {
+			String splitter[] = string.split(",");
+			if (i != 0) {
+				output.append(",");
+			}
+			output.append(splitter[0]);
+			if (!splitter[0].equals("")) {
+				output.append(" " + splitter[1]);
+				i++;
+			}
+		}
+		output.append(")");
+		java.sql.Connection connection = DB.getConnection();
+		Statement statement = connection.createStatement();
+		statement
+				.executeUpdate("UPDATE tracks SET geodata=GeomFromText('"+output.toString()+"'), transferNodes=NULL WHERE trackId='"+trackID+"'");
+		connection.close();
 		this.updateTrackVersion();
 	}
 
