@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.commons.lang3.StringEscapeUtils;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -86,7 +85,7 @@ public class TracksManager {
 		obj.put("tracktype", result.getString(1));
 		obj.put("trackname", result.getString(2));
 		obj.put("internalinfo", result.getString(3));
-		obj.putArray("geodata").addAll(geoData);
+		obj.putArray("geodata").addAll(geoData); //tidak bisa menggassign nilai ke null
 		obj.put("loop", (result.getInt(5) > 0 ? true : false));
 		obj.put("penalty", result.getDouble(6));
 		ArrayNode transferNodes = Json.newArray();
@@ -195,8 +194,8 @@ public class TracksManager {
 		output.append(")");
 		java.sql.Connection connection = DB.getConnection();
 		Statement statement = connection.createStatement();
-		statement
-				.executeUpdate("UPDATE tracks SET geodata=GeomFromText('"+output.toString()+"'), transferNodes=NULL WHERE trackId='"+trackID+"'");
+		statement.executeUpdate("UPDATE tracks SET geodata=GeomFromText('" + output.toString()
+				+ "'), transferNodes=NULL WHERE trackId='" + trackID + "'");
 		connection.close();
 		this.updateTrackVersion();
 	}

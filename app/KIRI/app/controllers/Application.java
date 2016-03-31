@@ -16,7 +16,6 @@ import play.data.DynamicForm;
 import play.data.Form;
 import play.libs.Json;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -148,7 +147,7 @@ public class Application extends Controller {
 
 	private ObjectNode updateProfile(User user, String newPassword, String newFullName, String newCompany)
 			throws NoSuchAlgorithmException, SQLException, UnsupportedEncodingException {
-		user.updateProfile(newPassword, newFullName, newFullName);
+		user.updateProfile(newPassword, newFullName, newCompany);
 		return Method.wellDone(null);
 	}
 
