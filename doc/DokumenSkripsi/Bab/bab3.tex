@@ -3,7 +3,7 @@
 
 \section{Analisis Sistem Kini}
 \label{sec:analisissistemkini}
-Berdasarkan hasil analisa serta wawancara dengan kontributor kode KIRI, berikut adalah penjelasan secara umum mengenai isi kode KIRI (gambar \ref{fig:3_strukturkiri}):
+Berdasarkan hasil analisa serta wawancara dengan kontributor kode KIRI, berikut adalah penjelasan secara umum mengenai isi kode KIRI (Gambar \ref{fig:3_strukturkiri}):
 \begin{enumerate}
 	\item \textit{Folder} ``.settings'' merupakan \textit{folder} yang menyimpan \textit{file-file} pengaturan sistem KIRI untuk Eclipse. Eclipse adalah sebuah \textit{open source} IDE (\textit{Integrated Development Environment}) yang membantu programer dalam membangun suatu perangkat lunak\cite{eclipse}.
 	\item \textit{Folder} ``etc'' merupakan \textit{folder} yang menyimpan \textit{file-file} untuk membangun konstanta-konstanta dan fungsi-fungsi yang digunakan oleh sistem KIRI.
@@ -33,11 +33,11 @@ Berdasarkan hasil analisa serta wawancara dengan kontributor kode KIRI, berikut 
 	\label{fig:3_public_html_dev}
 \end{figure}
 
-Penelitian ini berfokus pada pembahasan KIRI \textit{Dashboard}, untuk itu bagian yang akan dianalisa lebih mendalam adalah pada bagian ``public\_html\_dev'' (gambar \ref{fig:3_public_html_dev}) dan beberapa bagian-bagian pendukung untuk membangun KIRI \textit{Dashboard}. \textit{Folder} ``public\_html\_dev'' memiliki struktur sebagai berikut:
+Penelitian ini berfokus pada pembahasan KIRI \textit{Dashboard}, untuk itu bagian yang akan dianalisa lebih mendalam adalah pada bagian ``public\_html\_dev'' (Gambar \ref{fig:3_public_html_dev}) dan beberapa bagian-bagian pendukung untuk membangun KIRI \textit{Dashboard}. \textit{Folder} ``public\_html\_dev'' memiliki struktur sebagai berikut:
 \begin{enumerate}
-	\item \textit{Folder} ``bukitjarian'', berisi mengenai \textit{file-file} untuk membangun KIRI \textit{Dashboard} (gambar \ref{fig:3_bukit_jarian}).
-	\item \textit{Folder} ``docs'', berisi sebuah \textit{file} ``index.php'' yang bila dijalankan akan mengarahkan pengguna ke alamat \url{https://bitbucket.org/projectkiri/kiri_api/wiki/Home} (gambar \ref{fig:3_dokumentasi}). Halaman tersebut berisi mengenai dokumentasi sistem KIRI.
-	\item \textit{File} ``index.php'', bila \textit{file} ini dieksekusi maka akan mengarahkan pengguna ke alamat \url{http://static.kiri.travel/developer} (gambar \ref{fig:3_developer}). Halaman tersebut berisi informasi mengenai alamat KIRI \textit{Dashboard}, dokumentasi KIRI, dan halaman untuk memberikan masukan kepada kontributor sistem KIRI.
+	\item \textit{Folder} ``bukitjarian'', berisi mengenai \textit{file-file} untuk membangun KIRI \textit{Dashboard} (Gambar \ref{fig:3_bukit_jarian}).
+	\item \textit{Folder} ``docs'', berisi sebuah \textit{file} ``index.php'' yang bila dijalankan akan mengarahkan pengguna ke alamat \url{https://bitbucket.org/projectkiri/kiri_api/wiki/Home} (Gambar \ref{fig:3_dokumentasi}). Halaman tersebut berisi mengenai dokumentasi sistem KIRI.
+	\item \textit{File} ``index.php'', bila \textit{file} ini dieksekusi maka akan mengarahkan pengguna ke alamat \url{http://static.kiri.travel/developer} (Gambar \ref{fig:3_developer}). Halaman tersebut berisi informasi mengenai alamat KIRI \textit{Dashboard}, dokumentasi KIRI, dan halaman untuk memberikan masukan kepada kontributor sistem KIRI.
 \end{enumerate}
 
 \begin{figure}[htbp]
@@ -61,7 +61,7 @@ Penelitian ini berfokus pada pembahasan KIRI \textit{Dashboard}, untuk itu bagia
 	\label{fig:3_bukit_jarian}
 \end{figure}
 
-Pada direktori ``public\_html\_dev/bukitjarian'' (gambar \ref{fig:3_bukit_jarian}) terdapat bermacam-macam \textit{file} dan \textit{folder}. Berdasarkan wawancara dengan kontributor kode, terdapat dua bagian \textit{file} dan \textit{folder} yang berperan penting dalam membangun KIRI \textit{Dashboard}:
+Pada direktori ``public\_html\_dev/bukitjarian'' (Gambar \ref{fig:3_bukit_jarian}) terdapat bermacam-macam \textit{file} dan \textit{folder}. Berdasarkan wawancara dengan kontributor kode, terdapat dua bagian \textit{file} dan \textit{folder} yang berperan penting dalam membangun KIRI \textit{Dashboard}:
 \begin{enumerate}
 	\item ``index.html'', ``bukitjariangwt/'', dan ``images/''. \textit{File} dan \textit{folder} ini dibangun dengan menggunakan perangkat lunak GWT. GWT (\textit{Google Web Toolkit}) adalah perangkat lunak yang digunakan untuk membangun dan melakukan optimasi suatu aplikasi berbasis web\cite{gwt}. Dengan GWT, pengguna tidak perlu ahli dalam menggunakan bahasa pemrograman berbasis web seperti JavaScript. GWT menggunakan bahasa Java dalam pembuatannya dan akan melakukan konversi kode Java tersebut menjadi HTML dan JavaScript. Hasil konversi menggunakan GWT akan mengalami \textit{obfuscate} (pengacakan) sehingga sulit untuk dianalisa. Namun demikian, \textit{file-file} ini bersifat statis dan tidak memerlukan operasi khusus di \textit{server}, sehingga dapat disalin (\textit{copy}) apa adanya. 
 	\item ``handle.php'' merupakan kode pada sisi \textit{server} yang bertugas untuk melayani permintaan-permintaan dari \textit{browser} yang dieksekusi oleh ``index.html''.
@@ -167,7 +167,7 @@ Bagian ini diawali dengan memeriksa apakah pengguna memberikan \textit{password}
 
 \section{Analisis \textit{Database} Sistem Kini}
 \label{sec:analisisdatabasesistemkini}
-Sistem KIRI menggunakan perangkat lunak MySQL sebagai sarana penyimpanan untuk mengolah data. Seperti yang dijelaskan pada subbab sebelumnya (subbab \ref{sec:analisissistemkini}) terdapat sebuah \textit{folder} yang menyimpan \textit{file-file} untuk membangun \textit{database} sistem KIRI, yaitu: \textit{folder} ``sql'' (gambar \ref{fig:3_strukturkiri}). Berdasarkan hasil analisa dan wawancara dengan kontributor kode KIRI, berikut adalah penjelasan mengenai isi \textit{folder} ``sql'' (gambar \ref{fig:4_struktursql}):
+Sistem KIRI menggunakan perangkat lunak MySQL sebagai sarana penyimpanan untuk mengolah data. Seperti yang dijelaskan pada subbab sebelumnya (subbab \ref{sec:analisissistemkini}) terdapat sebuah \textit{folder} yang menyimpan \textit{file-file} untuk membangun \textit{database} sistem KIRI, yaitu: \textit{folder} ``sql'' (Gambar \ref{fig:3_strukturkiri}). Berdasarkan hasil analisa dan wawancara dengan kontributor kode KIRI, berikut adalah penjelasan mengenai isi \textit{folder} ``sql'' (Gambar \ref{fig:4_struktursql}):
 \begin{enumerate}
 	\item \textit{file} ``.gitignore'', merupakan \textit{file} yang menyimpan daftar \textit{file} yang tidak perlu dikirimkan ke tempat penyimpanan GitHub karena \textit{file-file} tersebut dibangkitkan oleh sistem.
 	\item \textit{file} ``tirtayasa\_structure.sql'', merupakan \textit{file} untuk membangun tabel-tabel serta kolom-kolom (pada setiap tabel) \textit{database} sistem KIRI.
@@ -196,30 +196,48 @@ Berdasarkan hasil analisa dan wawancara dengan kontributor kode pada subbab sebe
 	\item KIRI \textit{Dashboard} terdiri dari dua bagian penting, yaitu bagian pertama adalah \textit{file} dan \textit{folder} yang bersifat statis, yaitu: ``index.html'', ``bukitjariangwt/'', dan ``images/'', serta bagian kedua adalah ``handle.php'' yang bertugas menangani permintaan-permintaan (dari ``index.html'') pada sisi \textit{server}.
 	\item KIRI \textit{Dashboard server side} (\textit{file} ``handle.php'') terbagi menjadi 16 bagian dalam menangani permintaan.
 	\item Perangkat lunak pengolahan data yang digunakan oleh sistem KIRI adalah MySQL.
+	\item KIRI \textit{Dashboard server side} (\textit{file} ``handle.php'') akan mengirimkan data dalam format JSON dalam membalas permintaan dari ``index.html''.
+	\item KIRI \textit{Dashboard server side} (\textit{file} ``handle.php'') menggunakan \textit{framework} (sumber: \url{http://openwall.com/phpass/}) untuk melakukan fungsi \textit{hash} terhadap \textit{password} pada bagian \textit{register} dan bagian \textit{login}. \textit{Framework} tersebut terlalu rumit untuk diimplementasikan dan tidak tersedia di Java, maka untuk melakukan fungsi \textit{hash} terhadap \textit{password} akan menggunakan SHA-2 (\textit{Secure Hash Algorithm}) yang disediakan oleh Java.
+	\item KIRI \textit{Dashboard server side} (\textit{file} ``handle.php'') menggunakan PHPMailer pada bagian \textit{register} untuk mengirimkan \textit{password} yang telah dibangun oleh sisi \textit{server}. PHPMailer terlalu rumit untuk diimplementasikan dan tidak tersedia di Java, maka untuk mengirimkan \textit{password} yang telah dibangun oleh sisi \textit{server} akan menggunakan JavaMail API Jar yang tersedia untuk Java.
 \end{enumerate}
 
-Dalam memodelkan KIRI \textit{Dashboard} dengan menggunakan Play Framework perlu memperhatikan beberapa hal, yaitu: MVC, \textit{routes}, dan \textit{database}.
+Berdasarkan kebutuhan akan poin-poin di atas, maka dalam memodelkan KIRI \textit{Dashboard} dengan menggunakan Play Framework perlu memperhatikan beberapa hal, yaitu: bagian \textit{models}, \textit{views}, \textit{controllers}, \textit{routes}  dan \textit{libraries} yang digunakan.
 
 \subsection{Routes}
 \label{sec:routesusulan}
 Kebutuhan KIRI \textit{Dashboard} adalah pemetaan untuk ke 2 bagian, yaitu:
 \begin{enumerate}
-	\item Pemetaan URL untuk menangani tampilan (\textit{View}) KIRI \textit{Dashboard}. Hanya 1 pemetaan untuk tampilan (walau fitur KIRI \textit{Dashboard} banyak) yang dibutuhkan karena kode KIRI pada sistem kini telah menggunakan permodelan sistem yang menggunakan AJAX dalam mengatur proses permintaan datanya. Penggunaaan AJAX memungkinkan suatu aplikasi berbasis web tidak perlu melakukan permintaan berulang-ulang untuk tampilan yang umumnya sama (meningkatkan kecepatan saat \textit{browsing}).
-	\item Pemetaan URL untuk menangani permintaan dari tampilan, yaitu KIRI \textit{Dashboard server side} ((\textit{Controller})). Bagian pemetaan ini yang nantinya akan menangani 16 bagian permintaan yang dilakukan bagian tampilan KIRI \textit{Dashboard}.
+	\item Pemetaan URL untuk menangani tampilan KIRI \textit{Dashboard} (\textit{views}). Hanya 1 \textit{route} yang dibutuhkan untuk pemetaan terhadap bagian tampilan (walau fitur KIRI \textit{Dashboard} banyak) karena kode KIRI \textit{Dashboard} sistem kini telah menggunakan kombinasi JavaScript dan AJAX sedemikian rupa yang dapat mengubah tampilan KIRI \textit{Dashboard} sesuai dengan balasan permintaan dari sisi \textit{server}. AJAX (\textit{asynchronous JavaScript and XML}) adalah teknik yang memungkinkan suatu situs web melakukan permintaan ke sisi \textit{server} secara \textit{background}\cite{ajax}.
+	\item Pemetaan URL untuk menangani permintaan-permintaan dari tampilan ke sisi \textit{server}, yaitu KIRI \textit{Dashboard server side} (\textit{controllers}).
 \end{enumerate}
 
 \subsection{\textit{Views}}
 \label{sec:viewusulan}
-Seperti yang telah dijelaskan pada subbab sebelumnya bahwa bagian tampilan KIRI \textit{Dashboard} dibuat dengan menggunakan perangkat GWT dimana kode yang dihasilkan sangat sulit untuk dipelajari. Walau sulit dipelajari, bagian tampilan KIRI \textit{Dashboard} memiliki keuntungan sendiri karena bersifat statis (dijelaskan oleh kontributor kode). Sifat statis ini memudahkan permodelan karena dengan begitu kode dapat disalin apa adanya ke sistem usulan. Pada Play Framework \textit{file-file} yang bersifat statis seperti ini dapat disimpan pada bagian \textit{folder} ``public/''. Akibat dari disimpanny \textit{file-file} tampilan ke \textit{folder} ``public/'' adalah bagian \textit{views} pada struktur Play Framework akan kosong. Kosongnya bagian \textit{views} menyebabkan seolah-olah Play Framework tidak menggunakan konsep MVC.
+Seperti yang telah dijelaskan pada analisa sebelumnya bahwa bagian tampilan KIRI \textit{Dashboard} dibuat dengan menggunakan perangkat GWT dimana kode yang dihasilkan sangat sulit untuk dipelajari. Walau sulit dipelajari, bagian tampilan KIRI \textit{Dashboard} memiliki keuntungan sendiri karena bersifat statis (dijelaskan oleh kontributor kode). Sifat statis ini memudahkan pemodelan karena dengan begitu kode dapat disalin apa adanya ke sistem usulan. Pada Play Framework \textit{file-file} yang bersifat statis seperti ini dapat disimpan pada bagian \textit{folder} ``public/''.
 
 \subsection{\textit{Controllers}}
 \label{sec:controllerusulan}
-Pada bagian ini akan dibuat sebuah metode yang akan menangani permintaan dari \textit{views} sistem usulan. Bagian ini berfungsi seperti ``handle.php'', yaitu menangani 16 jenis permintaan seperti yang telah dijelaskan pada subbab sebelumnya.
+Pada bagian ini akan dibuat sebuah kelas yang akan menangani permintaan dari \textit{views} sistem usulan. Bagian ini berfungsi seperti ``handle.php'', yaitu menangani 16 jenis permintaan seperti yang telah dijelaskan pada subbab sebelumnya.
 
 \subsection{\textit{Models}}
 \label{sec:modelusulan}
-Tidak ada bagian yang perlu diubah menjadi \textit{models}, maka bagian ini tidak perlu ada pada sistem usulan.
+\textit{Models} adalah bagian yang paling bebas dan tidak memiliki aturan pembuatan khusus pada Play Framework. Pada bagian ini peneliti memutuskan untuk membuat \textit{models} sesuai dengan diagram \textit{use case} KIRI \textit{Dashboard} (Gambar \ref{fig:3_usecase}). Untuk setiap kemampuan pengguna yang dapat dilakukan pada diagram \textit{use case} (Gambar \ref{fig:3_usecase}) akan dibuat kelas Java di bagian \textit{models} pada sistem usulan.
 
-\subsection{\textit{Database}}
-\label{sec:databaseusulan}
-Sistem kini menggunakan MySQL sebagai perangkat pengolah datanya. Aplikasi yang dibuat dengan Play Framework memungkinkan untuk menggunakan MySQL sebagai perangkat pengolahan datanya. Untuk itu bagian \textit{database} sistem kini dapat disalin apa adanya. Perbedaan pada sistem usulan adalah pada penulisan kode dalam melakukan koneksi dan eksekusi suatu \textit{query} ke MySQL karena sebelumnya menggunakan bahasa PHP dan Play Framework menggunakan bahasa Java (JDBC).
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[scale=0.5]{Gambar/3_usecase.png}
+	\caption{Diagram \textit{use case} KIRI \textit{Dashboard}}
+	\label{fig:3_usecase}
+\end{figure}
+
+\subsection{\textit{Libraries}}
+\label{sec:librariesUsulan}
+Berikut adalah \textit{libraries} (sumber: \url{http://mvnrepository.com/}) yang akan digunakan untuk membangun KIRI \textit{Dashboard server side} sistem usulan:
+\begin{itemize}
+	\item Jackson Databind, digunakan untuk menangani pengiriman data dalam format JSON.
+	\item JavaMail API, digunakan untuk mengirimkan \textit{email}.
+	\item MySQL Connector/J, digunakan untuk melakukan hubungan koneksi dan eksekusi \textit{query} dengan \textit{database}. \textit{Library} MySQL Connector/J merupakan \textit{library} resmi JDBC driver untuk MySQL.
+	\item Commons Lang 3, digunakan untuk mengatasi permasalahan pembacaan karakter.
+\end{itemize}
+
+

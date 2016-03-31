@@ -34,7 +34,7 @@
 
 \subsection{\textit{Point}}
 \label{sec:point}
-\textit{Point} adalah nilai geometri yang merepresentasikan sebuah lokasi ke dalam suatu koordinat\cite{mysqlspatial}. Koordinat pada \textit{Point} terdiri dari nilai X dan Y dimana X merepresentasikan letak lokasi terhadap garis bujur dan Y merepresentasikan letak lokasi terhadap garis lintang. \textit{Point} tidak memiliki dimensi maupun nilai batasan. Contoh representasi \textit{Point} adalah Universitas Katolik Parahyangan direpresentasikan dalam koordinat X=107.6049079 dan Y=-6.874735 (gambar \ref{fig:2_UNPAR}).
+\textit{Point} adalah nilai geometri yang merepresentasikan sebuah lokasi ke dalam suatu koordinat\cite{mysqlspatial}. Koordinat pada \textit{Point} terdiri dari nilai X dan Y dimana X merepresentasikan letak lokasi terhadap garis bujur dan Y merepresentasikan letak lokasi terhadap garis lintang. \textit{Point} tidak memiliki dimensi maupun nilai batasan. Contoh representasi \textit{Point} adalah Universitas Katolik Parahyangan direpresentasikan dalam koordinat X=107.6049079 dan Y=-6.874735 (Gambar \ref{fig:2_UNPAR}).
 
 \begin{figure}[htbp]
 	\centering
@@ -45,7 +45,7 @@
 
 \subsection{\textit{LineString}}
 \label{sec:linestring}
-\textit{LineString} adalah garis yang terbentuk dari sekumpulan \textit{Point}\cite{mysqlspatial}. Dalam peta dunia, \textit{LineString} dapat merepresentasikan sebuah sungai dan dalam peta perkotaan, \textit{LineString} dapat merepresentasikan sebuah jalan (contoh: gambar \ref{fig:2_linestring}). Karena \textit{LineString} merupakan sekumpulan \textit{Point}, maka \textit{LineString} menyimpan sekumpulan koordinat dimana setiap koordinat ($X_{1}$\ldots$X_{n}$ dan $Y_{1}$\ldots$Y_{n}$, dimana n menyatakan banyaknya \textit{Point} dalam \textit{LineString}) terhubung oleh garis dengan koordinat selanjutnya. Contohnya: misal terdapat sebuah \textit{LineString} yang mengandung 3 buah \textit{Point}, maka terdapat garis yang menghubungkan \textit{Point} pertama dengan \textit{Point} kedua dan \textit{Point} kedua dengan \textit{Point} ketiga.
+\textit{LineString} adalah garis yang terbentuk dari sekumpulan \textit{Point}\cite{mysqlspatial}. Dalam peta dunia, \textit{LineString} dapat merepresentasikan sebuah sungai dan dalam peta perkotaan, \textit{LineString} dapat merepresentasikan sebuah jalan (contoh: Gambar \ref{fig:2_linestring}). Karena \textit{LineString} merupakan sekumpulan \textit{Point}, maka \textit{LineString} menyimpan sekumpulan koordinat dimana setiap koordinat ($X_{1}$\ldots$X_{n}$ dan $Y_{1}$\ldots$Y_{n}$, dimana n menyatakan banyaknya \textit{Point} dalam \textit{LineString}) terhubung oleh garis dengan koordinat selanjutnya. Contohnya: misal terdapat sebuah \textit{LineString} yang mengandung 3 buah \textit{Point}, maka terdapat garis yang menghubungkan \textit{Point} pertama dengan \textit{Point} kedua dan \textit{Point} kedua dengan \textit{Point} ketiga.
 
 \begin{figure}[htbp]
 	\centering
@@ -204,10 +204,10 @@ Play Framework adalah sekumpulan kerangka kode yang dapat digunakan untuk memban
 
 \subsection{Struktur Aplikasi}
 \label{sec:struktur_aplikasi}
-Ketika Play Framework pertama kali ter-\textit{install} pada komputer, Play Framework menyediakan \textit{default} direktori dengan struktur minimal (gambar \ref{fig:2_strukturplay}). Berikut adalah penjelasan struktur minimal Play Framework:
+Ketika Play Framework pertama kali ter-\textit{install} pada komputer, Play Framework menyediakan \textit{default} direktori dengan struktur minimal (Gambar \ref{fig:2_strukturplay}). Berikut adalah penjelasan struktur minimal Play Framework:
 \begin{enumerate}
-	\item \textit{Folder} ``app'' merupakan \textit{folder} yang berisi mengenai pola arsitektur yang dimiliki Play Framework, yaitu ``models'' (tidak dibuat secara \textit{default}), ``views'', dan ``controllers'' yang akan dijelaskan lebih lanjut pada subbab selanjutnya (subbab \textit{Models}: \ref{sec:models}, subbab \textit{Views}: \ref{sec:views}, dan subbab \textit{Controllers}: \ref{sec:controllers}).
-	\item \textit{Folder} ``conf'' berisi mengenai \textit{file} ``application.conf'' yang menyimpan pengaturan-pengaturan seperti kumpulan \textit{log}, koneksi ke \textit{database}, jenis \textit{port} tempat \textit{server} bekerja, dll. \textit{Folder} ``conf'' juga berisi \textit{file} ``routes'' yang mengatur bagaimana HTTP \textit{requests} nantinya akan diproses lebih lanjut yang akan dijelaskan pada subbab selanjutnya (subbab \ref{sec:routes}).
+	\item \textit{Folder} ``app'' merupakan \textit{folder} yang berisi pola arsitektur yang dimiliki Play Framework, yaitu ``models'' (tidak dibuat secara \textit{default}), ``views'', dan ``controllers'' yang akan dijelaskan lebih lanjut pada subbab selanjutnya (subbab \textit{Models}: \ref{sec:models}, subbab \textit{Views}: \ref{sec:views}, dan subbab \textit{Controllers}: \ref{sec:controllers}).
+	\item \textit{Folder} ``conf'' berisi \textit{file} ``application.conf'' yang menyimpan pengaturan-pengaturan seperti kumpulan \textit{log}, koneksi ke \textit{database}, jenis \textit{port} tempat \textit{server} bekerja, dll. \textit{Folder} ``conf'' juga berisi \textit{file} ``routes'' yang mengatur bagaimana HTTP \textit{requests} nantinya akan diproses lebih lanjut yang akan dijelaskan pada subbab selanjutnya (subbab \ref{sec:routes}).
 	\item \textit{Folder} ``project'' terdapat \textit{file} ``build.properties'' dan ``plugins.sbt'', \textit{file} tersebut mendeskripsikan versi Play dan SBT yang digunakan pada aplikasi.
 	\item \textit{Folder} ``public'' merupakan \textit{folder} yang menyimpan data-data seperti gambar (\textit{folder} ``images''), kumpulan Javascript yang digunakan (\textit{folder} ``javascripts'', secara \textit{default} berisikan \textit{file} ``jquery-1.9.0.min.js'') dan data-data CSS (folder ``stylesheets'').
 	\item \textit{File} ``build.sbt'' mengatur \textit{dependencies} yang dibutuhkan dalam pembuatan aplikasi.
@@ -238,7 +238,7 @@ Berikut adalah isi kode \textit{default} \textit{routes}:
 
 Contoh di atas menunjukkan bagaimana \textit{routes} memetakan permintaan URL \textit{index} atau ``/'' (baris ke 2) dan permintaan URL ``/assets/*file'' (baris ke 5).
 
-Struktur \textit{routes} terdiri dari 3 bagian (gambar \ref{fig:2_routes}), yaitu HTTP \textit{method}, URL \textit{path}, dan \textit{action method}. Struktur \textit{routes} seperti yang dijelaskan pada gambar \ref{fig:2_routes} juga sekaligus menjadi struktur minimal yang harus ada agar \textit{routes} dapat memetakan suatu HTTP URLs. HTTP \textit{method} berisikan protokol yang ingin dilakukan terhadap suatu HTTP \textit{request}. HTTP \textit{method} dapat berupa ``\texttt{GET}'', ``\texttt{POST}'', ``\texttt{DELETE}'', ``\texttt{PATCH}'', ``\texttt{HEAD}'' atau ``\texttt{PUT}''\cite{playframeworkweb}. URL \textit{path} merupakan direktori yang ingin dituju dalam \textit{server} aplikasi. URL \textit{path} dimulai dengan tanda ``/'' dan diikuti dengan nama direktori yang ingin dituju. Terakhir, \textit{action method} merupakan pemilihan kelas \textit{controller} yang ingin dituju. Struktur \textit{action method} terdiri dari 3 bagian (dipisahkan dengan karakter ``.''), yaitu pemilihan \textit{package} ``controllers'' yang ingin dituju, bagian kedua adalah pemilihan kelas ``controllers'' yang dipilih (contohnya: ``Products'' pada gambar \ref{fig:2_routes}), dan terakhir adalah pemilihan \textit{method} yang ada pada kelas ``controllers'' yang dipilih (contohnya: ``list()'').
+Struktur \textit{routes} terdiri dari 3 bagian (Gambar \ref{fig:2_routes}), yaitu HTTP \textit{method}, URL \textit{path}, dan \textit{action method}. Struktur \textit{routes} seperti yang dijelaskan pada gambar \ref{fig:2_routes} juga sekaligus menjadi struktur minimal yang harus ada agar \textit{routes} dapat memetakan suatu HTTP URLs. HTTP \textit{method} berisikan protokol yang ingin dilakukan terhadap suatu HTTP \textit{request}. HTTP \textit{method} dapat berupa ``\texttt{GET}'', ``\texttt{POST}'', ``\texttt{DELETE}'', ``\texttt{PATCH}'', ``\texttt{HEAD}'' atau ``\texttt{PUT}''\cite{playframeworkweb}. URL \textit{path} merupakan direktori yang ingin dituju dalam \textit{server} aplikasi. URL \textit{path} dimulai dengan tanda ``/'' dan diikuti dengan nama direktori yang ingin dituju. Terakhir, \textit{action method} merupakan pemilihan kelas \textit{controller} yang ingin dituju. Struktur \textit{action method} terdiri dari 3 bagian (dipisahkan dengan karakter ``.''), yaitu pemilihan \textit{package} ``controllers'' yang ingin dituju, bagian kedua adalah pemilihan kelas ``controllers'' yang dipilih (contohnya: ``Products'' pada gambar \ref{fig:2_routes}), dan terakhir adalah pemilihan \textit{method} yang ada pada kelas ``controllers'' yang dipilih (contohnya: ``list()'').
 
 \begin{figure}[htbp]
 	\centering
@@ -257,7 +257,7 @@ Penulisan sebuah variabel pada URL \textit{path} dimulai dengan tanda ``:'' lalu
 
 \subsection{\textit{Models}}
 \label{sec:models}
-Fungsi \textit{models} pada Play Framework sama seperti fungsi \textit{models} pada pola arsitektur MVC secara umum, yaitu untuk memanipulasi dan menyimpan data. Secara \textit{default}, \textit{models} tidak dibuat oleh struktur minimal Play Framework (gambar \ref{fig:2_strukturplay}). Untuk itu perlu menambahkan \textit{models} secara manual ke dalam struktur Play Framework. Langkah yang dilakukan untuk menambahkan \textit{models} ke dalam Play Framework adalah:
+Fungsi \textit{models} pada Play Framework sama seperti fungsi \textit{models} pada pola arsitektur MVC secara umum, yaitu untuk memanipulasi dan menyimpan data. Secara \textit{default}, \textit{models} tidak dibuat oleh struktur minimal Play Framework (Gambar \ref{fig:2_strukturplay}). Untuk itu perlu menambahkan \textit{models} secara manual ke dalam struktur Play Framework. Langkah yang dilakukan untuk menambahkan \textit{models} ke dalam Play Framework adalah:
 \begin{enumerate}
 	\item Menambahkan folder ``models'' ke dalam folder ``app'',
 	\item Menambahkan file dengan format ``.java'' ke dalam folder ``models''.
@@ -267,7 +267,7 @@ Tidak ada aturan khusus yang diharuskan dalam penulisan kode dalam kelas \textit
 
 \subsection{\textit{Views}}
 \label{sec:views}
-Fungsi \textit{views} pada Play Framework adalah mengatur tampilan yang ingin ditampilkan di layar. \textit{Views} menggunakan bahasa HTML dan Scala. Bahasa Scala pada \textit{views} berfungsi sebagai penerima parameter yang dikirimkan dari kelas \textit{models} dimana antara \textit{models} dan \textit{views} dihubungkan oleh \textit{controllers}. Penamaan \textit{file} di dalam folder \textit{views} (gambar \ref{fig:2_strukturplay}) harus dengan format sebagai berikut, ``namaFile.scala.html''.
+Fungsi \textit{views} pada Play Framework adalah mengatur tampilan yang ingin ditampilkan di layar. \textit{Views} menggunakan bahasa HTML dan Scala. Bahasa Scala pada \textit{views} berfungsi sebagai penerima parameter yang dikirimkan dari kelas \textit{models} dimana antara \textit{models} dan \textit{views} dihubungkan oleh \textit{controllers}. Penamaan \textit{file} di dalam folder \textit{views} (Gambar \ref{fig:2_strukturplay}) harus dengan format sebagai berikut, ``namaFile.scala.html''.
 
 Berikut adalah contoh struktur kode \textit{views}:
 
@@ -289,7 +289,7 @@ Baris 1 pada contoh kode di atas digunakan sebagai parameter penerima input dari
 
 \subsection{\textit{Controllers}}
 \label{sec:controllers}
-\textit{Controllers} merupakan bagian pada Play Framework yang terhubung langsung dengan \textit{routes} (subbab \ref{sec:routes}). Jika \textit{action method} yang dikirimkan oleh \textit{routes} sesuai dengan \textit{method} yang dimiliki suatu kelas \textit{controllers}, maka \textit{controllers} akan mengeksekusi fungsi logika yang terdapat pada \textit{method} dan mengembalikan nilai berupa objek dari kelas \textit{Result} (gambar \ref{fig:2_controllers1}). Fungsi dari \textit{controllers} dalam arsitektur MVC adalah sebagai penghubung antara \textit{models} dan \textit{views}. 
+\textit{Controllers} merupakan bagian pada Play Framework yang terhubung langsung dengan \textit{routes} (subbab \ref{sec:routes}). Jika \textit{action method} yang dikirimkan oleh \textit{routes} sesuai dengan \textit{method} yang dimiliki suatu kelas \textit{controllers}, maka \textit{controllers} akan mengeksekusi fungsi logika yang terdapat pada \textit{method} dan mengembalikan nilai berupa objek dari kelas \textit{Result} (Gambar \ref{fig:2_controllers1}). Fungsi dari \textit{controllers} dalam arsitektur MVC adalah sebagai penghubung antara \textit{models} dan \textit{views}. 
 
 \begin{figure}[htbp]
 	\centering	
@@ -325,7 +325,7 @@ Penulisan kode pada suatu kelas \textit{controllers} menggunakan bahasa Java dan
 \label{sec:database}
 Play Framework menyediakan sebuah \textit{plugin} yang dapat digunakan untuk mengatur koneksi JDBC ke berbagai jenis aplikasi \textit{database} yang tersedia\cite{playframeworkweb}. Salah satu koneksi \textit{database} yang disediakan oleh Play adalah koneksi ke MySQL. Secara \textit{default} \textit{plugin} yang disediakan oleh Play masih belum aktif. Perlu dilakukan beberapa langkah agar \textit{plugin} tersebut dapat aktif. Berikut adalah langkah-langkah yang dilakukan agar Play Framework dapat terhubung dengan \textit{database} MySQL:
 \begin{enumerate}
-	\item Menambahkan kode program ke dalam ``build.sbt'' (gambar \ref{fig:2_strukturplay}), yaitu:
+	\item Menambahkan kode program ke dalam ``build.sbt'' (Gambar \ref{fig:2_strukturplay}), yaitu:
 	
 	\begin{lstlisting}
 	libraryDependencies += javaJdbc
@@ -334,7 +334,7 @@ Play Framework menyediakan sebuah \textit{plugin} yang dapat digunakan untuk men
 	
 	Baris 1 kode program di atas adalah untuk mengaktifkan plugin JDBC pada Play Framework. Play tidak menyediakan \textit{database driver} apapun, untuk itu perlu menambahkan \textit{database driver} (baris 2) sebagai \textit{dependency} untuk aplikasi Play Framework.
 	
-	\item Menambahkan kode program ke dalam ``conf/application.conf'' (gambar \ref{fig:2_strukturplay}), yaitu:
+	\item Menambahkan kode program ke dalam ``conf/application.conf'' (Gambar \ref{fig:2_strukturplay}), yaitu:
 	
 	\begin{lstlisting}
 	db.default.driver=com.mysql.jdbc.Driver
@@ -358,8 +358,8 @@ Play Framework menyediakan sebuah \textit{plugin} yang dapat digunakan untuk men
 \label{sec:json}
 JSON (\textit{JavaScript Object Notation}) adalah sebuah format pertukaran data ringan\cite{json}. JSON dapat dibangun dalam 2 buah struktur:
 \begin{enumerate}
-	\item Sekumpulan pasangan antara nama dengan nilai. Umumnya dikenal dengan sebutan objek. Sebuah objek dalam JSON dimulai dengan karakter ``\texttt{\{}'' dan diakhiri dengan karakter ``\texttt{\}}''. Diantara karkater ``\texttt{\{}'' dan ``\texttt{\}}'' dapat disisipkan sekumpulan pasangan ``\texttt{nama:nilai}'' yang dipisahkan dengan karakter ``\texttt{,}''.
-	\item Sekumpulan data terstruktur. Umumnya dikenal dengan sebutan \textit{array}. Sebuah \textit{array} dalam JSON dimulai dengan karakter ``\texttt{[}'' dan diakhiri dengan karakter ``\texttt{]}''. Diantara karkater ``\texttt{[}'' dan ``\texttt{]}'' dapat disisipkan sekumpulan data (dapat berupa nilai, objek atau \textit{array}) yang dipisahkan dengan karakter ``\texttt{,}''. Dalam \textit{array}. Setiap data dalam \textit{array} tidak harus sama jenisnya.
+	\item Sekumpulan pasangan antara nama dengan nilai. Umumnya dikenal dengan sebutan objek. Sebuah objek dalam JSON dimulai dengan karakter ``\texttt{\{}'' dan diakhiri dengan karakter ``\texttt{\}}''. Di antara karakter ``\texttt{\{}'' dan ``\texttt{\}}'' dapat disisipkan sekumpulan pasangan ``\texttt{nama:nilai}'' yang dipisahkan dengan karakter ``\texttt{,}''.
+	\item Sekumpulan data terstruktur. Umumnya dikenal dengan sebutan \textit{array}. Sebuah \textit{array} dalam JSON dimulai dengan karakter ``\texttt{[}'' dan diakhiri dengan karakter ``\texttt{]}''. Di antara karakter ``\texttt{[}'' dan ``\texttt{]}'' dapat disisipkan sekumpulan data (dapat berupa nilai, objek atau \textit{array}) yang dipisahkan dengan karakter ``\texttt{,}''. Setiap data dalam \textit{array} tidak harus sama jenisnya.
 \end{enumerate}
 
 Nilai dalam JSON dapat berupa \textit{string} (sekumpulan karakter yang diapit dengan 2 tanda kutip ganda, contoh: ``\texttt{karakter}''), angka, \texttt{true}, \texttt{false}, atau \texttt{null}.
