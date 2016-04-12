@@ -4,11 +4,12 @@ import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
-import models.Method;
+import models.Utils;
 import models.TracksManager;
 import models.User;
 import models.ApiKeysManager;
 import models.AuthenticationManager;
+import models.Constant;
 import models.UniqueStatusError;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
@@ -41,84 +42,94 @@ public class Application extends Controller {
 		try {
 			User user = null;
 			DynamicForm requestData = Form.form().bindFromRequest();
-			String mode = requestData.get("mode");
-			if (!mode.equals("login") && !mode.equals("register") && !mode.equals("logout")) {
-				user = new User(requestData.get("sessionid"));
+			String mode = requestData.get(Constant.PROTO_MODE);
+			if (!mode.equals(Constant.PROTO_MODE_LOGIN) && !mode.equals(Constant.PROTO_MODE_REGISTER)
+					&& !mode.equals(Constant.PROTO_MODE_LOGOUT)) {
+				user = new User(requestData.get(Constant.PROTO_SESSION_ID));
 			}
 			switch (mode) {
-			case "login":
-				response = this.login(requestData.get("userid"), requestData.get("password"));
+			case Constant.PROTO_MODE_LOGIN:
+				response = this.login(requestData.get(Constant.PROTO_USER_ID),
+						requestData.get(Constant.PROTO_PASSWORD));
 				break;
-			case "register":
-				response = this.register(requestData.get("userid"), requestData.get("fullname"),
-						requestData.get("company"));
+			case Constant.PROTO_MODE_REGISTER:
+				response = this.register(requestData.get(Constant.PROTO_USER_ID),
+						requestData.get(Constant.PROTO_FULL_NAME), requestData.get(Constant.PROTO_COMPANY));
 				break;
-			case "logout":
-				response = this.logout(requestData.get("sessionid"));
+			case Constant.PROTO_MODE_LOGOUT:
+				response = this.logout(requestData.get(Constant.PROTO_SESSION_ID));
 				break;
-			case "getprofile":
+			case Constant.PROTO_MODE_GET_PROFILE:
 				response = this.getProfile(user);
 				break;
-			case "updateprofile":
-				response = this.updateProfile(user, requestData.get("password"), requestData.get("fullname"),
-						requestData.get("company"));
+			case Constant.PROTO_MODE_UPDATE_PROFILE:
+				response = this.updateProfile(user, requestData.get(Constant.PROTO_PASSWORD),
+						requestData.get(Constant.PROTO_FULL_NAME), requestData.get(Constant.PROTO_COMPANY));
 				break;
-			case "listapikeys":
+			case Constant.PROTO_MODE_LIST_API_KEYS:
 				response = this.getListOfApiKeys(user);
 				break;
-			case "addapikey":
-				response = this.addApiKey(user, requestData.get("domainfilter"), requestData.get("description"));
+			case Constant.PROTO_MODE_ADD_API_KEY:
+				response = this.addApiKey(user, requestData.get(Constant.PROTO_DOMAIN_FILTER),
+						requestData.get(Constant.PROTO_DESCRIPTION));
 				break;
-			case "updateapikey":
-				response = this.updateApiKey(user, requestData.get("verifier"), requestData.get("domainfilter"),
-						requestData.get("description"));
+			case Constant.PROTO_MODE_UPDATE_API_KEY:
+				response = this.updateApiKey(user, requestData.get(Constant.PROTO_VERIFIER),
+						requestData.get(Constant.PROTO_DOMAIN_FILTER), requestData.get(Constant.PROTO_DESCRIPTION));
 				break;
-			case "listtracks":
+			case Constant.PROTO_MODE_LIST_TRACKS:
 				response = this.getListOfTracks(user);
 				break;
-			case "getdetailstrack":
-				response = this.getDetailsTrack(user, requestData.get("trackid"));
+			case Constant.PROTO_MODE_GET_DETAILS_TRACK:
+				response = this.getDetailsTrack(user, requestData.get(Constant.PROTO_TRACK_ID));
 				break;
-			case "deletetrack":
-				response = this.deleteTrack(user, requestData.get("trackid"));
+			case Constant.PROTO_MODE_DELETE_TRACK:
+				response = this.deleteTrack(user, requestData.get(Constant.PROTO_TRACK_ID));
 				break;
-			case "addtrack":
-				response = this.addTrack(user, requestData.get("trackid"), requestData.get("trackname"),
-						requestData.get("tracktype"), requestData.get("penalty"), requestData.get("internalinfo"));
+			case Constant.PROTO_MODE_ADD_TRACK:
+				response = this.addTrack(user, requestData.get(Constant.PROTO_TRACK_ID),
+						requestData.get(Constant.PROTO_TRACK_NAME), requestData.get(Constant.PROTO_TRACK_TYPE),
+						requestData.get(Constant.PROTO_PENALTY), requestData.get(Constant.PROTO_INTERNAL_INFO));
 				break;
-			case "updatetrack":
-				response = this.updateTrack(user, requestData.get("trackid"), requestData.get("newtrackid"),
-						requestData.get("tracktype"), requestData.get("trackname"), requestData.get("internalinfo"),
-						requestData.get("loop"), requestData.get("penalty"), requestData.get("transfernodes"));
+			case Constant.PROTO_MODE_UPDATE_TRACK:
+				String transfernodes = requestData.get(Constant.PROTO_TRANSFER_NODES) == null ? ""
+						: requestData.get(Constant.PROTO_TRANSFER_NODES);
+				String internalinfo = requestData.get(Constant.PROTO_INTERNAL_INFO) == null ? ""
+						: requestData.get(Constant.PROTO_INTERNAL_INFO);
+				response = this.updateTrack(user, requestData.get(Constant.PROTO_TRACK_ID),
+						requestData.get(Constant.PROTO_NEW_TRACK_ID), requestData.get(Constant.PROTO_TRACK_TYPE),
+						requestData.get(Constant.PROTO_TRACK_NAME), internalinfo,
+						requestData.get(Constant.PROTO_PATH_LOOP), requestData.get(Constant.PROTO_PENALTY),
+						transfernodes);
 				break;
-			case "cleargeodata":
-				response = this.clearGeoData(user, requestData.get("trackid"));
+			case Constant.PROTO_MODE_CLEAR_GEODATA:
+				response = this.clearGeoData(user, requestData.get(Constant.PROTO_TRACK_ID));
 				break;
-			case "importkml":
+			case Constant.PROTO_MODE_IMPORT_KML:
 				File dataKML = null;
 				MultipartFormData body = request().body().asMultipartFormData();
-			    FilePart uploadedFile = body.getFile("uploadedfile");
-			    if (uploadedFile != null) {
-			        dataKML = uploadedFile.getFile();
-			    } else {
-			        Method.dieNice("Server script is unable to retrieve the file");
-			    }
-				response = this.importKML(user, requestData.get("trackid"),dataKML);
+				FilePart uploadedFile = body.getFile(Constant.PROTO_UPLOADED_FILE);
+				if (uploadedFile != null) {
+					dataKML = uploadedFile.getFile();
+				} else {
+					Utils.dieNice("Server script is unable to retrieve the file");
+				}
+				response = this.importKML(user, requestData.get("trackid"), dataKML);
 				break;
 			default:
-				throw new IOException("Mode Not Found");
+				throw new IOException(Constant.ERROR_MODE_NOT_FOUND);
 			}
 			return ok(response);
 		} catch (UniqueStatusError e) {
 			e.printStackTrace();
 			response = Json.newObject();
-			response.put("status", e.getStatus());
+			response.put(Constant.PROTO_STATUS, e.getStatus());
 			return badRequest(response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			response = Json.newObject();
-			response.put("status", "error");
-			response.put("message", e.getMessage());
+			response.put(Constant.PROTO_STATUS, Constant.ERROR);
+			response.put(Constant.PROTO_MESSAGE, e.getMessage());
 			return badRequest(response);
 		}
 	}
@@ -132,13 +143,14 @@ public class Application extends Controller {
 	private ObjectNode register(String email, String fullname, String company) throws IOException, SQLException,
 			NoSuchAlgorithmException, UnsupportedEncodingException, AddressException, MessagingException {
 		AuthenticationManager manager = new AuthenticationManager();
-		return manager.register(email, fullname, company);
+		manager.register(email, fullname, company);
+		return Utils.wellDone();
 	}
 
 	private ObjectNode logout(String sessionid) throws IOException, SQLException {
 		AuthenticationManager manager = new AuthenticationManager();
 		manager.logout(sessionid);
-		return Method.wellDone(null);
+		return Utils.wellDone();
 	}
 
 	private ObjectNode getProfile(User user) throws IOException, SQLException {
@@ -148,7 +160,7 @@ public class Application extends Controller {
 	private ObjectNode updateProfile(User user, String newPassword, String newFullName, String newCompany)
 			throws NoSuchAlgorithmException, SQLException, UnsupportedEncodingException {
 		user.updateProfile(newPassword, newFullName, newCompany);
-		return Method.wellDone(null);
+		return Utils.wellDone();
 	}
 
 	private ObjectNode getListOfApiKeys(User user) throws SQLException, IOException {
@@ -165,7 +177,7 @@ public class Application extends Controller {
 			throws IOException, SQLException {
 		ApiKeysManager manager = new ApiKeysManager();
 		manager.updateApiKey(user, apiKey, domainFilter, description);
-		return Method.wellDone(null);
+		return Utils.wellDone();
 	}
 
 	private ObjectNode getListOfTracks(User user) throws SQLException, IOException {
@@ -181,14 +193,14 @@ public class Application extends Controller {
 	private ObjectNode deleteTrack(User user, String trackID) throws IOException, SQLException {
 		TracksManager manager = new TracksManager();
 		manager.deleteTrack(user, trackID);
-		return Method.wellDone(null);
+		return Utils.wellDone();
 	}
 
 	private ObjectNode addTrack(User user, String trackID, String trackName, String trackType, String penalty,
 			String internalInfo) throws IOException, SQLException {
 		TracksManager manager = new TracksManager();
 		manager.addTrack(user, trackID, trackName, trackType, penalty, internalInfo);
-		return Method.wellDone(null);
+		return Utils.wellDone();
 	}
 
 	private ObjectNode updateTrack(User user, String trackID, String newTrackID, String trackType, String trackName,
@@ -196,19 +208,19 @@ public class Application extends Controller {
 		TracksManager manager = new TracksManager();
 		manager.updateTrack(user, trackID, newTrackID, trackType, trackName, internalInfo, loop, penalty,
 				transferNodes);
-		return Method.wellDone(null);
+		return Utils.wellDone();
 	}
 
 	private ObjectNode clearGeoData(User user, String trackID) throws IOException, SQLException {
 		TracksManager manager = new TracksManager();
 		manager.clearGeoData(user, trackID);
-		return Method.wellDone(null);
+		return Utils.wellDone();
 	}
-	
+
 	private ObjectNode importKML(User user, String trackID, File dataKML) throws IOException, SQLException {
 		TracksManager manager = new TracksManager();
-		manager.importKML(user,trackID,dataKML);
-		return Method.wellDone(null);
+		manager.importKML(user, trackID, dataKML);
+		return Utils.wellDone();
 	}
 
 }

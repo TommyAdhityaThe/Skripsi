@@ -4,9 +4,9 @@ import play.db.DB;
 import play.libs.Json;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 /**
@@ -18,10 +18,10 @@ public class ApiKeysManager {
 	public ObjectNode getListOfApiKeys(User user) throws SQLException, IOException {
 		this.checkPrivilege(user.isPrivilegeApiUsage());
 		java.sql.Connection connection = DB.getConnection();
-		Statement statement = connection.createStatement();
-		ResultSet result = statement
-				.executeQuery("SELECT verifier, domainFilter, description FROM apikeys WHERE email='"
-						+ user.getActiveUserID() + "' ORDER BY verifier");
+		PreparedStatement pstmt = connection.prepareStatement(
+				"SELECT verifier, domainFilter, description FROM apikeys WHERE email=? ORDER BY verifier");
+		pstmt.setString(1, user.getActiveUserID());
+		ResultSet result = pstmt.executeQuery();
 		ArrayNode listApiKeys = Json.newArray();
 		while (result.next()) {
 			ArrayNode apiKeyValue = Json.newArray();
@@ -31,23 +31,27 @@ public class ApiKeysManager {
 			listApiKeys.add(apiKeyValue);
 		}
 		ObjectNode obj = Json.newObject();
-		obj.put("status", "ok");
-		obj.putArray("apikeyslist").addAll(listApiKeys);
+		obj.put(Constant.PROTO_STATUS, Constant.PROTO_STATUS_OK);
+		obj.putArray(Constant.PROTO_API_KEYS_LIST).addAll(listApiKeys);
 		connection.close();
 		return obj;
 	}
 
 	public ObjectNode addApiKey(User user, String domainFilter, String description) throws SQLException, IOException {
 		this.checkPrivilege(user.isPrivilegeApiUsage());
-		String apiKey = Method.generateApiKey();
+		String apiKey = this.generateApiKey();
 		java.sql.Connection connection = DB.getConnection();
-		Statement statement = connection.createStatement();
-		statement.executeUpdate("INSERT INTO apikeys(verifier, email, domainFilter, description) VALUES('" + apiKey
-				+ "', '" + user.getActiveUserID() + "', '" + domainFilter + "', '" + description + "')");
-		Method.logStatistic(Constant.APIKEY_KIRI, "ADDAPIKEY", user.getActiveUserID() + apiKey);
+		PreparedStatement pstmt = connection
+				.prepareStatement("INSERT INTO apikeys(verifier, email, domainFilter, description) VALUES(?,?,?,?)");
+		pstmt.setString(1, apiKey);
+		pstmt.setString(2, user.getActiveUserID());
+		pstmt.setString(3, domainFilter);
+		pstmt.setString(4, description);
+		pstmt.executeUpdate();
+		Utils.logStatistic(Constant.APIKEY_KIRI, "ADDAPIKEY", user.getActiveUserID() + apiKey);
 		ObjectNode obj = Json.newObject();
-		obj.put("status", "ok");
-		obj.put("verifier", apiKey);
+		obj.put(Constant.PROTO_STATUS, Constant.PROTO_STATUS_OK);
+		obj.put(Constant.PROTO_VERIFIER, apiKey);
 		connection.close();
 		return obj;
 	}
@@ -56,24 +60,31 @@ public class ApiKeysManager {
 			throws IOException, SQLException {
 		this.checkPrivilege(user.isPrivilegeApiUsage());
 		java.sql.Connection connection = DB.getConnection();
-		Statement statement = connection.createStatement();
-		ResultSet result = statement.executeQuery("SELECT email FROM apikeys WHERE verifier='" + apiKey + "'");
+		PreparedStatement pstmt = connection.prepareStatement("SELECT email FROM apikeys WHERE verifier=?");
+		pstmt.setString(1, apiKey);
+		ResultSet result = pstmt.executeQuery();
 		while (result.next()) {
 			if (!result.getString(1).equals(user.getActiveUserID())) {
 				connection.close();
-				Method.dieNice(
+				Utils.dieNice(
 						"User " + user.getActiveUserID() + " does not have privilege to update API Key " + apiKey + "");
 			}
 		}
-		statement.executeUpdate("UPDATE apikeys SET domainFilter='" + domainFilter + "', description='" + description
-				+ "' WHERE verifier='" + apiKey + "'");
+		pstmt = connection.prepareStatement("UPDATE apikeys SET domainFilter=?, description=? WHERE verifier=?");
+		pstmt.setString(1, domainFilter);
+		pstmt.setString(2, description);
+		pstmt.setString(3, apiKey);
+		pstmt.executeUpdate();
 		connection.close();
 	}
 
 	private void checkPrivilege(boolean privilegeApiUsage) throws IOException {
 		if (!privilegeApiUsage) {
-			Method.dieNice("User doesn't have enough privilege to perform the action.");
+			Utils.dieNice("User doesn't have enough privilege to perform the action.");
 		}
 	}
 
+	private String generateApiKey() {
+		return Utils.generateRandom("01234456789ABCDEF", 16);
+	}
 }

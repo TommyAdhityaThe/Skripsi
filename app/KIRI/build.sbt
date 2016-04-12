@@ -22,8 +22,8 @@ libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.18"
 libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.6.3"
 //untuk pake Java Mail
 libraryDependencies += "com.sun.mail" % "javax.mail" % "1.5.4"
-//untuk htmlspecialchars
-libraryDependencies += "org.apache.commons" % "commons-lang3" % "3.4"
+//untuk jbcrypt password
+libraryDependencies += "org.mindrot" % "jbcrypt" % "0.3m"
 
 
 // untuk eclipse

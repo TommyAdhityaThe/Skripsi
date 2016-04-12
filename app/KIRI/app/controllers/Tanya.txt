@@ -1,4 +1,0 @@
-yang mau ditanya:
-1. getDetailTrack
-	-ArrayNode geoData = this.lineStringToLatLngArray(result.getString("AsText(geodata)"));
-	-lineString = lineString.replaceAll("LINESTRING\\(([^)]+)\\)/", "$1"); $i maksudnya apa..

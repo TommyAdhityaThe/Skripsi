@@ -4,12 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.lang3.StringEscapeUtils;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import play.db.DB;
@@ -21,19 +20,25 @@ import play.libs.Json;
  * @author Tommy Adhitya The
  */
 public class TracksManager {
-
 	public void addTrack(User user, String trackID, String trackName, String trackType, String penalty,
 			String internalInfo) throws IOException, SQLException {
 		this.checkPrivilege(user.isPrivilegeRoute());
 		java.sql.Connection connection = DB.getConnection();
-		Statement statement = connection.createStatement();
-		ResultSet result = statement.executeQuery("SELECT trackId FROM tracks WHERE trackId='" + trackID + "'");
+		PreparedStatement pstmt = connection.prepareStatement("SELECT trackId FROM tracks WHERE trackId=?");
+		pstmt.setString(1, trackID);
+		ResultSet result = pstmt.executeQuery();
 		if (result.next()) {
 			connection.close();
-			Method.dieNice("The trackId '" + trackID + "' already existed.");
+			Utils.dieNice("The trackId '" + trackID + "' already existed.");
 		}
-		statement.executeUpdate("INSERT INTO tracks (trackId, trackTypeId, trackName, penalty, internalInfo) VALUES ('"
-				+ trackID + "','" + trackType + "','" + trackName + "','" + penalty + "','" + internalInfo + "')");
+		pstmt = connection.prepareStatement(
+				"INSERT INTO tracks (trackId, trackTypeId, trackName, penalty, internalInfo) VALUES (?,?,?,?,?)");
+		pstmt.setString(1, trackID);
+		pstmt.setString(2, trackType);
+		pstmt.setString(3, trackName);
+		pstmt.setString(4, penalty);
+		pstmt.setString(5, internalInfo);
+		pstmt.executeUpdate();
 		this.updateTrackVersion();
 		connection.close();
 	}
@@ -41,28 +46,29 @@ public class TracksManager {
 	public ObjectNode getListOfTracks(User user) throws SQLException, IOException {
 		this.checkPrivilege(user.isPrivilegeRoute());
 		java.sql.Connection connection = DB.getConnection();
-		Statement statement = connection.createStatement();
-		ResultSet result = statement
-				.executeQuery("SELECT trackTypeId, trackId, trackName FROM tracks ORDER BY trackTypeId, trackId");
+		PreparedStatement pstmt = connection
+				.prepareStatement("SELECT trackTypeId, trackId, trackName FROM tracks ORDER BY trackTypeId, trackId");
+		ResultSet result = pstmt.executeQuery();
 		ArrayNode trackList = Json.newArray();
 		while (result.next()) {
 			ArrayNode track = Json.newArray();
 			track.add(result.getString(2));
-			track.add(StringEscapeUtils.escapeHtml4(result.getString(1) + "/" + result.getString(3)));
+			track.add(result.getString(1) + "/" + result.getString(3));
 			trackList.add(track);
 		}
-		result = statement.executeQuery("SELECT trackTypeId, name FROM tracktypes ORDER BY trackTypeId");
+		pstmt = connection.prepareStatement("SELECT trackTypeId, name FROM tracktypes ORDER BY trackTypeId");
+		result = pstmt.executeQuery();
 		ArrayNode trackTypeList = Json.newArray();
 		while (result.next()) {
 			ArrayNode trackType = Json.newArray();
 			trackType.add(result.getString(1));
-			trackType.add(StringEscapeUtils.escapeHtml4(result.getString(2)));
+			trackType.add(result.getString(2));
 			trackTypeList.add(trackType);
 		}
 		ObjectNode obj = Json.newObject();
-		obj.put("status", "ok");
-		obj.putArray("trackslist").addAll(trackList);
-		obj.putArray("tracktypeslist").addAll(trackTypeList);
+		obj.put(Constant.PROTO_STATUS, Constant.PROTO_STATUS_OK);
+		obj.putArray(Constant.PROTO_TRACKS_LIST).addAll(trackList);
+		obj.putArray(Constant.PROTO_TRACK_TYPES_LIST).addAll(trackTypeList);
 		connection.close();
 		return obj;
 	}
@@ -70,24 +76,28 @@ public class TracksManager {
 	public ObjectNode getDetailsTrack(User user, String trackID) throws IOException, SQLException {
 		this.checkPrivilege(user.isPrivilegeRoute());
 		java.sql.Connection connection = DB.getConnection();
-		Statement statement = connection.createStatement();
-		ResultSet result = statement.executeQuery(
-				"SELECT trackTypeId, trackName, internalInfo, AsText(geodata), pathloop, penalty, transferNodes FROM tracks WHERE trackId='"
-						+ trackID + "'");
+		PreparedStatement pstmt = connection.prepareStatement(
+				"SELECT trackTypeId, trackName, internalInfo, AsText(geodata), pathloop, penalty, transferNodes FROM tracks WHERE trackId=?");
+		pstmt.setString(1, trackID);
+		ResultSet result = pstmt.executeQuery();
 		if (!result.next()) {
 			connection.close();
-			Method.dieNice("Can't find track information for '" + trackID + "'");
+			Utils.dieNice("Can't find track information for '" + trackID + "'");
 		}
 		ArrayNode geoData = this.lineStringToLatLngArray(result.getString(4));
 		ObjectNode obj = Json.newObject();
-		obj.put("status", "ok");
-		obj.put("trackid", trackID);
-		obj.put("tracktype", result.getString(1));
-		obj.put("trackname", result.getString(2));
-		obj.put("internalinfo", result.getString(3));
-		obj.putArray("geodata").addAll(geoData); //tidak bisa menggassign nilai ke null
-		obj.put("loop", (result.getInt(5) > 0 ? true : false));
-		obj.put("penalty", result.getDouble(6));
+		obj.put(Constant.PROTO_STATUS, Constant.PROTO_STATUS_OK);
+		obj.put(Constant.PROTO_TRACK_ID, trackID);
+		obj.put(Constant.PROTO_TRACK_TYPE, result.getString(1));
+		obj.put(Constant.PROTO_TRACK_NAME, result.getString(2));
+		obj.put(Constant.PROTO_INTERNAL_INFO, result.getString(3));
+		if (result.getString(4) == null) {
+			obj.putNull(Constant.PROTO_GEO_DATA);
+		} else {
+			obj.putArray(Constant.PROTO_GEO_DATA).addAll(geoData);
+		}
+		obj.put(Constant.PROTO_PATH_LOOP, (result.getInt(5) > 0 ? true : false));
+		obj.put(Constant.PROTO_PENALTY, result.getDouble(6));
 		ArrayNode transferNodes = Json.newArray();
 		if (result.getString(7) == null) {
 			transferNodes.add("0-" + (geoData.size() - 1));
@@ -97,7 +107,7 @@ public class TracksManager {
 				transferNodes.add(temp[i]);
 			}
 		}
-		obj.putArray("transfernodes").addAll(transferNodes);
+		obj.putArray(Constant.PROTO_TRANSFER_NODES).addAll(transferNodes);
 		connection.close();
 		return obj;
 	}
@@ -110,21 +120,32 @@ public class TracksManager {
 			pathLoop = 1;
 		}
 		java.sql.Connection connection = DB.getConnection();
-		Statement statement = connection.createStatement();
+		PreparedStatement pstmt;
 		ResultSet result;
 		if (!newTrackID.equals(trackID)) {
-			result = statement.executeQuery("SELECT trackId FROM tracks WHERE trackId='" + newTrackID + "'");
+			pstmt = connection.prepareStatement("SELECT trackId FROM tracks WHERE trackId=?");
+			pstmt.setString(1, newTrackID);
+			result = pstmt.executeQuery();
 			if (result.next()) {
 				connection.close();
-				Method.dieNice("The new trackId '" + newTrackID + "' already existed.");
+				Utils.dieNice("The new trackId '" + newTrackID + "' already existed.");
 			}
 		}
-		statement.executeUpdate("UPDATE tracks SET trackTypeId='" + trackType + "', trackId='" + newTrackID
-				+ "', trackName='" + trackName + "', internalInfo='" + internalInfo + "', pathloop='" + pathLoop
-				+ "', penalty='" + penalty + "' WHERE trackId='" + trackID + "'");
+		pstmt = connection.prepareStatement(
+				"UPDATE tracks SET trackTypeId=?, trackId=?, trackName=?, internalInfo=?, pathloop=?, penalty=? WHERE trackId=?");
+		pstmt.setString(1, trackType);
+		pstmt.setString(2, newTrackID);
+		pstmt.setString(3, trackName);
+		pstmt.setString(4, internalInfo);
+		pstmt.setInt(5, pathLoop);
+		pstmt.setString(6, penalty);
+		pstmt.setString(7, trackID);
+		pstmt.executeUpdate();
 		if (!transferNodes.equals("")) {
-			statement.executeUpdate(
-					"UPDATE tracks SET transferNodes='" + transferNodes + "' WHERE trackId='" + trackID + "'");
+			pstmt = connection.prepareStatement("UPDATE tracks SET transferNodes=? WHERE trackId=?");
+			pstmt.setString(1, transferNodes);
+			pstmt.setString(2, trackID);
+			pstmt.executeUpdate();
 		}
 		this.updateTrackVersion();
 		connection.close();
@@ -133,10 +154,11 @@ public class TracksManager {
 	public void deleteTrack(User user, String trackID) throws IOException, SQLException {
 		this.checkPrivilege(user.isPrivilegeRoute());
 		java.sql.Connection connection = DB.getConnection();
-		Statement statement = connection.createStatement();
-		if (statement.executeUpdate("DELETE FROM tracks WHERE trackId='" + trackID + "'") == 0) {
+		PreparedStatement pstmt = connection.prepareStatement("DELETE FROM tracks WHERE trackId=?");
+		pstmt.setString(1, trackID);
+		if (pstmt.executeUpdate() == 0) {
 			connection.close();
-			Method.dieNice("The track " + trackID + " was not found in the database");
+			Utils.dieNice("The track " + trackID + " was not found in the database");
 		}
 		this.updateTrackVersion();
 		connection.close();
@@ -145,8 +167,11 @@ public class TracksManager {
 	public void clearGeoData(User user, String trackID) throws IOException, SQLException {
 		this.checkPrivilege(user.isPrivilegeRoute());
 		java.sql.Connection connection = DB.getConnection();
-		Statement statement = connection.createStatement();
-		statement.executeUpdate("UPDATE tracks SET geodata=NULL, transferNodes=NULL WHERE trackId='" + trackID + "'");
+
+		PreparedStatement pstmt = connection
+				.prepareStatement("UPDATE tracks SET geodata=NULL, transferNodes=NULL WHERE trackId=?");
+		pstmt.setString(1, trackID);
+		pstmt.executeUpdate();
 		connection.close();
 	}
 
@@ -154,7 +179,7 @@ public class TracksManager {
 	public void importKML(User user, String trackID, File dataKML) throws IOException, SQLException {
 		this.checkPrivilege(user.isPrivilegeRoute());
 		if (dataKML.length() > Constant.MAX_FILE_SIZE) {
-			Method.dieNice("Uploaded file size is greater than maximum size allowed (" + Constant.MAX_FILE_SIZE + ")");
+			Utils.dieNice("Uploaded file size is greater than maximum size allowed (" + Constant.MAX_FILE_SIZE + ")");
 		}
 		BufferedReader br = null;
 		br = new BufferedReader(new FileReader(dataKML));
@@ -171,7 +196,7 @@ public class TracksManager {
 			numMatches++;
 		}
 		if (numMatches != 1) {
-			Method.dieNice(
+			Utils.dieNice(
 					"The KML file must contain exactly one <coordinate> tag inside one <LineString> tag. But I found "
 							+ numMatches + " occurences");
 		}
@@ -193,24 +218,26 @@ public class TracksManager {
 		}
 		output.append(")");
 		java.sql.Connection connection = DB.getConnection();
-		Statement statement = connection.createStatement();
-		statement.executeUpdate("UPDATE tracks SET geodata=GeomFromText('" + output.toString()
-				+ "'), transferNodes=NULL WHERE trackId='" + trackID + "'");
+		PreparedStatement pstmt = connection
+				.prepareStatement("UPDATE tracks SET geodata=GeomFromText(?), transferNodes=NULL WHERE trackId=?");
+		pstmt.setString(1, output.toString());
+		pstmt.setString(2, trackID);
+		pstmt.executeUpdate();
 		connection.close();
 		this.updateTrackVersion();
 	}
 
 	private void updateTrackVersion() throws SQLException {
 		java.sql.Connection connection = DB.getConnection();
-		Statement statement = connection.createStatement();
-		statement
-				.executeUpdate("UPDATE properties SET propertyvalue=propertyvalue+1 WHERE propertyname='trackversion'");
+		PreparedStatement pstmt = connection.prepareStatement(
+				"UPDATE properties SET propertyvalue=propertyvalue+1 WHERE propertyname='trackversion'");
+		pstmt.executeUpdate();
 		connection.close();
 	}
 
 	private void checkPrivilege(boolean privilegeRoute) throws IOException {
 		if (!privilegeRoute) {
-			Method.dieNice("User doesn't have enough privilege to perform the action.");
+			Utils.dieNice("User doesn't have enough privilege to perform the action.");
 		}
 	}
 
