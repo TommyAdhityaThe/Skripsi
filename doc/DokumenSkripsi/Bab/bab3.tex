@@ -151,7 +151,7 @@ Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap 
 \label{sec:bagianregister}
 Bagian ini terletak di baris 317-341 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=register}'' pada permintaan POST. Bagian ini berfungsi untuk melakukan pendaftaran sebagai pengguna KIRI \textit{Dashboard}. Pendaftaran ini berguna agar pengguna bisa mendapatkan hak akses terhadap fitur-fitur yang terdapat dalam KIRI \textit{Dashboard}.
 
-Bagian ini diawali dengan memeriksa apakah pengguna memberikan \textit{email}, \textit{fullname}, dan \textit{company} pada permintaan atau tidak (baris 318-320). Setelah itu, program akan memeriksa \textit{database} apakah data pengguna yang ingin dibuat sudah ada atau belum (baris 323-327). Bila belum ada, maka program akan membangun sebuah sandi secara acak untuk pengguna (baris 330-332). Program akan menambahkan data pengguna beserta sandi yang telah dibangun ke dalam \textit{database} sistem KIRI (baris 333). Sandi yang telah dibangun program juga dikirimkan ke alamat \textit{email} pengguna (baris 335). Lalu program mencatat proses tersebut ke dalam statistik \textit{database} sistem KIRI. Terakhir, program akan mengirimkan pesan dalam format JSON sebagai penanda bahwa pengguna berhasil melakukan proses registrasi (baris 340).
+Bagian ini diawali dengan memeriksa apakah pengguna memberikan \textit{email}, \textit{fullname}, dan \textit{company} pada permintaan atau tidak (baris 318-320). Setelah itu, program akan memeriksa \textit{database} apakah data pengguna yang ingin dibuat sudah ada atau belum (baris 323-327). Bila belum ada, maka program akan membangun sebuah sandi secara acak untuk pengguna (baris 330). \textit{Hashing} akan dilakukan terhadap sandi acak tersebut dengan menggunakan PHP \textit{hashing framework}\cite{openwall} (baris 332). \textit{Hashing} adalah teknik untuk memetakan data dengan ukuran yang berbeda-beda menjadi data dengan ukuran yang tetap\cite{hashing}. Program akan menambahkan data pengguna beserta sandi yang telah dibangun ke dalam \textit{database} sistem KIRI (baris 333). Sandi yang telah dibangun program juga dikirimkan ke alamat \textit{email} pengguna (baris 335). Lalu program mencatat proses tersebut ke dalam statistik \textit{database} sistem KIRI. Terakhir, program akan mengirimkan pesan dalam format JSON sebagai penanda bahwa pengguna berhasil melakukan proses registrasi (baris 340).
 
 \subsection{Bagian Melihat Data Pribadi Pengguna}
 \label{sec:lihatdatadiri}
@@ -197,17 +197,15 @@ Berdasarkan hasil analisa dan wawancara dengan kontributor kode pada subbab sebe
 	\item KIRI \textit{Dashboard server side} (\textit{file} ``handle.php'') terbagi menjadi 16 bagian dalam menangani permintaan.
 	\item Perangkat lunak pengolahan data yang digunakan oleh sistem KIRI adalah MySQL.
 	\item KIRI \textit{Dashboard server side} (\textit{file} ``handle.php'') akan mengirimkan data dalam format JSON dalam membalas permintaan dari ``index.html''.
-	\item KIRI \textit{Dashboard server side} (\textit{file} ``handle.php'') menggunakan \textit{framework} (sumber: \url{http://openwall.com/phpass/}) untuk melakukan fungsi \textit{hash} terhadap \textit{password} pada bagian \textit{register} dan bagian \textit{login}. \textit{Framework} tersebut terlalu rumit untuk diimplementasikan dan tidak tersedia di Java, maka untuk melakukan fungsi \textit{hash} terhadap \textit{password} akan menggunakan SHA-2 (\textit{Secure Hash Algorithm}) yang disediakan oleh Java.
-	\item KIRI \textit{Dashboard server side} (\textit{file} ``handle.php'') menggunakan PHPMailer pada bagian \textit{register} untuk mengirimkan \textit{password} yang telah dibangun oleh sisi \textit{server}. PHPMailer terlalu rumit untuk diimplementasikan dan tidak tersedia di Java, maka untuk mengirimkan \textit{password} yang telah dibangun oleh sisi \textit{server} akan menggunakan JavaMail API Jar yang tersedia untuk Java.
 \end{enumerate}
 
-Berdasarkan kebutuhan akan poin-poin di atas, maka dalam memodelkan KIRI \textit{Dashboard} dengan menggunakan Play Framework perlu memperhatikan beberapa hal, yaitu: bagian \textit{models}, \textit{views}, \textit{controllers}, \textit{routes}  dan \textit{libraries} yang digunakan.
+Berdasarkan kebutuhan akan poin-poin di atas, maka dalam memodelkan KIRI \textit{Dashboard} dengan menggunakan Play Framework perlu memperhatikan beberapa hal, yaitu: bagian \textit{models}, \textit{views}, \textit{controllers}, dan \textit{routes}.
 
 \subsection{Routes}
 \label{sec:routesusulan}
 Kebutuhan KIRI \textit{Dashboard} adalah pemetaan untuk ke 2 bagian, yaitu:
 \begin{enumerate}
-	\item Pemetaan URL untuk menangani tampilan KIRI \textit{Dashboard} (\textit{views}). Hanya 1 \textit{route} yang dibutuhkan untuk pemetaan terhadap bagian tampilan (walau fitur KIRI \textit{Dashboard} banyak) karena kode KIRI \textit{Dashboard} sistem kini telah menggunakan kombinasi JavaScript dan AJAX sedemikian rupa yang dapat mengubah tampilan KIRI \textit{Dashboard} sesuai dengan balasan permintaan dari sisi \textit{server}. AJAX (\textit{asynchronous JavaScript and XML}) adalah teknik yang memungkinkan suatu situs web melakukan permintaan ke sisi \textit{server} secara \textit{background}\cite{ajax}.
+	\item Pemetaan URL untuk menangani tampilan KIRI \textit{Dashboard} (\textit{views}). Hanya 1 \textit{route} yang dibutuhkan untuk pemetaan terhadap bagian tampilan (walau fitur KIRI \textit{Dashboard} banyak) karena kode KIRI \textit{Dashboard} sistem kini telah menggunakan kombinasi JavaScript  AJAX sedemikian rupa yang dapat mengubah tampilan KIRI \textit{Dashboard} sesuai dengan balasan permintaan dari sisi \textit{server}. AJAX (\textit{asynchronous JavaScript and XML}) adalah teknik yang memungkinkan suatu situs web melakukan permintaan ke sisi \textit{server} secara \textit{background}\cite{w3schools}.
 	\item Pemetaan URL untuk menangani permintaan-permintaan dari tampilan ke sisi \textit{server}, yaitu KIRI \textit{Dashboard server side} (\textit{controllers}).
 \end{enumerate}
 
@@ -230,14 +228,152 @@ Pada bagian ini akan dibuat sebuah kelas yang akan menangani permintaan dari \te
 	\label{fig:3_usecase}
 \end{figure}
 
-\subsection{\textit{Libraries}}
-\label{sec:librariesUsulan}
-Berikut adalah \textit{libraries} (sumber: \url{http://mvnrepository.com/}) yang akan digunakan untuk membangun KIRI \textit{Dashboard server side} sistem usulan:
+\section{Analisis \textit{Libraries} Sistem Usulan}
+\label{sec:analisislibrary}
+Berdasarkan hasil analisis 16 bagian sistem KIRI, dibutuhkan beberapa \textit{library} untuk dapat melakukan \textit{porting} beberapa bagian pada penelitian ini. Untuk mengatur penggunaan \textit{library} pada aplikasi Play Framework dapat dilakukan pada \textit{file} ``build.sbt''\cite{playframeworkweb} (Gambar \ref{fig:3_strukturkiri}). Daftar \textit{library} yang dapat digunakan untuk Play Framework dapat dicari melalui Maven Repository\cite{maven}. Deklarasi untuk menambahkan sebuah \textit{library} pada ``build.sbt'' terdiri dari 3 bagian, yaitu: kelompok, nama spesifik, dan versi. Berikut adalah contoh struktur kode untuk menambahkan sebuah \textit{library} pada ``build.sbt'':
+\begin{lstlisting}
+		libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.18"
+\end{lstlisting}
+Kode di atas menjelaskan bahwa akan ditambahkan \textit{library} dari kelompok ``mysql'', dengan nama ``mysql-connector-java'', dan versi yang digunakan adalah ``5.1.18''.
+
+\subsection{Jackson Databind}
+\label{sec:jacksondatabind}
+Dalam membalas permintaan dari bagian tampilan sistem kini, bagian sisi \textit{server} akan mengirimkan pesan dalam format JSON. Jackson Databind adalah \textit{library} Java (disarankan oleh Play Framework) yang digunakan untuk melakukan pengolahan data dalam format JSON\cite{jackson}. Jackson Databind dapat mengolah sebuah data objek Java dari atau menjadi data yang berformat JSON. Berikut adalah kelas-kelas yang dapat digunakan untuk membangun data dalam format JSON:
+\begin{enumerate}
+	\item \textbf{ObjectNode}\\
+	Kelas ini merupakan \textit{node} yang memetakan sebuah atau sekumpulan objek pada JSON (Subbab \ref{sec:json}). Berikut adalah contoh kode untuk membangun sebuah kelas ObjectNode pada Play Framework:
+	\begin{lstlisting}
+		ObjectNode obj = Json.newObject();
+	\end{lstlisting}
+	Berikut adalah beberapa \textit{method} yang dimiliki oleh kelas ini:
+		\begin{itemize}
+			\item \texttt{public ObjectNode put(String fieldName, String v)}\\
+			Berfungsi untuk memberikan nilai berupa String ke sebuah nama.\\
+			Parameter:
+				\begin{itemize}
+					\item \texttt{fieldName} merepresentasikan nama.
+					\item \texttt{v} merepresentasikan nilai berupa String.
+				\end{itemize}
+			Nilai kembalian: objek JSON dalam bentuk \textit{node}.
+			\item \texttt{public ObjectNode put(String fieldName, boolean v)}\\
+			Berfungsi untuk memberikan nilai berupa boolean ke sebuah nama.\\
+			Parameter:
+				\begin{itemize}
+					\item \texttt{fieldName} merepresentasikan nama.
+					\item \texttt{v} merepresentasikan nilai berupa boolean.
+				\end{itemize}
+			Nilai kembalian: objek JSON dalam bentuk \textit{node}.
+			\item \texttt{public ObjectNode put(String fieldName, double v)}\\
+			Berfungsi untuk memberikan nilai berupa double ke sebuah nama.\\
+			Parameter:
+				\begin{itemize}
+					\item \texttt{fieldName} merepresentasikan nama.
+					\item \texttt{v} merepresentasikan nilai berupa double.
+				\end{itemize}
+			Nilai kembalian: objek JSON dalam bentuk \textit{node}.
+			\item \texttt{public ObjectNode putNull(String fieldName)}\\
+			Berfungsi untuk memberikan nilai null ke sebuah nama.\\
+			Parameter:
+				\begin{itemize}
+					\item \texttt{fieldName} merepresentasikan nama.
+				\end{itemize}
+			Nilai kembalian: objek JSON dalam bentuk \textit{node}.
+			\item \texttt{public ArrayNode putArray(String fieldName)}\\
+			Berfungsi untuk membangun sebuah ArrayNode dan menambahkan ArrayNode tersebut ke sebuah nama.\\
+			Parameter:
+				\begin{itemize}
+					\item \texttt{fieldName} merepresentasikan nama.
+				\end{itemize}
+			Nilai kembalian: sebuah ArrayNode yang baru dibangun.
+		\end{itemize}
+	\item \textbf{ArrayNode}\\
+	Kelas ini merupakan \textit{node} yang memetakan sebuah atau sekumpulan \textit{array} pada JSON (Subbab \ref{sec:json}). Berikut adalah contoh kode untuk membangun sebuah kelas ArrayNode pada Play Framework:
+	\begin{lstlisting}
+		ArrayNode arr = Json.newArray();
+	\end{lstlisting}
+	Berikut adalah beberapa \textit{method} yang dimiliki oleh kelas ini:
+		\begin{itemize}
+			\item \texttt{public ArrayNode add(String v)}\\
+			Berfungsi untuk menambahkan sebuah data berupa String ke akhir \textit{node} \textit{array}.\\
+			Parameter:
+				\begin{itemize}
+					\item \texttt{v} merepresentasikan nilai berupa String.
+				\end{itemize}
+			Nilai kembalian: array JSON dalam bentuk \textit{node}.
+			\item \texttt{public ArrayNode add(JsonNode value)}\\
+			Berfungsi untuk menambahkan sebuah data berupa \textit{node} (dapat berupa ObjectNode atau ArrayNode) ke akhir \textit{node} \textit{array}.\\
+			Parameter:
+				\begin{itemize}
+					\item \texttt{v} merepresentasikan nilai berupa ObjectNode atau ArrayNode.
+				\end{itemize}
+			Nilai kembalian: \textit{array} atau objek JSON dalam bentuk \textit{node}.
+			\item \texttt{public ArrayNode addAll(ArrayNode other)}\\
+			Berfungsi untuk menambahkan sebuah data berupa ArrayNode ke akhir \textit{node} \textit{array}.\\
+			Parameter:
+				\begin{itemize}
+					\item \texttt{other} merepresentasikan ArrayNode.
+				\end{itemize}
+			Nilai kembalian: \textit{array} JSON dalam bentuk \textit{node}.
+		\end{itemize}
+\end{enumerate}
+ 
+\subsection{JavaMail API}
+\label{sec:javamailapi}
+Pada bagian \textit{register} sistem kini (Subbab \ref{sec:bagianregister}), sandi yang telah dibangun oleh sistem akan dikirimkan ke \textit{email} pengguna, untuk itu diperlukan metode pengiriman \textit{email} oleh sistem usulan. Setelah dianalisis lebih lanjut, diketahui bahwa sistem kini menggunakan PHPMailer\cite{github} sebagai metode pengiriman \textit{email}. PHPMailer terlalu rumit untuk diimplementasikan dan tidak tersedia di Java. JavaMail API merupakan \textit{library} Java yang menyediakan layanan SMTP\cite{javamailapi}. SMTP adalah layanan yang dapat digunakan untuk melakukan pengiriman \textit{email} secara efisien\cite{smtp}.
+
+\subsection{MySQL Connector/J}
+\label{sec:mysqlconnector/j}
+Sistem kini menggunakan MySQL sebagai sarana penyimpanan datanya (Subbab \ref{sec:analisisdatabasesistemkini}). MySQL Connector/J adalah JDBC API yang dapat digunakan untuk mengakses semua jenis data yang terstruktur, terutama data yang tersimpan dalam suatu \textit{Relational Database} (Subbab \ref{sec:jdbc}). 
+
+Struktur kode untuk melakukan akses ke \textit{database} telah dijelaskan pada subbab sebelumnya (Subbab \ref{sec:jdbc}). Namun demikian, struktur kode tersebut masih rentan terhadap serangan SQL \textit{injection}. SQL \textit{injection} adalah sebuah serangan pada \textit{database} dengan mengubah SQL \textit{statement} sedemikian rupa sehingga dapat menghancurkan suatu \textit{database} sistem\cite{w3schools}. Berikut adalah contoh struktur kode untuk mencegah terjadinya serangan SQL \textit{injection}:
+
+\begin{lstlisting}
+public void connectToAndQueryDatabase(String username, String password) {
+    Connection con = DriverManager.getConnection(
+                         "jdbc:myDriver:myDatabase",
+                         username,
+                         password);
+    PreparedStatement pstmt = con.prepareStatement("SELECT a, b, c FROM Table1 where value=?");
+    pstmt.setString(1, "xxx");
+    ResultSet rs = pstmt.executeQuery();
+    while (rs.next()) {
+        int x = rs.getInt("a");
+        String s = rs.getString("b");
+        float f = rs.getFloat("c");
+    }
+}
+\end{lstlisting}
+
+Perbedaan antara kode di atas dengan kode pada subbab sebelumnya (Subbab \ref{sec:jdbc}) adalah pada baris ke 6, yaitu penggunaan kelas PreparedStatement (kode di atas) dan kelas Statement (subbab sebelumnya). Kelas PreparedStatement dapat menangani serangan SQL \textit{injection} karena dapat menangani penulisan karakter jenis apapun (contoh: ``;''). Berikut adalah beberapa \textit{method} yang dimiliki kelas PreparedStatement:
 \begin{itemize}
-	\item Jackson Databind, digunakan untuk menangani pengiriman data dalam format JSON.
-	\item JavaMail API, digunakan untuk mengirimkan \textit{email}.
-	\item MySQL Connector/J, digunakan untuk melakukan hubungan koneksi dan eksekusi \textit{query} dengan \textit{database}. \textit{Library} MySQL Connector/J merupakan \textit{library} resmi JDBC driver untuk MySQL.
-	\item Commons Lang 3, digunakan untuk mengatasi permasalahan pembacaan karakter.
+	\item \texttt{public void setString(int parameterIndex, String x)}\\
+		Berfungsi untuk memberikan nilai \textit{String} ke indeks parameter tujuan.\\
+		Parameter:
+		\begin{itemize}
+			\item \texttt{parameterIndex} merepresentasikan indeks dengan urutan 1,2,3,dst.
+			\item \texttt{x} nilai yang akan dimasukkan.
+		\end{itemize}
+	\item \texttt{public ResultSet executeQuery()}\\
+		Berfungsi untuk melakukan eksekusi terhadap \textit{query} yang telah dibangun.\\
+		Nilai kembalian: objek \texttt{ResultSet} yang berupa data yang dihasilkan dari eksekusi \textit{query} \texttt{sql}.
+	\item \texttt{public int executeUpdate()}\\
+		Berfungsi untuk melakukan eksekusi terhadap \textit{query} yang telah dibangun.\\
+		Nilai kembalian: jumlah baris yang berhasil dieksekusi dalam \textit{database} atau 0 jika tidak ada baris yang dieksekusi.
 \end{itemize}
 
+\subsection{jBCrypt}
+\label{sec:jbcrypt}
+Berdasarkan analisa pada bagian \textit{register} sistem kini (Subbab \ref{sec:bagianregister}) didapatkan informasi bahwa dilakukan \textit{hashing} pada sandi yang sudah diacak. \textit{Hashing} yang dilakukan adalah menggunakan sebuah PHP \textit{hashing framework}\cite{openwall}. Berdasarkan hasil wawancara dengan kontributor kode KIRI, algoritma yang digunakan pada \textit{framework} tersebut adalah bcrypt. jBCrypt adalah \textit{library} Java untuk melakukan \textit{hashing} data dengan menggunakan algoritma bcrypt\cite{jbcrypt}. Berikut adalah contoh kode untuk melakukan \textit{hashing} suatu data:
+\begin{lstlisting}
+	String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
+\end{lstlisting}
 
+Berikut adalah contoh kode untuk melakukan pengecekan antara sandi sebelum dilakukan \textit{hashing} dan sandi yang sudah dilakukan \textit{hashing}:
+\begin{lstlisting}
+	if (BCrypt.checkpw(candidate, hashed))
+		System.out.println("It matches");
+	else
+		System.out.println("It does not match");
+\end{lstlisting}
+
+Baris 1 kode di atas menjelaskan bahwa untuk melakukan pengecekan digunakan \textit{method} ``\texttt{checkpw}''. Parameter ``\texttt{candidate}'' adalah sandi sebelum dilakukan \textit{hashing} dan parameter ``\texttt{hashed}'' adalah sandi yang sudah dilakukan \textit{hashing}.
