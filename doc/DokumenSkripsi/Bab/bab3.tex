@@ -189,14 +189,12 @@ Sistem KIRI menggunakan perangkat lunak MySQL sebagai sarana penyimpanan untuk m
 \end{figure}
 
 
-\section{Analisis Sistem Usulan}
-\label{sec:analisissistemusulan}
+\section{Analisis MVC dan \textit{Routes} Sistem Usulan}
+\label{sec:analisismvcdantextitroutessistemusulan}
 Berdasarkan hasil analisa dan wawancara dengan kontributor kode pada subbab sebelumnya (subbab \ref{sec:analisissistemkini} dan subbab \ref{sec:analisisdatabasesistemkini}) didapatkan poin-poin bahwa:
 \begin{enumerate}
 	\item KIRI \textit{Dashboard} terdiri dari dua bagian penting, yaitu bagian pertama adalah \textit{file} dan \textit{folder} yang bersifat statis, yaitu: ``index.html'', ``bukitjariangwt/'', dan ``images/'', serta bagian kedua adalah ``handle.php'' yang bertugas menangani permintaan-permintaan (dari ``index.html'') pada sisi \textit{server}.
 	\item KIRI \textit{Dashboard server side} (\textit{file} ``handle.php'') terbagi menjadi 16 bagian dalam menangani permintaan.
-	\item Perangkat lunak pengolahan data yang digunakan oleh sistem KIRI adalah MySQL.
-	\item KIRI \textit{Dashboard server side} (\textit{file} ``handle.php'') akan mengirimkan data dalam format JSON dalam membalas permintaan dari ``index.html''.
 \end{enumerate}
 
 Berdasarkan kebutuhan akan poin-poin di atas, maka dalam memodelkan KIRI \textit{Dashboard} dengan menggunakan Play Framework perlu memperhatikan beberapa hal, yaitu: bagian \textit{models}, \textit{views}, \textit{controllers}, dan \textit{routes}.
@@ -215,11 +213,31 @@ Seperti yang telah dijelaskan pada analisa sebelumnya bahwa bagian tampilan KIRI
 
 \subsection{\textit{Controllers}}
 \label{sec:controllerusulan}
-Pada bagian ini akan dibuat sebuah kelas yang akan menangani permintaan dari \textit{views} sistem usulan. Bagian ini berfungsi seperti ``handle.php'', yaitu menangani 16 jenis permintaan seperti yang telah dijelaskan pada subbab sebelumnya.
+Pada bagian ini akan dibuat sebuah kelas yang akan menangani permintaan dari \textit{views} sistem usulan (Gambar \ref{fig:3_classdiagram_kasar}). Bagian ini berfungsi seperti ``handle.php'', yaitu menangani 16 jenis permintaan seperti yang telah dijelaskan pada subbab sebelumnya.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[scale=0.47]{Gambar/3_classdiagram_kasar.png}
+	\caption{Diagram Kelas Analisis}
+	\label{fig:3_classdiagram_kasar}
+\end{figure}
+
 
 \subsection{\textit{Models}}
 \label{sec:modelusulan}
-\textit{Models} adalah bagian yang paling bebas dan tidak memiliki aturan pembuatan khusus pada Play Framework. Pada bagian ini peneliti memutuskan untuk membuat \textit{models} sesuai dengan diagram \textit{use case} KIRI \textit{Dashboard} (Gambar \ref{fig:3_usecase}). Untuk setiap kemampuan pengguna yang dapat dilakukan pada diagram \textit{use case} (Gambar \ref{fig:3_usecase}) akan dibuat kelas Java di bagian \textit{models} pada sistem usulan.
+\textit{Models} adalah bagian yang paling bebas dan tidak memiliki aturan pembuatan khusus pada Play Framework. Pada bagian ini peneliti memutuskan untuk membuat \textit{models} sesuai dengan diagram \textit{use case} KIRI \textit{Dashboard} (Gambar \ref{fig:3_usecase}). Untuk setiap kemampuan pengguna yang dapat dilakukan pada diagram \textit{use case} (Gambar \ref{fig:3_usecase}) akan dibuat kelas Java di bagian \textit{models} pada sistem usulan (Gambar \ref{fig:3_classdiagram_kasar}). Berikut adalah penjelasan kelas-kelas yang dibuat pada \textit{models}:
+\begin{enumerate}
+	\item AuthenticationManager\\
+	Kelas ini berfungsi untuk menangani permintaan \textit{login}, \textit{register}, dan \textit{logout}.
+	\item ApiKeysManager\\
+	Kelas ini berfungsi untuk menangani permintaan melihat daftar API \textit{keys}, menambahkan data API \textit{key}, dan mengubah data API \textit{key}.
+	\item UserManager\\
+	Kelas ini berfungsi untuk menangani permintaan melihat data pribadi pengguna, mengubah data pribadi pengguna, dan melakukan pemeriksaan \textit{login}.
+	\item TracksManager\\
+	Kelas ini berfungsi untuk menangani permintaan melihat rute angkutan umum, menambahkan rute angkutan umum, melihat rute angkutan umum secara detail, mengubah data rute angkutan umum, menghapus rute angkutan umum, menghapus data geografis rute angkutan umum, dan melakukan impor data KML.
+	\item Constant\\
+	Kelas ini berfungsi untuk membangun konstanta-konstanta statis yang digunakan dalam sistem KIRI.
+\end{enumerate}
 
 \begin{figure}[htbp]
 	\centering
