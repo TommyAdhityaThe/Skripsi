@@ -183,37 +183,39 @@ Sistem KIRI menggunakan perangkat lunak MySQL sebagai sarana penyimpanan untuk m
 
 \begin{figure}[htbp]
 	\centering
-		\includegraphics[scale=0.7]{Gambar/4_strukturdatabase.PNG}
+		\includegraphics[scale=0.65]{Gambar/4_strukturdatabase.PNG}
 	\caption{Struktur database sistem KIRI}
 	\label{fig:4_strukturdatabase}
 \end{figure}
 
 
-\section{Analisis MVC dan \textit{Routes} Sistem Usulan}
-\label{sec:analisismvcdantextitroutessistemusulan}
+\section{Analisis Sistem Usulan}
+\label{sec:analisissistemusulan}
 Berdasarkan hasil analisa dan wawancara dengan kontributor kode pada subbab sebelumnya (subbab \ref{sec:analisissistemkini} dan subbab \ref{sec:analisisdatabasesistemkini}) didapatkan poin-poin bahwa:
 \begin{enumerate}
 	\item KIRI \textit{Dashboard} terdiri dari dua bagian penting, yaitu bagian pertama adalah \textit{file} dan \textit{folder} yang bersifat statis, yaitu: ``index.html'', ``bukitjariangwt/'', dan ``images/'', serta bagian kedua adalah ``handle.php'' yang bertugas menangani permintaan-permintaan (dari ``index.html'') pada sisi \textit{server}.
 	\item KIRI \textit{Dashboard server side} (\textit{file} ``handle.php'') terbagi menjadi 16 bagian dalam menangani permintaan.
 \end{enumerate}
 
-Berdasarkan kebutuhan akan poin-poin di atas, maka dalam memodelkan KIRI \textit{Dashboard} dengan menggunakan Play Framework perlu memperhatikan beberapa hal, yaitu: bagian \textit{models}, \textit{views}, \textit{controllers}, dan \textit{routes}.
+Berdasarkan kebutuhan akan poin-poin di atas, maka dalam memodelkan KIRI \textit{Dashboard} dengan menggunakan Play Framework perlu memperhatikan beberapa hal, yaitu: \textit{models}, \textit{controllers}, \textit{routes}, dan \textit{folder} ``public/''.
 
-\subsection{Routes}
+\subsection{\textit{Routes}}
 \label{sec:routesusulan}
 Kebutuhan KIRI \textit{Dashboard} adalah pemetaan untuk ke 2 bagian, yaitu:
 \begin{enumerate}
-	\item Pemetaan URL untuk menangani tampilan KIRI \textit{Dashboard} (\textit{views}). Hanya 1 \textit{route} yang dibutuhkan untuk pemetaan terhadap bagian tampilan (walau fitur KIRI \textit{Dashboard} banyak) karena kode KIRI \textit{Dashboard} sistem kini telah menggunakan kombinasi JavaScript  AJAX sedemikian rupa yang dapat mengubah tampilan KIRI \textit{Dashboard} sesuai dengan balasan permintaan dari sisi \textit{server}. AJAX (\textit{asynchronous JavaScript and XML}) adalah teknik yang memungkinkan suatu situs web melakukan permintaan ke sisi \textit{server} secara \textit{background}\cite{w3schools}.
+	\item Pemetaan URL untuk menangani tampilan KIRI \textit{Dashboard}. Hanya 1 \textit{route} yang dibutuhkan untuk pemetaan terhadap bagian tampilan (walau fitur KIRI \textit{Dashboard} banyak) karena kode KIRI \textit{Dashboard} sistem kini telah menggunakan kombinasi JavaScript  AJAX sedemikian rupa yang dapat mengubah tampilan KIRI \textit{Dashboard} sesuai dengan balasan permintaan dari sisi \textit{server}. AJAX (\textit{asynchronous JavaScript and XML}) adalah teknik yang memungkinkan suatu situs web melakukan permintaan ke sisi \textit{server} secara \textit{background}\cite{w3schools}.
 	\item Pemetaan URL untuk menangani permintaan-permintaan dari tampilan ke sisi \textit{server}, yaitu KIRI \textit{Dashboard server side} (\textit{controllers}).
 \end{enumerate}
 
-\subsection{\textit{Views}}
-\label{sec:viewusulan}
-Seperti yang telah dijelaskan pada analisa sebelumnya bahwa bagian tampilan KIRI \textit{Dashboard} dibuat dengan menggunakan perangkat GWT dimana kode yang dihasilkan sangat sulit untuk dipelajari. Walau sulit dipelajari, bagian tampilan KIRI \textit{Dashboard} memiliki keuntungan sendiri karena bersifat statis (dijelaskan oleh kontributor kode). Sifat statis ini memudahkan pemodelan karena dengan begitu kode dapat disalin apa adanya ke sistem usulan. Pada Play Framework \textit{file-file} yang bersifat statis seperti ini dapat disimpan pada bagian \textit{folder} ``public/''.
+Isi lengkap dari \textit{routes} (\textit{file} ``conf/routes'') akan dijelaskan pada bab perancangan (Bab \ref{chap:perancangan}).
+
+\subsection{\textit{Folder} ``public/''}
+\label{sec:folderpublic}
+Seperti yang telah dijelaskan pada analisa sebelumnya bahwa bagian tampilan KIRI \textit{Dashboard} dibuat dengan menggunakan perangkat GWT dimana kode yang dihasilkan sangat sulit untuk dipelajari. Walau sulit dipelajari, bagian tampilan KIRI \textit{Dashboard} memiliki keuntungan sendiri karena bersifat statis (dijelaskan oleh kontributor kode). Sifat statis ini memudahkan pemodelan karena dengan begitu kode dapat disalin apa adanya ke sistem usulan. Pada Play Framework, \textit{file-file} yang bersifat statis seperti ini dapat disimpan pada bagian \textit{folder} ``public/''.
 
 \subsection{\textit{Controllers}}
 \label{sec:controllerusulan}
-Pada bagian ini akan dibuat sebuah kelas yang akan menangani permintaan dari \textit{views} sistem usulan (Gambar \ref{fig:3_classdiagram_kasar}). Bagian ini berfungsi seperti ``handle.php'', yaitu menangani 16 jenis permintaan seperti yang telah dijelaskan pada subbab sebelumnya.
+Pada bagian ini akan dibuat sebuah kelas yang akan menangani permintaan-permintaan dari bagian tampilan sistem usulan (Gambar \ref{fig:3_classdiagram_kasar}). Bagian ini berfungsi seperti ``handle.php'' pada sistem kini, yaitu menangani 16 jenis permintaan berbeda seperti yang telah dijelaskan pada subbab sebelumnya (Subbab \ref{sec:analisissistemkini}).
 
 \begin{figure}[htbp]
 	\centering
@@ -225,7 +227,7 @@ Pada bagian ini akan dibuat sebuah kelas yang akan menangani permintaan dari \te
 
 \subsection{\textit{Models}}
 \label{sec:modelusulan}
-\textit{Models} adalah bagian yang paling bebas dan tidak memiliki aturan pembuatan khusus pada Play Framework. Pada bagian ini peneliti memutuskan untuk membuat \textit{models} sesuai dengan diagram \textit{use case} KIRI \textit{Dashboard} (Gambar \ref{fig:3_usecase}). Untuk setiap kemampuan pengguna yang dapat dilakukan pada diagram \textit{use case} (Gambar \ref{fig:3_usecase}) akan dibuat kelas Java di bagian \textit{models} pada sistem usulan (Gambar \ref{fig:3_classdiagram_kasar}). Berikut adalah penjelasan kelas-kelas yang dibuat pada \textit{models}:
+\textit{Models} adalah bagian yang paling bebas dan tidak memiliki aturan pembuatan khusus pada Play Framework. Pada bagian ini peneliti memutuskan untuk membuat \textit{models} sesuai dengan \textit{use case} KIRI \textit{Dashboard}. Untuk setiap kemampuan pengguna yang dapat dilakukan pada \textit{use case} (Gambar \ref{fig:3_usecase}) akan dibuat kelas Java di bagian \textit{models} pada sistem usulan (Gambar \ref{fig:3_classdiagram_kasar}). Berikut adalah penjelasan kelas-kelas yang dibuat pada \textit{models}:
 \begin{enumerate}
 	\item AuthenticationManager\\
 	Kelas ini berfungsi untuk menangani permintaan \textit{login}, \textit{register}, dan \textit{logout}.
@@ -337,7 +339,100 @@ Dalam membalas permintaan dari bagian tampilan sistem kini, bagian sisi \textit{
  
 \subsection{JavaMail API}
 \label{sec:javamailapi}
-Pada bagian \textit{register} sistem kini (Subbab \ref{sec:bagianregister}), sandi yang telah dibangun oleh sistem akan dikirimkan ke \textit{email} pengguna, untuk itu diperlukan metode pengiriman \textit{email} oleh sistem usulan. Setelah dianalisis lebih lanjut, diketahui bahwa sistem kini menggunakan PHPMailer\cite{github} sebagai metode pengiriman \textit{email}. PHPMailer terlalu rumit untuk diimplementasikan dan tidak tersedia di Java. JavaMail API merupakan \textit{library} Java yang menyediakan layanan SMTP\cite{javamailapi}. SMTP adalah layanan yang dapat digunakan untuk melakukan pengiriman \textit{email} secara efisien\cite{smtp}.
+Pada bagian \textit{register} sistem kini (Subbab \ref{sec:bagianregister}), sandi yang telah dibangun oleh sistem akan dikirimkan ke \textit{email} pengguna, untuk itu diperlukan metode pengiriman \textit{email} oleh sistem usulan. Setelah dilakukan analisis lebih lanjut, diketahui bahwa sistem kini menggunakan PHPMailer\cite{github} sebagai metode pengiriman \textit{email}. PHPMailer terlalu rumit untuk diimplementasikan dan tidak tersedia di Java. JavaMail API merupakan \textit{library} Java yang menyediakan layanan SMTP\cite{javamailapi}. SMTP adalah layanan yang dapat digunakan untuk melakukan pengiriman \textit{email} secara efisien\cite{smtp}. Berikut adalah contoh struktur kode untuk mengirimkan \textit{email} dengan menggunakan JavaMail API:
+\begin{lstlisting}
+	Properties props = new Properties();
+    props.setProperty("mail.smtp.host", "my-mail-server");
+    Session session = Session.getInstance(props);
+    try {
+        MimeMessage msg = new MimeMessage(session);
+        msg.setFrom("me@example.com");
+        msg.setRecipients(Message.RecipientType.TO,
+                          "you@example.com");
+        msg.setSubject("JavaMail hello world example");
+        msg.setSentDate(new Date());
+        msg.setText("Hello, world!\n");
+        Transport.send(msg, "me@example.com", "my-password");
+    } catch (MessagingException mex) {
+        System.out.println("send failed, exception: " + mex);
+    }
+\end{lstlisting}
+
+Baris 1-3 pada contoh kode di atas menyatakan pembangunan sebuah sesi \textit{email} dan apa saja aturan yang ingin digunakan dalam sesi tersebut. Baris 5-11 menyatakan bagaimana rancangan pesan yang ingin dikirimkan. Baris 12 menyatakan bahwa pesan akan dikirim dengan menggunakan data otentikasi pada parameter \textit{method} tersebut (``me@example.com'' sebagai \textit{username} dan ``my-password'' sebagai sandi). Baris 13-15 menyatakan bagaimana penanganan jika terjadi kesalahan. Berikut adalah penjelasan seluruh kelas yang digunakan pada contoh kode di atas:
+\begin{enumerate}
+	\item \textbf{Properties}\\
+	Kelas ini merupakan kelas yang merepresentasikan sekumpulan data yang terdiri dari pasangan kata kunci dan nilai. Setiap pasangan kata kunci dan nilai dalam kelas ini merupakan data dalam format \textit{String}.
+	Berikut adalah sebuah \textit{method} yang digunakan pada penelitian ini:
+		\begin{itemize}
+			\item \texttt{public Object setProperty(String key, String value)}\\
+			Berfungsi untuk menambahkan sebuah pasangan kata kunci dan nilai.\\
+			Parameter:
+				\begin{itemize}
+					\item \texttt{key} kata kunci.
+					\item \texttt{value} nilai.
+				\end{itemize}
+			Nilai kembalian: nilai lama berdasarkan kata kunci pada parameter (atau \texttt{null} jika belum ada kata kunci yang dibangun).
+		\end{itemize}
+	\item \textbf{Session}\\
+	Kelas ini merepresentasikan sebuah sesi \textit{email}. Sebuah sesi \textit{email} dibangun dengan memiliki pengaturan awal. Pengaturan awal dibangun berdasarkan sekumpulan kata kunci dan nilai pada kelas Properties.
+	Berikut adalah sebuah \textit{method} yang digunakan pada penelitian ini:
+		\begin{itemize}
+			\item \texttt{public static Session getInstance(Properties props)}\\
+			Berfungsi untuk membangun sebuah sesi \textit{email}.\\
+			Parameter:
+				\begin{itemize}
+					\item \texttt{props} merupakan sekumpulan kata kunci dan nilai yang menyatakan pengaturan awal.
+				\end{itemize}
+			Nilai kembalian: sebuah sesi \textit{email}.
+		\end{itemize}
+	\item \textbf{MimeMessage}\\
+	Kelas ini merepresentasikan rancangan pesan yang ingin dikirimkan. Konstruktor kelas ini memerlukan sebuah sesi \textit{email} (kelas Session) untuk dapat dijalankan. Jika syarat terpenuhi, maka konstruktor kelas ini akan membangun sebuah pesan kosong. Berikut adalah beberapa \textit{method} yang digunakan pada penelitian ini:
+		\begin{itemize}
+			\item \texttt{public void setFrom(String address)}\\
+			Berfungsi untuk memberikan alamat pengirim pesan.\\
+			Parameter:
+				\begin{itemize}
+					\item \texttt{address} alamat \textit{email} pengirim pesan.
+				\end{itemize}
+			\item \texttt{public void setRecipients(Message.RecipientType type, String addresses)}\\
+			Berfungsi untuk memberikan alamat penerima pesan.\\
+			Parameter:
+				\begin{itemize}
+					\item \texttt{type} tipe penerima pesan.
+					\item \texttt{address} alamat \textit{email} penerima pesan.
+				\end{itemize}
+			\item \texttt{public void setSubject(String subject)}\\
+			Berfungsi untuk memberikan judul pesan.\\
+			Parameter:
+				\begin{itemize}
+					\item \texttt{subject} judul.
+				\end{itemize}
+			\item \texttt{public void setSentDate(Date d)}\\
+			Berfungsi untuk memberikan tanggal pengirimanpesan.\\
+			Parameter:
+				\begin{itemize}
+					\item \texttt{d} tanggal pengiriman.
+				\end{itemize}
+			\item \texttt{public void setText(String text)}\\
+			Berfungsi untuk memberikan isi pesan.\\
+			Parameter:
+				\begin{itemize}
+					\item \texttt{text} isi.
+				\end{itemize}
+		\end{itemize}
+	\item \textbf{Transport}\\
+	Kelas ini merepresentasikan pengiriman pesan. Berikut adalah sebuah \textit{method} yang digunakan pada penelitian ini:
+		\begin{itemize}
+			\item \texttt{public static void send(Message msg, String user, String password)}\\
+			Berfungsi untuk mengirimkan pesan.\\
+			Parameter:
+				\begin{itemize}
+					\item \texttt{msg} rancangan pesan.
+					\item \texttt{user} alamat \textit{email}.
+					\item \texttt{password} sandi yang cocok dengan alamat \textit{email}.
+				\end{itemize}
+		\end{itemize}
+\end{enumerate}
 
 \subsection{MySQL Connector/J}
 \label{sec:mysqlconnector/j}
@@ -394,4 +489,28 @@ Berikut adalah contoh kode untuk melakukan pengecekan antara sandi sebelum dilak
 		System.out.println("It does not match");
 \end{lstlisting}
 
-Baris 1 kode di atas menjelaskan bahwa untuk melakukan pengecekan digunakan \textit{method} ``\texttt{checkpw}''. Parameter ``\texttt{candidate}'' adalah sandi sebelum dilakukan \textit{hashing} dan parameter ``\texttt{hashed}'' adalah sandi yang sudah dilakukan \textit{hashing}.
+Baris 1 kode di atas menjelaskan bahwa untuk melakukan pengecekan digunakan \textit{method} ``\texttt{checkpw}''. Parameter ``\texttt{candidate}'' adalah sandi sebelum dilakukan \textit{hashing} dan parameter ``\texttt{hashed}'' adalah sandi yang sudah dilakukan \textit{hashing}. 
+
+Berikut adalah penjelasan secara detail seluruh \textit{method} yang dimiliki kelas BCrypt:
+\begin{itemize}
+	\item \texttt{public static String hashpw(String password, String salt)}\\
+		Berfungsi untuk melakukan \textit{hashing} pada sebuah sandi dengan menggunakan algoritma bcrypt.\\
+		Parameter:
+		\begin{itemize}
+			\item \texttt{password} merepresentasikan indeks dengan urutan 1,2,3,dst.
+			\item \texttt{salt} kunci yang digunakan.
+		\end{itemize}
+		Nilai kembalian: kata sandi yang telah dilakukan \textit{hash}.
+	\item \texttt{public static boolean checkpw(String plaintext, String hashed)}\\
+		Berfungsi untuk melakukan pengecekan apakah sebuah sandi cocok dengan sebuah data \textit{hash}.\\
+		Parameter:
+		\begin{itemize}
+			\item \texttt{plaintext} sandi.
+			\item \texttt{hashed} data \textit{hash}.
+		\end{itemize}
+		Nilai kembalian: \texttt{true} jika cocok dan \texttt{false} jika tidak cocok.
+	\item \texttt{public static String gensalt()}\\
+		Berfungsi untuk membangun kunci dalam format \textit{String} yang dapat digunakan untuk melakukan \textit{hashing} suatu sandi.\\
+		Parameter:
+		Nilai kembalian: sebuah kunci.
+\end{itemize}
