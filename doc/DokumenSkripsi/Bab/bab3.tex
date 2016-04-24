@@ -165,6 +165,142 @@ Bagian ini terletak di baris 362-380 dari ``handle.php'' (kode \ref{lst:handle.p
 
 Bagian ini diawali dengan memeriksa apakah pengguna memberikan \textit{password}, \textit{fullname}, dan \textit{company} pada permintaan atau tidak (baris 364-366). Bila pengguna memberikan \textit{password} dengan nilai \texttt{NULL} maka program akan membangun \textit{password} secara acak dan menambahkan \textit{password} tersebut ke dalam \textit{database} sistem KIRI sesuai dengan \textit{email} pengguna pada saat sesi tersebut (kode 369-374). Lalu program akan mengubah semua data pribadi pengguna sesuai dengan data yang diberikan oleh pengguna (baris 375-376). Terakhir, program mengirimkan pesan keberhasilan dalam format JSON kepada pengguna (baris 379).
 
+\section{Analisis Tampilan Sistem Kini}
+\label{sec:analisistampilansistemkini}
+Berdasarkan hasil wawancara dengan kontributor kode, didapat informasi bahwa bagian tampilan sistem kini dibangun menggunakan perangkat GWT dalam pembuatannya. Selain itu, didapatkan pula informasi bahwa bagian tampilan dibangun dengan menggunakan kombinasi JavaScript AJAX sedemikian rupa yang dapat mengubah tampilan sistem kini sesuai dengan balasan permintaan dari sisi \textit{server}. AJAX (\textit{asynchronous JavaScript and XML}) adalah teknik yang memungkinkan suatu situs web melakukan permintaan ke sisi \textit{server} secara \textit{background}\cite{w3schools}.
+
+Berdasarkan hasil analisa terhadap bagian tampilan sistem kini, didapatkan informasi bahwa setiap permintaan yang dilakukan oleh bagian tampilan ke sisi \textit{server} menggunakan metode POST. Permintaan tersebut akan diarahkan ke direktori ``/bukitjarian/handle.php''. Permintaan-permintaan tersebut nantinya akan dibalas oleh sisi \textit{server} dengan pesan dalam format JSON. Pesan tersebut nantinya akan diolah oleh bagian tampilan dan menghasilkan perubahan tertentu pada bagian tampilan. Bagian tampilan sistem kini terbagi ke dalam beberapa bagian, yaitu: 
+\begin{enumerate}
+	\begin{figure}[htbp]
+		\centering
+			\includegraphics[scale=0.35]{Gambar/3_tampilan_otentikasi.png}
+		\caption{Otentikasi dan Data Pribadi Pengguna}
+		\label{fig:3_tampilan_otentikasi}
+	\end{figure}
+	\item Otentikasi dan Data Pribadi Pengguna.\\
+	Merupakan bagian untuk mengelola otentikasi dan pengelola data pribadi pengguna (Gambar \ref{fig:3_tampilan_otentikasi}). Bagian ini terdiri dari:
+	\begin{itemize}
+		\item \textbf{\textit{Login}}, berfungsi untuk dapat masuk ke dalam sistem KIRI \textit{Dashboard} sebagai pengguna terdaftar (Gambar \ref{fig:3_tampilan_login}).\\
+		\begin{figure}[htbp]
+			\centering
+				\includegraphics[scale=0.6]{Gambar/3_tampilan_login.png}
+			\caption{\textit{Login}}
+			\label{fig:3_tampilan_login}
+		\end{figure}
+	
+		\item \textbf{\textit{Register}}, berfungsi untuk mendaftarkan pengguna baru (Gambar \ref{fig:3_tampilan_register}).\\
+		\begin{figure}[htbp]
+			\centering
+				\includegraphics[scale=0.7]{Gambar/3_tampilan_register.PNG}
+			\caption{\textit{Register}}
+			\label{fig:3_tampilan_register}
+		\end{figure}
+		
+		\item \textbf{\textit{Logout}}, berfungsi untuk kembali ke halaman login KIRI \textit{Dashboard} sekaligus menghapus data sesi otentikasi pengguna (Gambar \ref{fig:3_tampilan_logout}).\\
+		\begin{figure}[htbp]
+			\centering
+				\includegraphics[scale=0.7]{Gambar/3_tampilan_logout.png}
+			\caption{\textit{Logout} dan Lihat Data Pribadi}
+			\label{fig:3_tampilan_logout}
+		\end{figure}
+
+		\item \textbf{\textit{Profile}}, berfungsi untuk melihat data pribadi pengguna (Gambar \ref{fig:3_tampilan_logout}).
+
+		\item \textbf{Update}, berfungsi untuk mengubah data pribadi pengguna (Gambar \ref{fig:3_tampilan_profil}).\\
+		\begin{figure}[htbp]
+			\centering
+				\includegraphics[scale=0.7]{Gambar/3_tampilan_profil.PNG}
+			\caption{Data Pribadi}
+			\label{fig:3_tampilan_profil}
+		\end{figure}
+	\end{itemize}
+	
+	\begin{figure}[htbp]
+		\centering
+			\includegraphics[scale=0.35]{Gambar/3_tampilan_route.png}
+		\caption{Pengelola Rute Angkutan Umum}
+		\label{fig:3_tampilan_route}
+	\end{figure}
+	\item Pengelola Rute Angkutan Umum.\\
+	Merupakan bagian untuk mengelola rute angkutan umum (Gambar \ref{fig:3_tampilan_route}). Bagian ini ditampilkan jika pengguna berhasil \textit{login} dan memiliki hak akses terhadap rute angkutan umum.
+	\begin{itemize}
+		\item \textbf{Peta}, merupakan representasi gambar dari data geografi sebuah rute angkutan umum (Gambar \ref{fig:3_tampilan_peta}).
+		\begin{figure}[htbp]
+			\centering
+				\includegraphics[scale=0.35]{Gambar/3_tampilan_peta.png}
+			\caption{Peta Rute Angkot Ciroyom-Antapani}
+			\label{fig:3_tampilan_peta}
+		\end{figure}
+		\item \textbf{Daftar Rute Angkutan Umum} (Gambar \ref{fig:3_tampilan_daftarrute}).
+		\begin{figure}[htbp]
+			\centering
+				\includegraphics[scale=0.5]{Gambar/3_tampilan_daftarrute.png}
+			\caption{Daftar Rute Angkutan Umum}
+			\label{fig:3_tampilan_daftarrute}
+		\end{figure}
+		\item \textbf{Lihat Informasi Rute Angkutan Umum} (Gambar \ref{fig:3_tampilan_informasirute}).
+		\begin{figure}[htbp]
+			\centering
+				\includegraphics[scale=0.5]{Gambar/3_tampilan_informasirute.png}
+			\caption{Informasi Rute Angkot Ciroyom-Antapani}
+			\label{fig:3_tampilan_informasirute}
+		\end{figure}
+		\item \textbf{\textit{Delete}}, menghapus sebuah rute angkutan umum yang sedang dipilih (Gambar \ref{fig:3_tampilan_daftarrute}).
+		\item \textbf{\textit{Add}}, menambahkan rute angkutan umum baru (Gambar \ref{fig:3_tampilan_tambahrute}).
+		\begin{figure}[htbp]
+			\centering
+				\includegraphics[scale=0.5]{Gambar/3_tampilan_tambahrute.png}
+			\caption{Tambah Rute Angkutan Umum Baru}
+			\label{fig:3_tampilan_tambahrute}
+		\end{figure}
+		\item \textbf{\textit{Update}}, mengubah data rute angkutan umum (Gambar \ref{fig:3_tampilan_ubahrute}).
+		\begin{figure}[htbp]
+			\centering
+				\includegraphics[scale=0.5]{Gambar/3_tampilan_ubahrute.png}
+			\caption{Ubah Data Rute Angkutan Umum}
+			\label{fig:3_tampilan_ubahrute}
+		\end{figure}
+		\item \textbf{\textit{Clear Geodata}}, hapus data geografi pada peta (Gambar \ref{fig:3_tampilan_ubahrute}).
+		\item \textbf{\textit{Clear Transfers}}, menghapus titik-titik merah pada peta (Gambar \ref{fig:3_tampilan_ubahrute}).
+		\item \textbf{\textit{All Transfers}}, memunculkan titik-titik merah pada peta (Gambar \ref{fig:3_tampilan_ubahrute}).
+		\item \textbf{Impor Data KML}, menambahkan data geografi pada peta (Gambar \ref{fig:3_tampilan_imporkml}).
+		\begin{figure}[htbp]
+			\centering
+				\includegraphics[scale=0.7]{Gambar/3_tampilan_imporkml.png}
+			\caption{Impor data KML}
+			\label{fig:3_tampilan_imporkml}
+		\end{figure}
+	\end{itemize}	
+
+	\begin{figure}[htbp]
+		\centering
+			\includegraphics[scale=0.35]{Gambar/3_tampilan_apikey.png}
+		\caption{Pengelola API \textit{Keys}}
+		\label{fig:3_tampilan_apikey}
+	\end{figure}
+	\item Pengelola API \textit{Keys}.\\
+	Merupakan bagian untuk mengelola API \textit{keys} (Gambar \ref{fig:3_tampilan_apikey}). Bagian ini ditampilkan jika pengguna berhasil \textit{login} dan memiliki hak akses terhadap API \textit{keys}.
+	\begin{itemize}
+		\item \textbf{\textit{Add}}, menambahkan sebuah API \textit{key} baru ke dalam daftar milik pengguna (Gambar \ref{fig:3_tampilan_addapikey}).
+		\begin{figure}[htbp]
+			\centering
+				\includegraphics[scale=0.5]{Gambar/3_tampilan_addapikey.png}
+			\caption{Menambahkan Sebuah API \textit{Key}}
+			\label{fig:3_tampilan_addapikey}
+		\end{figure}
+		\item \textbf{\textit{Edit}}, mengubah sebuah data API \textit{key} yang dipilih pengguna (Gambar \ref{fig:3_tampilan_editapikey}).
+		\begin{figure}[htbp]
+			\centering
+				\includegraphics[scale=0.5]{Gambar/3_tampilan_editapikey.png}
+			\caption{Mengubah Data Sebuah API \textit{Key}}
+			\label{fig:3_tampilan_editapikey}
+		\end{figure}
+		\item \textbf{\textit{Refresh}}, melihat seluruh daftar API \textit{keys} yang dimiliki oleh pengguna (Gambar \ref{fig:3_tampilan_apikey}).
+	\end{itemize}
+	
+\end{enumerate}
+
+
 \section{Analisis \textit{Database} Sistem Kini}
 \label{sec:analisisdatabasesistemkini}
 Sistem KIRI menggunakan perangkat lunak MySQL sebagai sarana penyimpanan untuk mengolah data. Seperti yang dijelaskan pada subbab sebelumnya (subbab \ref{sec:analisissistemkini}) terdapat sebuah \textit{folder} yang menyimpan \textit{file-file} untuk membangun \textit{database} sistem KIRI, yaitu: \textit{folder} ``sql'' (Gambar \ref{fig:3_strukturkiri}). Berdasarkan hasil analisa dan wawancara dengan kontributor kode KIRI, berikut adalah penjelasan mengenai isi \textit{folder} ``sql'' (Gambar \ref{fig:4_struktursql}):
@@ -172,6 +308,24 @@ Sistem KIRI menggunakan perangkat lunak MySQL sebagai sarana penyimpanan untuk m
 	\item \textit{file} ``.gitignore'', merupakan \textit{file} yang menyimpan daftar \textit{file} yang tidak perlu dikirimkan ke tempat penyimpanan GitHub karena \textit{file-file} tersebut dibangkitkan oleh sistem.
 	\item \textit{file} ``tirtayasa\_structure.sql'', merupakan \textit{file} untuk membangun tabel-tabel serta kolom-kolom (pada setiap tabel) \textit{database} sistem KIRI.
 	\item \textit{file} ``tirtayasa.sql'', merupakan \textit{file} untuk membangun isi dari kolom-kolom setiap tabel, yaitu \textit{record-record} awal.
+\end{enumerate}
+
+Berdasarkan hasil analisa terhadap \textit{database} sistem kini (Gambar \ref{fig:4_struktursql}), berikut adalah penjelasan fungsi seluruh tabel yang digunakan oleh sistem kini:
+\begin{enumerate}
+	\item \textbf{statistics}\\
+	Berfungsi untuk melakukan pencatatan mengenai siapa saja yang telah menggunakan sistem kini. Digunakan pada bagian menambahkan API \textit{keys}, \textit{login}, dan \textit{register}. 
+	\item \textbf{apikeys}\\
+	Berfungsi untuk menyimpan daftar API \textit{keys} beserta informasi kepemilikannya. Digunakan untuk mengelola API \textit{keys} (melihat, menambahkan, dan mengubah). 
+	\item \textbf{users}\\
+	Berfungsi untuk menyimpan daftar pengguna yang dapat mengakses sistem kini. Digunakan untuk bagian \textit{login}, \textit{register}, pemeriksaan \textit{login}, pengelola data pribadi pengguna (melihat dan mengubah). 
+	\item \textbf{sessions}\\
+	Berfungsi untuk menyimpan data sesi sementara pengguna yang sedang menggunakan sistem kini. Setelah pengguna selesai menggunakan, maka data sesi akan dihapus oleh sistem. Digunakan untuk bagian \textit{logout} dan pemeriksaan \textit{login}. 
+	\item \textbf{properties}\\
+	Berfungsi untuk menyimpan informasi versi terbaru rute sistem kini. Digunakan untuk bagian pengelola rute angkutan umum (melihat, mengubah, menambahkan, dan menghapus).
+	\item \textbf{tracks}\\
+	Berfungsi untuk menyimpan daftar rute sistem kini. Digunakan untuk bagian pengelola rute angkutan umum (melihat, mengubah, menambahkan, dan menghapus).
+	\item \textbf{tracktypes}\\
+	Berfungsi untuk menyimpan daftar angkutan umum sistem kini. Digunakan untuk bagian pengelola rute angkutan umum (melihat, mengubah, menambahkan, dan menghapus).
 \end{enumerate}
 
 \begin{figure}[htbp]
@@ -183,7 +337,7 @@ Sistem KIRI menggunakan perangkat lunak MySQL sebagai sarana penyimpanan untuk m
 
 \begin{figure}[htbp]
 	\centering
-		\includegraphics[scale=0.65]{Gambar/4_strukturdatabase.PNG}
+		\includegraphics[scale=0.8]{Gambar/4_strukturdatabase.PNG}
 	\caption{Struktur database sistem KIRI}
 	\label{fig:4_strukturdatabase}
 \end{figure}
@@ -203,7 +357,7 @@ Berdasarkan kebutuhan akan poin-poin di atas, maka dalam memodelkan KIRI \textit
 \label{sec:routesusulan}
 Kebutuhan KIRI \textit{Dashboard} adalah pemetaan untuk ke 2 bagian, yaitu:
 \begin{enumerate}
-	\item Pemetaan URL untuk menangani tampilan KIRI \textit{Dashboard}. Hanya 1 \textit{route} yang dibutuhkan untuk pemetaan terhadap bagian tampilan (walau fitur KIRI \textit{Dashboard} banyak) karena kode KIRI \textit{Dashboard} sistem kini telah menggunakan kombinasi JavaScript  AJAX sedemikian rupa yang dapat mengubah tampilan KIRI \textit{Dashboard} sesuai dengan balasan permintaan dari sisi \textit{server}. AJAX (\textit{asynchronous JavaScript and XML}) adalah teknik yang memungkinkan suatu situs web melakukan permintaan ke sisi \textit{server} secara \textit{background}\cite{w3schools}.
+	\item Pemetaan URL untuk menangani bagian tampilan KIRI \textit{Dashboard}. Hanya 1 \textit{route} yang dibutuhkan untuk pemetaan terhadap bagian tampilan (walau fitur KIRI \textit{Dashboard} banyak) karena kode KIRI \textit{Dashboard} sistem kini telah menggunakan kombinasi JavaScript AJAX sedemikian rupa yang dapat mengubah tampilan KIRI \textit{Dashboard} sesuai dengan balasan permintaan dari sisi \textit{server}. AJAX (\textit{asynchronous JavaScript and XML}) adalah teknik yang memungkinkan suatu situs web melakukan permintaan ke sisi \textit{server} secara \textit{background}\cite{w3schools}.
 	\item Pemetaan URL untuk menangani permintaan-permintaan dari tampilan ke sisi \textit{server}, yaitu KIRI \textit{Dashboard server side} (\textit{controllers}).
 \end{enumerate}
 

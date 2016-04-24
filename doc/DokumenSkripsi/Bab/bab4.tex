@@ -3,14 +3,34 @@
 
 \section{Perancangan Kelas}
 \label{sec:diagramkelas}
-Seperti yang telah dijelaskan pada bab analisis, bahwa untuk memodelkan KIRI \textit{Dashboard Server Side} dalam Play Framework membutuhkan \textit{models}, \textit{views}, dan \textit{controllers}. Berdasarkan hasil analisis yang dilakukan pada bab analisis, telah dirancang diagram kelas untuk memenuhi kebutuhan dalam membangun aplikasi sistem usulan (Gambar \ref{fig:4_classdiagram}). Deskripsi kelas beserta fungsi dari diagram kelas akan dijelaskan pada subbab selanjutnya.
+Seperti yang telah dijelaskan pada bab analisis, bahwa untuk memodelkan KIRI \textit{Dashboard} dalam Play Framework membutuhkan \textit{routes}, \textit{controllers}, \textit{models}, dan \textit{folder} ``public/''. Berdasarkan hasil pengembangan diagram kelas analisis (Gambar \ref{fig:3_classdiagram_kasar}), dibuatlah diagram kelas rinci untuk memenuhi kebutuhan dalam membangun aplikasi sistem usulan (Gambar \ref{fig:4_classdiagramatribut} dan Gambar \ref{fig:4_classdiagramrelasi}). Deskripsi kelas beserta fungsi dari diagram kelas akan dijelaskan pada subbab selanjutnya.
 
 \begin{figure}[htbp]
 	\centering
-		\includegraphics[scale=0.45]{Gambar/4_classdiagram.png}
-	\caption{Kelas Diagram KIRI \textit{Dashboard Server Side}}
-	\label{fig:4_classdiagram}
+		\includegraphics[scale=0.45]{Gambar/4_classdiagram_atribut.png}
+	\caption{Kelas Diagram Rinci KIRI \textit{Dashboard Server Side} (Atribut dan \textit{Method})}
+	\label{fig:4_classdiagramatribut}
 \end{figure}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[scale=0.55]{Gambar/4_classdiagram_relasi.png}
+	\caption{Kelas Diagram Rinci KIRI \textit{Dashboard Server Side} (Relasi)}
+	\label{fig:4_classdiagramrelasi}
+\end{figure}
+
+\section{\textit{Routes}}
+\label{sec:perancanganroutes}
+\textit{Routes} merupakan bagian aplikasi Play Framework untuk melakukan pemetaan permintaan URL. Berikut adalah isi ``conf/routes'' hasil pengembangan dari bab analisis:
+\begin{lstlisting}
+	GET		/	 		 					 controllers.Application.index()
+	POST	/bukitjarian/handle.php	 		 controllers.Application.handle()
+	GET     /bukitjarian/		             controllers.Assets.at(path ="/public/bukitjarian", file="index.html")
+	GET     /bukitjarian/*file         		 controllers.Assets.at(path ="/public/bukitjarian", file)
+	GET     /*other	         		 	     controllers.Application.pagenotfound(other: String)
+\end{lstlisting}
+
+Baris ke 3 kode di atas adalah untuk penanganan bagian tampilan sistem usulan. Baris ke 2 kode di atas adalah untuk menangani permintaan ke sisi \textit{server} dari bagian tampilan berdasarkan hasil bab analisis (Subbab \ref{sec:analisistampilansistemkini}). Baris ke 1 adalah untuk penanganan jika ada permintaan ke ``/'' maka akan di arahkan ke bagian tampilan sistem usulan (Subbab \ref{sec:controllerssrancangan}). Baris ke 4 adalah penanganan seluruh \textit{file} statis yang digunakan untuk membangun bagian tampilan sistem usulan. Baris ke 5 adalah penanganan seluruh permintaan URL yang tidak memiliki fungsi pada sistem usulan.
 
 \section{\textit{Controllers}}
 \label{sec:controllerssrancangan}
@@ -474,6 +494,10 @@ Kelas ini merupakan kelas penyedia beberapa \textit{method} yang umum digunakan 
 	\end{itemize}
 \end{itemize}
 
-\section{\textit{Views}}
-\label{sec:viewssrancangan}
-Disalin apa adanya.
+\section{\textit{Folder} ``public/''}
+\label{sec:perancanganfolderpublic}
+Seluruh \textit{file} dan \textit{folder} yang bersifat statis pada sistem kini disalin apa adanya ke \textit{folder} ``public/'' sistem usulan, yaitu: \textit{folder} ``public\_html\_dev/bukitjarian'' yang berisi \textit{folder} ``bukitbukitjariangwt'', \textit{folder} ``images'', dan \textit{file} ``index.html''.
+
+\section{Perancangan Antarmuka}
+\label{sec:perancanganantarmuka}
+Tidak dibuat perancangan antarmuka baru karena sistem usulan menggunakan tampilan yang sama dengan sistem kini (Subbab \ref{sec:analisistampilansistemkini}). Bagian tampilan sistem kini juga dapat disalin apa adanya karena sifatnya yang statis dan tidak memerlukan operasi khusus di \textit{server}.
