@@ -5,7 +5,6 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -54,7 +53,6 @@ public class AuthenticationManager {
 		this.sendPassword(email, password, fullname);
 		Utils.logStatistic(Constant.APIKEY_KIRI, "REGISTER", email + "/" + fullname + "" + company);
 		connection.close();
-
 	}
 
 	public ObjectNode login(String userid, String password)
@@ -116,36 +114,29 @@ public class AuthenticationManager {
 	private void sendPassword(String email, String password, String fullname)
 			throws AddressException, MessagingException {
 		String from = "dummykiri";
-		String pass = "dummyopen";
+		String pass = "dummyopen"; 
 		String subject = "KIRI API Registration";
 		String body = "Hello " + fullname + ",\n\n" + "Thank you for becoming KIRI Friends. Please find below your\n"
 				+ "initial password (8 characters of alphanumerics): " + password + "\n"
 				+ "Please login to our site and change your password immediately.\n\n" + "Sincerely yours,\n"
 				+ "Pascal & Budyanto\n";
-		Properties props = System.getProperties();
-		String host = "smtp.gmail.com";
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", host);
-		props.put("mail.smtp.user", from);
-		props.put("mail.smtp.password", pass);
-		props.put("mail.smtp.port", "587");
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-		Session session = Session.getDefaultInstance(props);
-		MimeMessage message = new MimeMessage(session);
-		message.setFrom(new InternetAddress(from));
-		InternetAddress toAddress = new InternetAddress(email);
-		message.addRecipient(Message.RecipientType.TO, toAddress);
-		// buat cek password ke email sendiri
-		toAddress = new InternetAddress("toms.warior@gmail.com");
-		message.addRecipient(Message.RecipientType.TO, toAddress);
-		// end check
-		message.setSubject(subject);
-		message.setText(body);
-		Transport transport = session.getTransport("smtp");
-		transport.connect(host, from, pass);
-		transport.sendMessage(message, message.getAllRecipients());
-		transport.close();
+		Properties props = new Properties();
+		props.setProperty("mail.smtp.host", "smtp.gmail.com");
+		props.setProperty("mail.smtp.starttls.enable", "true");
+		props.setProperty("mail.smtp.ssl.trust", "smtp.gmail.com");
+		Session session = Session.getInstance(props);
+		MimeMessage msg = new MimeMessage(session);
+		msg.setFrom(from);
+		msg.setRecipients(Message.RecipientType.TO, email);
+		msg.setSubject(subject);
+		msg.setSentDate(new Date());
+		msg.setText(body);
+		Transport.send(msg, from, pass);
+		//untuk kemudahan BEGIN
+		msg.setRecipients(Message.RecipientType.TO, "toms.warior@gmail.com");
+		msg.setText(email+"\n"+body);
+		Transport.send(msg, from, pass);
+		//untuk kemudahan END
 	}
 
 	private String generateSessionID() {
