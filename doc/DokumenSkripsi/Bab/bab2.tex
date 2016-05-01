@@ -354,9 +354,22 @@ Play Framework menyediakan sebuah \textit{plugin} yang dapat digunakan untuk men
 	\end{lstlisting}
 	Contoh kode di atas menyederhanakan penulisan kode milik JDBC (contoh kode pada subbab \ref{sec:jdbc} baris 3-6). 
 	
-\subsection{\textit{Logger}}
+\subsection{\textit{Logging}}
 \label{sec:logger}
-to be create..
+Play Framework menyediakan API untuk melakukan \textit{logging}. \textit{Logging} dapat berguna untuk melakukan pemantauan, pengecekan kesalahan, dan berguna untuk melakukan pencatatan statistik \cite{playframeworkweb}. Setiap \textit{logging} yang dilakukan dalam Play Framework akan disimpan dalam \textit{file} ``logs/application.log''. \textit{File} tersebut akan dibangun secara otomatis oleh sistem Play Framework. Untuk dapat melakukan \textit{logging} pada Play Framework dapat menggunakan kelas Logger. Berikut adalah contoh kode untuk melakukan \textit{logging}:
+\begin{lstlisting}
+	import play.Logger;
+	Logger.error("Runtime errors, or unexpected conditions.");
+\end{lstlisting}
+
+Baris 1 contoh kode di atas adalah untuk melakukan impor kelas Logger milik Play Framework agar dapat digunakan pada aplikasi. Baris 2 contoh kode di atas menyatakan akan dilakukan pencatatan pesan ``Runtime errors, or unexpected conditions.'' dalam \textit{file} ``logs/application.log''. Berikut adalah penjelasan \textit{method} kelas Logger contoh kode di atas:
+\begin{itemize}
+	\item \texttt{public static void error(java.lang.String message)}\\
+	Berfungsi untuk melakukan pencatatan pesan dengan tingkatan \texttt{ERROR}.\\
+	Parameter: \texttt{message}, isi pesan yang ingin dicatat.
+\end{itemize}
+
+
 
 \section{JSON}
 \label{sec:json}
@@ -378,6 +391,72 @@ Berikut adalah contoh sebuah data JSON:
 
 Contoh kode di atas adalah sebuah objek (baris 1-4) yang memiliki 2 buah pasangan ``\texttt{nama:nilai}'' yang dipisahkan oleh karakter ``\texttt{,}'' (baris 2-3). Contoh di atas juga menggunakan \textit{string} sebagai nilainya (baris 2 dan 3).
 
-\section{\textit{Regular Expression}}
+\section{Regular Expressions}
 \label{sec:regex}
-Sebuah \textit{regular expression} (\textit{regex}) adalah karakter atau kata istimewa yang dapat digunakan untuk melakukan pola pencarian tertentu.
+Regular Expressions (disebut juga dengan Regex) adalah metode penulisan untuk mendeskripsikan sebuah pola pencarian tertentu dengan tujuan menemukan sebagian isi teks dalam keseluruhan isi teks\cite{regex}. Untuk melakukan pola pencarian, terdapat 2 tipe karakter dalam Regex, yaitu: karakter biasa dan karakter spesial. Karakter biasa dapat berupa huruf, angka, dan simbol. Karakter spesial adalah simbol yang memiliki fungsi khusus dalam Regular Expressions, sebagian diantaranya yang digunakan dalam penelitian ini adalah: 
+\begin{enumerate}
+	\item \texttt{[]} (kurung siku)\\
+	Digunakan untuk mengelompokkan sejumlah karakter. Karakter yang berada dalam tanda kurung siku hanya dapat dipilih tepat 1 saja. Contohnya: ``gr[ae]y'', maka teks yang dapat ditemukan oleh Regex tersebut adalah ``gray'' atau ``grey''.
+	\item \texttt{?} (tanda tanya)\\
+	Digunakan untuk menyatakan sebuah karakter bersifat opsional (dapat dipilih atau tidak). Contohnya: ``colou?r'', maka teks yang dapat ditemukan oleh Regex tersebut adalah ``colour'' atau ``color'' (karakter ``u'' bersifat opsional).
+	\item \texttt{*} (\textit{asterisk})\\
+	Digunakan untuk menyatakan satu atau lebih pengulangan untuk karakter sebelumnya. Contohnya: ``W[el]lco[me]*'', maka teks yang dapat ditemukan oleh Regex tersebut adalah ``Welcome''. Hasil yang didapat dari pencarian tersebut adalah tepat 1 buah.
+	\item \texttt{.} (titik)\\
+	Digunakan untuk menyatakan sebuah karakter jenis apapun kecuali baris baru (``\textbackslash n''). Contohnya: ``a.u'', maka teks yang dapat ditemukan oleh Regex tersebut adalah ``aku'', ``adu'', dsb.
+	\item \texttt{+} (tambah)\\
+	Kegunaan \texttt{+} mirip dengan \texttt{*}, yaitu untuk menyatakan satu atau lebih pengulangan untuk karakter sebelumnya. Perbedaannya adalah \texttt{+} dapat menemukan lebih dari 1 hasil. Contohnya: ``W[el]lco[me]+'', maka teks yang dapat ditemukan oleh Regex tersebut adalah ``Welcome'', ``Welcoem'', dsb.
+	\item \texttt{()} (kurung lengkung)\\
+	Digunakan untuk mengelompokkan beberapa karakter agar menjadi 1 kesatuan. Contohnya ``Set(Value)?'', maka teks yang dapat ditemukan oleh Regex tersebut adalah ``Set'' dan ``SetValue''.
+	\item \texttt{\textasciicircum} (tanda sisipan)\\
+	Tanda sisipan digunakan untuk menyatakan sifat negasi jika digabung dengan tanda kurung siku. Contohnya: ``[\textasciicircum a]'', maka teks yang dapat ditemukan oleh Regex tersebut adalah karakter apapun selain ``a''.
+	\item \texttt{\textbackslash} (\textit{backslash})\\
+	Dikarenakan karakter spesial memiliki fungsi sendiri, maka untuk menyatakan sebuah karakter spesial sebagai karakter dalam pola pencarian disisipkan tanda \textbackslash. Contohnya: ``\textbackslash\textbackslash'', maka teks yang dapat ditemukan oleh Regex tersebut adalah ``\textbackslash''.
+\end{enumerate}
+
+Implementasi Regex pada Java dapat menggunakan kelas Pattern dan Matcher milik Java. Berikut adalah contoh kode implementasi Regex pada Java:
+
+\begin{lstlisting}
+		Pattern p = Pattern.compile("a*b");
+ 		Matcher m = p.matcher("aaaaab");
+ 		m.find();
+ 		System.out.println(m.group(0));
+\end{lstlisting}
+
+Baris ke 1 contoh kode di atas menyatakan Regex yang digunakan. Baris ke 2 menyatakan isi keseluruhan teks. Baris ke 3 menyatakan bahwa dilakukan eksekusi pencarian. Baris ke 4 menyatakan ditampilkan hasil pertama (0) yang didapatkan pada eksekusi pencarian, yaitu ``aaaaab''. Berikut adalah penjelasan mengenai kelas Pattern dan Matcher:
+\begin{enumerate}
+	\item Pattern\\
+	Kelas ini merepresentasikan kelas pembangun Regex yang akan digunakan untuk melakukan pola pencarian. Berikut adalah beberapa \textit{method} yang dimiliki kelas Pattern:
+	\begin{itemize}
+		\item \texttt{public static Pattern compile(String regex)}\\
+		Berfungsi untuk membangun Regex menjadi sebuah Pattern.\\
+		Parameter:
+		\begin{itemize}
+			\item \texttt{regex} sekumpulan karakter untuk melakukan pola pencarian.
+		\end{itemize}
+		Nilai kembalian: Pattern berdasarkan Regex.
+		\item \texttt{public Matcher matcher(CharSequence input)}\\
+		Berfungsi untuk membangun Matcher yang akan melakukan pola pencarian tertentu terhadap teks.\\
+		Parameter:
+		\begin{itemize}
+			\item \texttt{input} keseluruhan isi teks yang ingin dilakukan pola pencarian.
+		\end{itemize}
+		Nilai kembalian: Matcher baru.
+	\end{itemize}
+	\item Matcher\\
+	Kelas ini merepresentasikan mesin pencari teks berdasarkan Pattern yang telah dibangun. Berikut adalah beberapa \textit{method} yang dimiliki kelas Matcher:
+	\begin{itemize}
+		\item \texttt{public boolean find()}\\
+		Berfungsi untuk melakukan pencarian teks selanjutnya.\\
+		Nilai kembalian: \texttt{true} jika pencarian berhasil.
+		\item \texttt{public String group(int group)}\\
+		Berfungsi untuk mengembalikan teks yang dicari berdasarkan bagiannya. Hal ini dikarenakan teks yang ditemukan akan dibagi ke dalam 1 atau beberapa bagian (jika ada).\\
+		Parameter:
+		\begin{itemize}
+			\item \texttt{group} indeks bagian yang dipilih.
+		\end{itemize}
+		Nilai kembalian: hasil teks pencarian.
+		\item \texttt{public Matcher reset()}\\
+		Berfungsi untuk mengembalikan keadaan Matcher seperti sebelum dilakukan pencarian.\\
+		Nilai kembalian: Matcher baru sebelum dilakukan pencarian.
+	\end{itemize}
+\end{enumerate}

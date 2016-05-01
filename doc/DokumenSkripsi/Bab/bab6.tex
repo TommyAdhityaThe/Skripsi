@@ -5,15 +5,15 @@
 \label{sec:kesimpulan}
 Berdasarkan hasil penelitian yang dilakukan, didapatkan kesimpulan-kesimpulan sebagai berikut:
 \begin{enumerate}
-	\item \textit{Porting} KIRI \textit{Dashboard server side} yang semula dalam bahasa PHP menjadi bahasa Java dengan menggunakan Play Framework dapat dilakukan.
-	\item Memodelkan kode yang semula dalam desain struktural (PHP) menjadi dalam MVC (Play Framework) dapat dilakukan.
-	\item Waktu eksekusi KIRI \textit{Dashboard server side} dalam bahasa PHP lebih cepat dibandingkan dalam Play Framework.
-	\item Play Framework cocok digunakan untuk proyek skala besar karena kemudahan dalam pengembangan kode (MVC dan \textit{typesafe}).
+	\item Kode KIRI \textit{Dashboard server side} dapat dibagi menjadi 16 yang masing-masing melayani sebuah permintaan tertentu untuk bagian tampilan sistem KIRI, yaitu: pemeriksaan \textit{login}, \textit{login}, \textit{logout}, menambahkan rute, mengubah rute, melihat daftar rute, melihat informasi rute secara detail, menghapus data geografis suatu rute, impor data KML, menghapus rute, melihat daftar API \textit{keys}, menambahkan API \textit{key}, mengubah API \textit{key}, \textit{register}, melihat data pribadi pengguna, dan mengubah data pribadi pengguna.
+	\item Telah berhasil melakukan \textit{porting} kode KIRI \textit{Dashboard server side} yang semula dalam bahasa PHP menjadi bahasa Java dengan menggunakan Play Framework. \textit{Porting} dilakukan dengan memodelkan 16 bagian kode KIRI \textit{Dashboard server side} menjadi \textit{models} dan \textit{controllers} pada Play Framework. Bagian tampilan kode KIRI \textit{Dashboard} dapat disalin apa adanya dalam Play Framework untuk mencoba seluruh fungsi KIRI \textit{Dashboard server side}.
+	\item Berdasarkan hasil pengujian eksperimental, waktu eksekusi fitur-fitur KIRI \textit{Dashboard server side} yang dibangun dengan Play Framework umumnya lebih cepat dibandingkan dengan KIRI \textit{Dashboard server side} yang dibangun dengan PHP.
 \end{enumerate}
 
 \section{Saran}
 \label{sec:saran}
 Berdasarkan hasil penelitian yang dilakukan, berikut adalah beberapa saran untuk pengembangan:
 \begin{enumerate}
-	\item Play Framework hanya cocok untuk proyek skala besar, untuk proyek kecil tidak disarankan menggunakan Play Framework karena waktu eksekusi aplikasi lebih besar dibandingkan PHP.
+	\item Bagian \textit{register} KIRI \textit{Dashboard server side} menggunakan JavaMail API untuk melakukan pengiriman \textit{email}. Berdasarkan hasil uji eksperimental terhadap waktu eksekusi didapatkan informasi perbedaan waktu yang cukup lama (4492 mili sekon). Peneliti menyarankan agar pengembang nantinya mencari alternatif solusi yang lebih baik dari JavaMail API.
+	\item Bagian pengelola API \textit{keys} KIRI \textit{Dashboard} belum memiliki bagian untuk menghapus API \textit{key}.
 \end{enumerate}

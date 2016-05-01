@@ -1,7 +1,7 @@
 \chapter{Analisis}
 \label{chap:analisis}
 
-\section{Analisis Sistem Kini}
+\section{Analisis Kode Sistem Kini}
 \label{sec:analisissistemkini}
 Berdasarkan hasil analisa serta wawancara dengan kontributor kode KIRI, berikut adalah penjelasan secara umum mengenai isi kode KIRI (Gambar \ref{fig:3_strukturkiri}):
 \begin{enumerate}
@@ -224,7 +224,7 @@ Berdasarkan hasil analisa terhadap bagian tampilan sistem kini, didapatkan infor
 	\item Pengelola Rute Angkutan Umum.\\
 	Merupakan bagian untuk mengelola rute angkutan umum (Gambar \ref{fig:3_tampilan_route}). Bagian ini ditampilkan jika pengguna berhasil \textit{login} dan memiliki hak akses terhadap rute angkutan umum.
 	\begin{itemize}
-		\item \textbf{Peta}, merupakan representasi gambar dari data geografi sebuah rute angkutan umum (Gambar \ref{fig:3_tampilan_peta}).
+		\item \textbf{Peta}, merupakan representasi gambar dari data geografis sebuah rute angkutan umum (Gambar \ref{fig:3_tampilan_peta}).
 		\begin{figure}[htbp]
 			\centering
 				\includegraphics[scale=0.35]{Gambar/3_tampilan_peta.png}
@@ -260,10 +260,10 @@ Berdasarkan hasil analisa terhadap bagian tampilan sistem kini, didapatkan infor
 			\caption{Ubah Data Rute Angkutan Umum}
 			\label{fig:3_tampilan_ubahrute}
 		\end{figure}
-		\item \textbf{\textit{Clear Geodata}}, hapus data geografi pada peta (Gambar \ref{fig:3_tampilan_ubahrute}).
+		\item \textbf{\textit{Clear Geodata}}, hapus data geografis pada peta (Gambar \ref{fig:3_tampilan_ubahrute}).
 		\item \textbf{\textit{Clear Transfers}}, menghapus titik-titik merah pada peta (Gambar \ref{fig:3_tampilan_ubahrute}).
 		\item \textbf{\textit{All Transfers}}, memunculkan titik-titik merah pada peta (Gambar \ref{fig:3_tampilan_ubahrute}).
-		\item \textbf{Impor Data KML}, menambahkan data geografi pada peta (Gambar \ref{fig:3_tampilan_imporkml}).
+		\item \textbf{Impor Data KML}, menambahkan data geografis pada peta (Gambar \ref{fig:3_tampilan_imporkml}).
 		\begin{figure}[htbp]
 			\centering
 				\includegraphics[scale=0.7]{Gambar/3_tampilan_imporkml.png}
@@ -402,7 +402,7 @@ Pada bagian ini akan dibuat sebuah kelas yang akan menangani permintaan-perminta
 	\label{fig:3_usecase}
 \end{figure}
 
-\section{Analisis \textit{Libraries} Sistem Usulan}
+\section{Analisis \textit{Libraries} Tambahan}
 \label{sec:analisislibrary}
 Berdasarkan hasil analisis 16 bagian sistem KIRI, dibutuhkan beberapa \textit{library} untuk dapat melakukan \textit{porting} beberapa bagian pada penelitian ini. Untuk mengatur penggunaan \textit{library} pada aplikasi Play Framework dapat dilakukan pada \textit{file} ``build.sbt''\cite{playframeworkweb} (Gambar \ref{fig:3_strukturkiri}). Daftar \textit{library} yang dapat digunakan untuk Play Framework dapat dicari melalui Maven Repository\cite{maven}. Deklarasi untuk menambahkan sebuah \textit{library} pada ``build.sbt'' terdiri dari 3 bagian, yaitu: kelompok, nama spesifik, dan versi. Berikut adalah contoh struktur kode untuk menambahkan sebuah \textit{library} pada ``build.sbt'':
 \begin{lstlisting}

@@ -1,0 +1,986 @@
+\chapter{Kode Program Sistem Usulan}
+\label{app:B}
+
+%selalu gunakan single spacing untuk source code !!!!!
+\singlespacing 
+% language: bahasa dari kode program
+% terdapat beberapa pilihan : Java, C, C++, PHP, Matlab, R, dll
+%
+% basicstyle : ukuran font untuk kode program
+% terdapat beberapa pilihan : tiny, scriptsize, footnotesize, dll
+%
+% caption : nama yang akan ditampilkan di dokumen akhir, lihat contoh
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=controllers/Application.java,label={lst:application.java}]
+package controllers;
+
+import play.mvc.Controller;
+import play.mvc.Http.MultipartFormData;
+import play.mvc.Http.MultipartFormData.FilePart;
+import play.mvc.Result;
+import models.Utils;
+import models.TracksManager;
+import models.User;
+import models.ApiKeysManager;
+import models.AuthenticationManager;
+import models.Constant;
+import models.UniqueStatusError;
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import play.data.DynamicForm;
+import play.data.Form;
+import play.libs.Json;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+
+/**
+ * Kelas ini untuk menangani permintaan-permintaan dari bagian View
+ * 
+ * @author Tommy Adhitya The
+ */
+public class Application extends Controller {
+	public Result index() {
+		return redirect("/bukitjarian/");
+	}
+
+	public Result pagenotfound(String other) {
+		return notFound("<h1>" + other + " not found</h1>").as("text/html");
+	}
+
+	public Result handle() {
+		ObjectNode response;
+		try {
+			User user = null;
+			DynamicForm requestData = Form.form().bindFromRequest();
+			String mode = requestData.get(Constant.PROTO_MODE);
+			if (!mode.equals(Constant.PROTO_MODE_LOGIN) && !mode.equals(Constant.PROTO_MODE_REGISTER)
+					&& !mode.equals(Constant.PROTO_MODE_LOGOUT)) {
+				user = new User(requestData.get(Constant.PROTO_SESSION_ID));
+			}
+			switch (mode) {
+			case Constant.PROTO_MODE_LOGIN:
+				response = this.login(requestData.get(Constant.PROTO_USER_ID),
+						requestData.get(Constant.PROTO_PASSWORD));
+				break;
+			case Constant.PROTO_MODE_REGISTER:
+				response = this.register(requestData.get(Constant.PROTO_USER_ID),
+						requestData.get(Constant.PROTO_FULL_NAME), requestData.get(Constant.PROTO_COMPANY));
+				break;
+			case Constant.PROTO_MODE_LOGOUT:
+				response = this.logout(requestData.get(Constant.PROTO_SESSION_ID));
+				break;
+			case Constant.PROTO_MODE_GET_PROFILE:
+				response = this.getProfile(user);
+				break;
+			case Constant.PROTO_MODE_UPDATE_PROFILE:
+				response = this.updateProfile(user, requestData.get(Constant.PROTO_PASSWORD),
+						requestData.get(Constant.PROTO_FULL_NAME), requestData.get(Constant.PROTO_COMPANY));
+				break;
+			case Constant.PROTO_MODE_LIST_API_KEYS:
+				response = this.getListOfApiKeys(user);
+				break;
+			case Constant.PROTO_MODE_ADD_API_KEY:
+				response = this.addApiKey(user, requestData.get(Constant.PROTO_DOMAIN_FILTER),
+						requestData.get(Constant.PROTO_DESCRIPTION));
+				break;
+			case Constant.PROTO_MODE_UPDATE_API_KEY:
+				response = this.updateApiKey(user, requestData.get(Constant.PROTO_VERIFIER),
+						requestData.get(Constant.PROTO_DOMAIN_FILTER), requestData.get(Constant.PROTO_DESCRIPTION));
+				break;
+			case Constant.PROTO_MODE_LIST_TRACKS:
+				response = this.getListOfTracks(user);
+				break;
+			case Constant.PROTO_MODE_GET_DETAILS_TRACK:
+				response = this.getDetailsTrack(user, requestData.get(Constant.PROTO_TRACK_ID));
+				break;
+			case Constant.PROTO_MODE_DELETE_TRACK:
+				response = this.deleteTrack(user, requestData.get(Constant.PROTO_TRACK_ID));
+				break;
+			case Constant.PROTO_MODE_ADD_TRACK:
+				response = this.addTrack(user, requestData.get(Constant.PROTO_TRACK_ID),
+						requestData.get(Constant.PROTO_TRACK_NAME), requestData.get(Constant.PROTO_TRACK_TYPE),
+						requestData.get(Constant.PROTO_PENALTY), requestData.get(Constant.PROTO_INTERNAL_INFO));
+				break;
+			case Constant.PROTO_MODE_UPDATE_TRACK:
+				String transfernodes = requestData.get(Constant.PROTO_TRANSFER_NODES) == null ? ""
+						: requestData.get(Constant.PROTO_TRANSFER_NODES);
+				String internalinfo = requestData.get(Constant.PROTO_INTERNAL_INFO) == null ? ""
+						: requestData.get(Constant.PROTO_INTERNAL_INFO);
+				response = this.updateTrack(user, requestData.get(Constant.PROTO_TRACK_ID),
+						requestData.get(Constant.PROTO_NEW_TRACK_ID), requestData.get(Constant.PROTO_TRACK_TYPE),
+						requestData.get(Constant.PROTO_TRACK_NAME), internalinfo,
+						requestData.get(Constant.PROTO_PATH_LOOP), requestData.get(Constant.PROTO_PENALTY),
+						transfernodes);
+				break;
+			case Constant.PROTO_MODE_CLEAR_GEODATA:
+				response = this.clearGeoData(user, requestData.get(Constant.PROTO_TRACK_ID));
+				break;
+			case Constant.PROTO_MODE_IMPORT_KML:
+				File dataKML = null;
+				MultipartFormData body = request().body().asMultipartFormData();
+				FilePart uploadedFile = body.getFile(Constant.PROTO_UPLOADED_FILE);
+				if (uploadedFile != null) {
+					dataKML = uploadedFile.getFile();
+				} else {
+					Utils.dieNice("Server script is unable to retrieve the file");
+				}
+				response = this.importKML(user, requestData.get("trackid"), dataKML);
+				break;
+			default:
+				throw new IOException(Constant.ERROR_MODE_NOT_FOUND);
+			}
+			return ok(response);
+		} catch (UniqueStatusError e) {
+			e.printStackTrace();
+			response = Json.newObject();
+			response.put(Constant.PROTO_STATUS, e.getStatus());
+			return badRequest(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			response = Json.newObject();
+			response.put(Constant.PROTO_STATUS, Constant.ERROR);
+			response.put(Constant.PROTO_MESSAGE, e.getMessage());
+			return badRequest(response);
+		}
+	}
+
+	private ObjectNode login(String userid, String password) throws UniqueStatusError, IOException, SQLException,
+			NoSuchAlgorithmException, UnsupportedEncodingException {
+		AuthenticationManager manager = new AuthenticationManager();
+		return manager.login(userid, password);
+	}
+
+	private ObjectNode register(String email, String fullname, String company) throws IOException, SQLException,
+			NoSuchAlgorithmException, UnsupportedEncodingException, AddressException, MessagingException {
+		AuthenticationManager manager = new AuthenticationManager();
+		manager.register(email, fullname, company);
+		return Utils.wellDone();
+	}
+
+	private ObjectNode logout(String sessionid) throws IOException, SQLException {
+		AuthenticationManager manager = new AuthenticationManager();
+		manager.logout(sessionid);
+		return Utils.wellDone();
+	}
+
+	private ObjectNode getProfile(User user) throws IOException, SQLException {
+		return user.getProfile();
+	}
+
+	private ObjectNode updateProfile(User user, String newPassword, String newFullName, String newCompany)
+			throws NoSuchAlgorithmException, SQLException, UnsupportedEncodingException {
+		user.updateProfile(newPassword, newFullName, newCompany);
+		return Utils.wellDone();
+	}
+
+	private ObjectNode getListOfApiKeys(User user) throws SQLException, IOException {
+		ApiKeysManager manager = new ApiKeysManager();
+		return manager.getListOfApiKeys(user);
+	}
+
+	private ObjectNode addApiKey(User user, String domainFilter, String description) throws SQLException, IOException {
+		ApiKeysManager manager = new ApiKeysManager();
+		return manager.addApiKey(user, domainFilter, description);
+	}
+
+	private ObjectNode updateApiKey(User user, String apiKey, String domainFilter, String description)
+			throws IOException, SQLException {
+		ApiKeysManager manager = new ApiKeysManager();
+		manager.updateApiKey(user, apiKey, domainFilter, description);
+		return Utils.wellDone();
+	}
+
+	private ObjectNode getListOfTracks(User user) throws SQLException, IOException {
+		TracksManager manager = new TracksManager();
+		return manager.getListOfTracks(user);
+	}
+
+	private ObjectNode getDetailsTrack(User user, String trackID) throws IOException, SQLException {
+		TracksManager manager = new TracksManager();
+		return manager.getDetailsTrack(user, trackID);
+	}
+
+	private ObjectNode deleteTrack(User user, String trackID) throws IOException, SQLException {
+		TracksManager manager = new TracksManager();
+		manager.deleteTrack(user, trackID);
+		return Utils.wellDone();
+	}
+
+	private ObjectNode addTrack(User user, String trackID, String trackName, String trackType, String penalty,
+			String internalInfo) throws IOException, SQLException {
+		TracksManager manager = new TracksManager();
+		manager.addTrack(user, trackID, trackName, trackType, penalty, internalInfo);
+		return Utils.wellDone();
+	}
+
+	private ObjectNode updateTrack(User user, String trackID, String newTrackID, String trackType, String trackName,
+			String internalInfo, String loop, String penalty, String transferNodes) throws SQLException, IOException {
+		TracksManager manager = new TracksManager();
+		manager.updateTrack(user, trackID, newTrackID, trackType, trackName, internalInfo, loop, penalty,
+				transferNodes);
+		return Utils.wellDone();
+	}
+
+	private ObjectNode clearGeoData(User user, String trackID) throws IOException, SQLException {
+		TracksManager manager = new TracksManager();
+		manager.clearGeoData(user, trackID);
+		return Utils.wellDone();
+	}
+
+	private ObjectNode importKML(User user, String trackID, File dataKML) throws IOException, SQLException {
+		TracksManager manager = new TracksManager();
+		manager.importKML(user, trackID, dataKML);
+		return Utils.wellDone();
+	}
+
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=models/ApiKeysManager.java,label={lst:ApiKeysManager.java}]
+package models;
+
+import play.db.DB;
+import play.libs.Json;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
+/**
+ * Kelas ini untuk menangani kasus: pengelolaan Api Keys
+ * 
+ * @author Tommy Adhitya The
+ */
+public class ApiKeysManager {
+	public ObjectNode getListOfApiKeys(User user) throws SQLException, IOException {
+		this.checkPrivilege(user.isPrivilegeApiUsage());
+		java.sql.Connection connection = DB.getConnection();
+		PreparedStatement pstmt = connection.prepareStatement(
+				"SELECT verifier, domainFilter, description FROM apikeys WHERE email=? ORDER BY verifier");
+		pstmt.setString(1, user.getActiveUserID());
+		ResultSet result = pstmt.executeQuery();
+		ArrayNode listApiKeys = Json.newArray();
+		while (result.next()) {
+			ArrayNode apiKeyValue = Json.newArray();
+			apiKeyValue.add(result.getString(1));
+			apiKeyValue.add(result.getString(2));
+			apiKeyValue.add(result.getString(3));
+			listApiKeys.add(apiKeyValue);
+		}
+		ObjectNode obj = Json.newObject();
+		obj.put(Constant.PROTO_STATUS, Constant.PROTO_STATUS_OK);
+		obj.putArray(Constant.PROTO_API_KEYS_LIST).addAll(listApiKeys);
+		connection.close();
+		return obj;
+	}
+
+	public ObjectNode addApiKey(User user, String domainFilter, String description) throws SQLException, IOException {
+		this.checkPrivilege(user.isPrivilegeApiUsage());
+		String apiKey = this.generateApiKey();
+		java.sql.Connection connection = DB.getConnection();
+		PreparedStatement pstmt = connection
+				.prepareStatement("INSERT INTO apikeys(verifier, email, domainFilter, description) VALUES(?,?,?,?)");
+		pstmt.setString(1, apiKey);
+		pstmt.setString(2, user.getActiveUserID());
+		pstmt.setString(3, domainFilter);
+		pstmt.setString(4, description);
+		pstmt.executeUpdate();
+		Utils.logStatistic(Constant.APIKEY_KIRI, "ADDAPIKEY", user.getActiveUserID() + apiKey);
+		ObjectNode obj = Json.newObject();
+		obj.put(Constant.PROTO_STATUS, Constant.PROTO_STATUS_OK);
+		obj.put(Constant.PROTO_VERIFIER, apiKey);
+		connection.close();
+		return obj;
+	}
+
+	public void updateApiKey(User user, String apiKey, String domainFilter, String description)
+			throws IOException, SQLException {
+		this.checkPrivilege(user.isPrivilegeApiUsage());
+		java.sql.Connection connection = DB.getConnection();
+		PreparedStatement pstmt = connection.prepareStatement("SELECT email FROM apikeys WHERE verifier=?");
+		pstmt.setString(1, apiKey);
+		ResultSet result = pstmt.executeQuery();
+		while (result.next()) {
+			if (!result.getString(1).equals(user.getActiveUserID())) {
+				connection.close();
+				Utils.dieNice(
+						"User " + user.getActiveUserID() + " does not have privilege to update API Key " + apiKey + "");
+			}
+		}
+		pstmt = connection.prepareStatement("UPDATE apikeys SET domainFilter=?, description=? WHERE verifier=?");
+		pstmt.setString(1, domainFilter);
+		pstmt.setString(2, description);
+		pstmt.setString(3, apiKey);
+		pstmt.executeUpdate();
+		connection.close();
+	}
+
+	private void checkPrivilege(boolean privilegeApiUsage) throws IOException {
+		if (!privilegeApiUsage) {
+			Utils.dieNice("User doesn't have enough privilege to perform the action.");
+		}
+	}
+
+	private String generateApiKey() {
+		return Utils.generateRandom("01234456789ABCDEF", 16);
+	}
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=models/AuthenticationManager.java,label={lst:authenticationmanager.java}]
+package models;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.MimeMessage;
+
+import org.mindrot.jbcrypt.BCrypt;
+
+import play.Logger;
+import play.db.DB;
+import play.libs.Json;
+import play.mvc.Http;
+
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.Properties;
+
+/**
+ * Kelas ini untuk menangani kasus: otentikasi
+ * 
+ * @author Tommy Adhitya The
+ */
+public class AuthenticationManager {
+	public void register(String email, String fullname, String company) throws IOException, SQLException,
+			NoSuchAlgorithmException, UnsupportedEncodingException, AddressException, MessagingException {
+		java.sql.Connection connection = DB.getConnection();
+		PreparedStatement pstmt = connection.prepareStatement("SELECT email FROM users WHERE email=?");
+		pstmt.setString(1, email);
+		ResultSet result = pstmt.executeQuery();
+		if (result.next()) {
+			connection.close();
+			Utils.dieNice("Ooops! Email " + email
+					+ " has already registered. Please check your mailbox or contact hello@kiri.travel");
+		}
+		String password = this.generatePassword();
+		String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
+		pstmt = connection.prepareStatement(
+				"INSERT INTO users(email, password, privilegeApiUsage, fullName, company) VALUES(? , ?, 1, ?, ?);");
+		pstmt.setString(1, email);
+		pstmt.setString(2, passwordHash);
+		pstmt.setString(3, fullname);
+		pstmt.setString(4, company);
+		pstmt.executeUpdate();
+		this.sendPassword(email, password, fullname);
+		Utils.logStatistic(Constant.APIKEY_KIRI, "REGISTER", email + "/" + fullname + "" + company);
+		connection.close();
+	}
+
+	public ObjectNode login(String userid, String password)
+			throws UniqueStatusError, SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		if (userid.length() > 128) {
+			this.returnInvalidCredentials("User ID length is more than allowed (" + userid.length() + ")");
+		}
+		if (password.length() > 32) {
+			this.returnInvalidCredentials("Password length is more than allowed (" + password.length() + ")");
+		}
+		java.sql.Connection connection = DB.getConnection();
+		PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM users WHERE email=?;");
+		pstmt.setString(1, userid);
+		ResultSet result = pstmt.executeQuery();
+		if (!result.next()) {
+			connection.close();
+			this.returnInvalidCredentials("User id not found: " + userid);
+		}
+		String userDataPassword = result.getString(2);
+		if (!BCrypt.checkpw(password, userDataPassword)) {
+			connection.close();
+			Utils.logStatistic(Constant.APIKEY_KIRI, "LOGIN", userid + "/FAIL");
+			this.returnInvalidCredentials("Password mismatch for " + userid);
+		}
+		Utils.logStatistic(Constant.APIKEY_KIRI, "LOGIN", userid + "/SUCCESS");
+		int privilegeRoute = result.getInt(5);
+		int privilegeApiUsage = result.getInt(6);
+		String sessionid = this.generateSessionID();
+		pstmt = connection.prepareStatement("INSERT INTO sessions (sessionId, email) VALUES (?,?);");
+		pstmt.setString(1, sessionid);
+		pstmt.setString(2, userid);
+		pstmt.executeUpdate();
+		StringBuilder privileges = new StringBuilder();
+		if (privilegeRoute != 0) {
+			privileges.append(",route");
+		}
+		if (privilegeApiUsage != 0) {
+			privileges.append(",apiusage");
+		}
+		if (privileges.length() > 0) {
+			privileges = new StringBuilder(privileges.substring(1));
+		}
+		ObjectNode obj = Json.newObject();
+		obj.put(Constant.PROTO_STATUS, Constant.PROTO_STATUS_OK);
+		obj.put(Constant.PROTO_SESSION_ID, sessionid);
+		obj.put(Constant.PROTO_PRIVILEGES, privileges.toString());
+		connection.close();
+		return obj;
+	}
+
+	public void logout(String sessionid) throws IOException, SQLException {
+		java.sql.Connection connection = DB.getConnection();
+		PreparedStatement pstmt = connection.prepareStatement("DELETE FROM sessions WHERE sessionId=?");
+		pstmt.setString(1, sessionid);
+		pstmt.executeUpdate();
+		connection.close();
+	}
+
+	private void sendPassword(String email, String password, String fullname)
+			throws AddressException, MessagingException {
+		String from = "dummykiri";
+		String pass = "dummyopen"; 
+		String subject = "KIRI API Registration";
+		String body = "Hello " + fullname + ",\n\n" + "Thank you for becoming KIRI Friends. Please find below your\n"
+				+ "initial password (8 characters of alphanumerics): " + password + "\n"
+				+ "Please login to our site and change your password immediately.\n\n" + "Sincerely yours,\n"
+				+ "Pascal & Budyanto\n";
+		Properties props = new Properties();
+		props.setProperty("mail.smtp.host", "smtp.gmail.com");
+		props.setProperty("mail.smtp.starttls.enable", "true");
+		props.setProperty("mail.smtp.ssl.trust", "smtp.gmail.com");
+		Session session = Session.getInstance(props);
+		MimeMessage msg = new MimeMessage(session);
+		msg.setFrom(from);
+		msg.setRecipients(Message.RecipientType.TO, email);
+		msg.setSubject(subject);
+		msg.setSentDate(new Date());
+		msg.setText(body);
+		Transport.send(msg, from, pass);
+	}
+
+	private String generateSessionID() {
+		return Utils.generateRandom("abcdefghiklmnopqrstuvwxyz0123456789", 16);
+	}
+
+	private String generatePassword() {
+		return Utils.generateRandom("abcdefghiklmnopqrstuvwxyz0123456789", 8);
+	}
+
+	private void returnInvalidCredentials(String logMessage) throws UniqueStatusError {
+		String ipAddress = Http.Context.current().request().remoteAddress();
+		this.logError("Login failed (IP=" + ipAddress + "): " + logMessage);
+		throw new UniqueStatusError(Constant.ERROR_CREDENTIAL_FAIL);
+	}
+
+	private void logError(String message) {
+		Date date = new Date();
+		String time = date.toString();
+		Logger.error("time=" + time + ";message=" + message + ";\n");
+	}
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=models/Constant.java,label={lst:constant.java}]
+package models;
+
+public class Constant {
+	public final static String APIKEY_KIRI = "E5D9904F0A8B4F99";
+
+	public final static String PROTO_MODE = "mode";
+	public final static String PROTO_MODE_LOGIN = "login";
+	public final static String PROTO_MODE_REGISTER="register";
+	public final static String PROTO_MODE_LOGOUT="logout";
+	public final static String PROTO_MODE_GET_PROFILE="getprofile";
+	public final static String PROTO_MODE_UPDATE_PROFILE="updateprofile";
+	public final static String PROTO_MODE_LIST_API_KEYS="listapikeys";
+	public final static String PROTO_MODE_ADD_API_KEY="addapikey";
+	public final static String PROTO_MODE_UPDATE_API_KEY="updateapikey";
+	public final static String PROTO_MODE_LIST_TRACKS="listtracks";
+	public final static String PROTO_MODE_GET_DETAILS_TRACK="getdetailstrack";
+	public final static String PROTO_MODE_DELETE_TRACK="deletetrack";
+	public final static String PROTO_MODE_ADD_TRACK="addtrack";
+	public final static String PROTO_MODE_UPDATE_TRACK="updatetrack";
+	public final static String PROTO_MODE_CLEAR_GEODATA="cleargeodata";
+	public final static String PROTO_MODE_IMPORT_KML="importkml";
+	
+	public final static String PROTO_STATUS = "status";
+	public final static String PROTO_STATUS_OK = "ok";
+	public final static String PROTO_FULL_NAME = "fullname";
+	public final static String PROTO_COMPANY = "company";
+	public final static String PROTO_MESSAGE = "message";
+	public final static String PROTO_API_KEYS_LIST = "apikeyslist";
+	public final static String PROTO_SESSION_ID = "sessionid";
+	public final static String PROTO_PRIVILEGES = "privileges";
+	public final static String PROTO_VERIFIER = "verifier";
+	public final static String PROTO_TRACK_ID = "trackid";
+	public final static String PROTO_TRACKS_LIST = "trackslist";
+	public final static String PROTO_TRACK_TYPE = "tracktype";
+	public final static String PROTO_TRACK_NAME = "trackname";
+	public final static String PROTO_TRACK_TYPES_LIST = "tracktypeslist";
+	public final static String PROTO_INTERNAL_INFO = "internalinfo";
+	public final static String PROTO_GEO_DATA = "geodata";
+	public final static String PROTO_PATH_LOOP = "loop";
+	public final static String PROTO_PENALTY = "penalty";
+	public final static String PROTO_TRANSFER_NODES = "transfernodes";
+	public final static String PROTO_USER_ID="userid";
+	public final static String PROTO_PASSWORD="password";
+	public final static String PROTO_DOMAIN_FILTER="domainfilter";
+	public final static String PROTO_DESCRIPTION="description";
+	public final static String PROTO_NEW_TRACK_ID="newtrackid";
+	public final static String PROTO_UPLOADED_FILE="uploadedfile";
+	
+	public final static String ERROR = "error";
+	public final static String ERROR_CREDENTIAL_FAIL = "credentialfail";
+	public final static String ERROR_SESSION_EXPIRED = "sessionexpired";
+	public final static String ERROR_MODE_NOT_FOUND = "Mode Not Found";
+
+	public final static int MAX_FILE_SIZE = 100 * 1024;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=models/TracksManager.java,label={lst:tracksmanager.java}]
+package models;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import play.db.DB;
+import play.libs.Json;
+
+/**
+ * Kelas ini untuk menangani kasus: pengelolaan rute angkutan umum KIRI
+ * 
+ * @author Tommy Adhitya The
+ */
+public class TracksManager {
+	public void addTrack(User user, String trackID, String trackName, String trackType, String penalty,
+			String internalInfo) throws IOException, SQLException {
+		this.checkPrivilege(user.isPrivilegeRoute());
+		java.sql.Connection connection = DB.getConnection();
+		PreparedStatement pstmt = connection.prepareStatement("SELECT trackId FROM tracks WHERE trackId=?");
+		pstmt.setString(1, trackID);
+		ResultSet result = pstmt.executeQuery();
+		if (result.next()) {
+			connection.close();
+			Utils.dieNice("The trackId '" + trackID + "' already existed.");
+		}
+		pstmt = connection.prepareStatement(
+				"INSERT INTO tracks (trackId, trackTypeId, trackName, penalty, internalInfo) VALUES (?,?,?,?,?)");
+		pstmt.setString(1, trackID);
+		pstmt.setString(2, trackType);
+		pstmt.setString(3, trackName);
+		pstmt.setString(4, penalty);
+		pstmt.setString(5, internalInfo);
+		pstmt.executeUpdate();
+		this.updateTrackVersion();
+		connection.close();
+	}
+
+	public ObjectNode getListOfTracks(User user) throws SQLException, IOException {
+		this.checkPrivilege(user.isPrivilegeRoute());
+		java.sql.Connection connection = DB.getConnection();
+		PreparedStatement pstmt = connection
+				.prepareStatement("SELECT trackTypeId, trackId, trackName FROM tracks ORDER BY trackTypeId, trackId");
+		ResultSet result = pstmt.executeQuery();
+		ArrayNode trackList = Json.newArray();
+		while (result.next()) {
+			ArrayNode track = Json.newArray();
+			track.add(result.getString(2));
+			track.add(result.getString(1) + "/" + result.getString(3));
+			trackList.add(track);
+		}
+		pstmt = connection.prepareStatement("SELECT trackTypeId, name FROM tracktypes ORDER BY trackTypeId");
+		result = pstmt.executeQuery();
+		ArrayNode trackTypeList = Json.newArray();
+		while (result.next()) {
+			ArrayNode trackType = Json.newArray();
+			trackType.add(result.getString(1));
+			trackType.add(result.getString(2));
+			trackTypeList.add(trackType);
+		}
+		ObjectNode obj = Json.newObject();
+		obj.put(Constant.PROTO_STATUS, Constant.PROTO_STATUS_OK);
+		obj.putArray(Constant.PROTO_TRACKS_LIST).addAll(trackList);
+		obj.putArray(Constant.PROTO_TRACK_TYPES_LIST).addAll(trackTypeList);
+		connection.close();
+		return obj;
+	}
+
+	public ObjectNode getDetailsTrack(User user, String trackID) throws IOException, SQLException {
+		this.checkPrivilege(user.isPrivilegeRoute());
+		java.sql.Connection connection = DB.getConnection();
+		PreparedStatement pstmt = connection.prepareStatement(
+				"SELECT trackTypeId, trackName, internalInfo, AsText(geodata), pathloop, penalty, transferNodes FROM tracks WHERE trackId=?");
+		pstmt.setString(1, trackID);
+		ResultSet result = pstmt.executeQuery();
+		if (!result.next()) {
+			connection.close();
+			Utils.dieNice("Can't find track information for '" + trackID + "'");
+		}
+		ArrayNode geoData = this.lineStringToLatLngArray(result.getString(4));
+		ObjectNode obj = Json.newObject();
+		obj.put(Constant.PROTO_STATUS, Constant.PROTO_STATUS_OK);
+		obj.put(Constant.PROTO_TRACK_ID, trackID);
+		obj.put(Constant.PROTO_TRACK_TYPE, result.getString(1));
+		obj.put(Constant.PROTO_TRACK_NAME, result.getString(2));
+		obj.put(Constant.PROTO_INTERNAL_INFO, result.getString(3));
+		if (result.getString(4) == null) {
+			obj.putNull(Constant.PROTO_GEO_DATA);
+		} else {
+			obj.putArray(Constant.PROTO_GEO_DATA).addAll(geoData);
+		}
+		obj.put(Constant.PROTO_PATH_LOOP, (result.getInt(5) > 0 ? true : false));
+		obj.put(Constant.PROTO_PENALTY, result.getDouble(6));
+		ArrayNode transferNodes = Json.newArray();
+		if (result.getString(7) == null) {
+			transferNodes.add("0-" + (geoData.size() - 1));
+		} else {
+			String[] temp = result.getString(7).split(",");
+			for (int i = 0; i < temp.length; i++) {
+				transferNodes.add(temp[i]);
+			}
+		}
+		obj.putArray(Constant.PROTO_TRANSFER_NODES).addAll(transferNodes);
+		connection.close();
+		return obj;
+	}
+
+	public void updateTrack(User user, String trackID, String newTrackID, String trackType, String trackName,
+			String internalInfo, String loop, String penalty, String transferNodes) throws SQLException, IOException {
+		this.checkPrivilege(user.isPrivilegeRoute());
+		int pathLoop = 0;
+		if (loop.equals("true")) {
+			pathLoop = 1;
+		}
+		java.sql.Connection connection = DB.getConnection();
+		PreparedStatement pstmt;
+		ResultSet result;
+		if (!newTrackID.equals(trackID)) {
+			pstmt = connection.prepareStatement("SELECT trackId FROM tracks WHERE trackId=?");
+			pstmt.setString(1, newTrackID);
+			result = pstmt.executeQuery();
+			if (result.next()) {
+				connection.close();
+				Utils.dieNice("The new trackId '" + newTrackID + "' already existed.");
+			}
+		}
+		pstmt = connection.prepareStatement(
+				"UPDATE tracks SET trackTypeId=?, trackId=?, trackName=?, internalInfo=?, pathloop=?, penalty=? WHERE trackId=?");
+		pstmt.setString(1, trackType);
+		pstmt.setString(2, newTrackID);
+		pstmt.setString(3, trackName);
+		pstmt.setString(4, internalInfo);
+		pstmt.setInt(5, pathLoop);
+		pstmt.setString(6, penalty);
+		pstmt.setString(7, trackID);
+		pstmt.executeUpdate();
+		if (!transferNodes.equals("")) {
+			pstmt = connection.prepareStatement("UPDATE tracks SET transferNodes=? WHERE trackId=?");
+			pstmt.setString(1, transferNodes);
+			pstmt.setString(2, trackID);
+			pstmt.executeUpdate();
+		}
+		this.updateTrackVersion();
+		connection.close();
+	}
+
+	public void deleteTrack(User user, String trackID) throws IOException, SQLException {
+		this.checkPrivilege(user.isPrivilegeRoute());
+		java.sql.Connection connection = DB.getConnection();
+		PreparedStatement pstmt = connection.prepareStatement("DELETE FROM tracks WHERE trackId=?");
+		pstmt.setString(1, trackID);
+		if (pstmt.executeUpdate() == 0) {
+			connection.close();
+			Utils.dieNice("The track " + trackID + " was not found in the database");
+		}
+		this.updateTrackVersion();
+		connection.close();
+	}
+
+	public void clearGeoData(User user, String trackID) throws IOException, SQLException {
+		this.checkPrivilege(user.isPrivilegeRoute());
+		java.sql.Connection connection = DB.getConnection();
+
+		PreparedStatement pstmt = connection
+				.prepareStatement("UPDATE tracks SET geodata=NULL, transferNodes=NULL WHERE trackId=?");
+		pstmt.setString(1, trackID);
+		pstmt.executeUpdate();
+		connection.close();
+	}
+
+	// belum beress
+	public void importKML(User user, String trackID, File dataKML) throws IOException, SQLException {
+		this.checkPrivilege(user.isPrivilegeRoute());
+		if (dataKML.length() > Constant.MAX_FILE_SIZE) {
+			Utils.dieNice("Uploaded file size is greater than maximum size allowed (" + Constant.MAX_FILE_SIZE + ")");
+		}
+		BufferedReader br = null;
+		br = new BufferedReader(new FileReader(dataKML));
+		String line;
+		StringBuilder hayStack = new StringBuilder();
+		while ((line = br.readLine()) != null) {
+			hayStack.append(line.trim());
+		}
+		br.close();
+		Pattern patt = Pattern.compile("(?i)<LineString>.*?<coordinates>(.*?)</coordinates>.*?</LineString>");
+		Matcher match = patt.matcher(hayStack.toString());
+		int numMatches = 0;
+		while (match.find()) {
+			numMatches++;
+		}
+		if (numMatches != 1) {
+			Utils.dieNice(
+					"The KML file must contain exactly one <coordinate> tag inside one <LineString> tag. But I found "
+							+ numMatches + " occurences");
+		}
+		match.reset();
+		match.find();
+		StringBuilder output = new StringBuilder("LINESTRING(");
+		String[] points = match.group(1).split("\\s+");
+		int i = 0;
+		for (String string : points) {
+			String splitter[] = string.split(",");
+			if (i != 0) {
+				output.append(",");
+			}
+			output.append(splitter[0]);
+			if (!splitter[0].equals("")) {
+				output.append(" " + splitter[1]);
+				i++;
+			}
+		}
+		output.append(")");
+		java.sql.Connection connection = DB.getConnection();
+		PreparedStatement pstmt = connection
+				.prepareStatement("UPDATE tracks SET geodata=GeomFromText(?), transferNodes=NULL WHERE trackId=?");
+		pstmt.setString(1, output.toString());
+		pstmt.setString(2, trackID);
+		pstmt.executeUpdate();
+		connection.close();
+		this.updateTrackVersion();
+	}
+
+	private void updateTrackVersion() throws SQLException {
+		java.sql.Connection connection = DB.getConnection();
+		PreparedStatement pstmt = connection.prepareStatement(
+				"UPDATE properties SET propertyvalue=propertyvalue+1 WHERE propertyname='trackversion'");
+		pstmt.executeUpdate();
+		connection.close();
+	}
+
+	private void checkPrivilege(boolean privilegeRoute) throws IOException {
+		if (!privilegeRoute) {
+			Utils.dieNice("User doesn't have enough privilege to perform the action.");
+		}
+	}
+
+	private ArrayNode lineStringToLatLngArray(String lineString) {
+		if (lineString == null) {
+			return Json.newArray();
+		}
+		lineString = lineString.replaceAll("LINESTRING\\(([^)]+)\\)", "$1");
+		String[] lnglatArray = lineString.split(",");
+		ArrayNode returnValue = Json.newArray();
+		for (String lnglat : lnglatArray) {
+			String[] temp = lnglat.split(" ");
+			returnValue.add(String.format("%.6f,%.6f", Double.parseDouble(temp[1]), Double.parseDouble(temp[0])));
+		}
+		return returnValue;
+	}
+
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=models/UniqueStatusError.java,label={lst:uniquestatuserror.java}]
+package models;
+
+/**
+ * Kelas ini untuk menangani kasus: - Credential Fail - Session Expired
+ * 
+ * @author Tommy Adhitya The
+ */
+public class UniqueStatusError extends Exception {
+	private String status;
+
+	public UniqueStatusError(String status) {
+		this.status = status;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+}
+\end{lstlisting}
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=models/User.java,label={lst:user.java}]
+package models;
+
+import play.db.DB;
+import play.libs.Json;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.mindrot.jbcrypt.BCrypt;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+/**
+ * Kelas ini untuk menangani kasus: pemeriksaan login, update profil dan
+ * permintaan data profil
+ * 
+ * @author Tommy Adhitya The
+ */
+public class User {
+	private String sessionID;
+	private String activeUserID;
+	private boolean privilegeRoute;
+	private boolean privilegeApiUsage;
+
+	public User(String sessionID) throws UniqueStatusError, SQLException {
+		this.sessionID = sessionID;
+		java.sql.Connection connection = DB.getConnection();
+		PreparedStatement pstmt = connection
+				.prepareStatement("DELETE FROM sessions WHERE lastSeen < (NOW() - INTERVAL 6 HOUR)");
+		pstmt.executeUpdate();
+		pstmt = connection.prepareStatement(
+				"SELECT users.email, users.privilegeRoute, users.privilegeApiUsage FROM users LEFT JOIN sessions ON users.email = sessions.email WHERE sessions.sessionId =?");
+		pstmt.setString(1, this.sessionID);
+		ResultSet result = pstmt.executeQuery();
+		if (!result.next()) {
+			connection.close();
+			throw new UniqueStatusError(Constant.ERROR_SESSION_EXPIRED);
+		}
+		this.activeUserID = result.getString(1);
+		this.privilegeRoute = result.getInt(2) != 0;
+		this.privilegeApiUsage = result.getInt(3) != 0;
+		connection.close();
+	}
+
+	public ObjectNode getProfile() throws IOException, SQLException {
+		java.sql.Connection connection = DB.getConnection();
+		PreparedStatement pstmt = connection.prepareStatement("SELECT fullName, company FROM users WHERE email=?");
+		pstmt.setString(1, this.activeUserID);
+		ResultSet result = pstmt.executeQuery();
+		if (!result.next()) {
+			connection.close();
+			Utils.dieNice("User " + this.activeUserID + " not found in database.");
+		}
+		String fullName = result.getString(1);
+		String company = result.getString(2);
+		ObjectNode obj = Json.newObject();
+		obj.put(Constant.PROTO_STATUS, Constant.PROTO_STATUS_OK);
+		obj.put(Constant.PROTO_FULL_NAME, fullName);
+		obj.put(Constant.PROTO_COMPANY, company);
+		connection.close();
+		return obj;
+	}
+
+	public void updateProfile(String newPassword, String newFullName, String newCompany)
+			throws NoSuchAlgorithmException, SQLException, UnsupportedEncodingException {
+		java.sql.Connection connection = DB.getConnection();
+		PreparedStatement pstmt;
+		if (!newPassword.equals("")) {
+			String passwordHash = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+			pstmt = connection.prepareStatement("UPDATE users SET password=? WHERE email=?");
+			pstmt.setString(1, passwordHash);
+			pstmt.setString(2, this.activeUserID);
+			pstmt.executeUpdate();
+		}
+		pstmt = connection.prepareStatement("UPDATE users SET fullName=?, company=? WHERE email=?");
+		pstmt.setString(1, newFullName);
+		pstmt.setString(2, newCompany);
+		pstmt.setString(3, this.activeUserID);
+		pstmt.executeUpdate();
+		connection.close();
+	}
+
+	public String getSessionID() {
+		return sessionID;
+	}
+
+	public String getActiveUserID() {
+		return activeUserID;
+	}
+
+	public boolean isPrivilegeRoute() {
+		return privilegeRoute;
+	}
+
+	public boolean isPrivilegeApiUsage() {
+		return privilegeApiUsage;
+	}
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=models/Utils.java,label={lst:utils.java}]
+package models;
+
+import java.util.Random;
+import play.libs.Json;
+import play.db.DB;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.io.IOException;
+
+/**
+ * Kelas ini untuk membangun: metode-metode pendukung aplikasi KIRI Dashboard
+ * 
+ * @author Tommy Adhitya The
+ */
+public class Utils {
+	public static String generateRandom(String chars, int length) {
+		int chars_size = chars.length();
+		Random random = new Random();
+		String string = "";
+		for (int i = 0; i < length; i++) {
+			string += chars.charAt(random.nextInt(chars_size));
+		}
+		return string;
+	}
+
+	public static ObjectNode wellDone() {
+		ObjectNode obj = Json.newObject();
+		obj.put(Constant.PROTO_STATUS, Constant.PROTO_STATUS_OK);
+		return obj;
+	}
+
+	public static void dieNice(String message) throws IOException {
+		throw new IOException(message);
+	}
+
+	public static void logStatistic(String verifier, String type, String additional_info) throws SQLException {
+		java.sql.Connection connection = DB.getConnection();
+		PreparedStatement pstmt = connection
+				.prepareStatement("INSERT INTO statistics (verifier, type, additionalInfo) VALUES (?,?,?)");
+		pstmt.setString(1, verifier);
+		pstmt.setString(2, type);
+		pstmt.setString(3, additional_info);
+		connection.close();
+	}
+}
+\end{lstlisting}
