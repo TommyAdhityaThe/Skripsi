@@ -67,101 +67,101 @@ Pada direktori ``public\_html\_dev/bukitjarian'' (Gambar \ref{fig:3_bukit_jarian
 	\item ``handle.php'' merupakan kode pada sisi \textit{server} yang bertugas untuk melayani permintaan-permintaan dari \textit{browser} yang dieksekusi oleh ``index.html''.
 \end{enumerate}
 
-Seperti disebutkan sebelumnya, \textit{file} ``handle.php'' berfungsi untuk melayani berbagai jenis permintaan yang dikirimkan oleh ``index.html''. \textit{File} ini dapat dibagi menjadi 16 bagian yang masing-masing melayani sebuah permintaan tertentu. Analisa lebih mendalam mengenai 16 bagian isi kode ``handle.php'' (kode \ref{lst:handle.php}) akan dijelaskan pada 16 subbab yang akan dijelaskan pada pembahasan analisa selanjutnya.
+Seperti disebutkan sebelumnya, \textit{file} ``handle.php'' berfungsi untuk melayani berbagai jenis permintaan yang dikirimkan oleh ``index.html''. \textit{File} ini dapat dibagi menjadi 16 bagian yang masing-masing melayani sebuah permintaan tertentu. Analisa lebih mendalam mengenai 16 bagian isi kode ``handle.php'' (Kode \ref{lst:handle.php}) akan dijelaskan pada 16 subbab yang akan dijelaskan pada pembahasan analisa selanjutnya.
 
 \subsection{Bagian Pemeriksaan \textit{Login}}
 \label{sec:pemeriksaanlogin}
-Bagian ini terletak di baris 12-32 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi untuk semua ``\texttt{mode}'' pada permintaan POST kecuali ``\texttt{mode=login}'', ``\texttt{mode=logout}'', dan ``\texttt{mode=register}''. Bagian ini berfungsi untuk memeriksa apakah pengguna sudah melakukan \textit{login} terlebih dahulu untuk melakukan aksi-aksi tertentu.
+Bagian ini terletak di baris 12-32 dari ``handle.php'' (Kode \ref{lst:handle.php}). Bagian ini akan dieksekusi untuk semua ``\texttt{mode}'' pada permintaan POST kecuali ``\texttt{mode=login}'', ``\texttt{mode=logout}'', dan ``\texttt{mode=register}''. Bagian ini berfungsi untuk memeriksa apakah pengguna sudah melakukan \textit{login} terlebih dahulu untuk melakukan aksi-aksi tertentu.
 
 Bagian ini diawali dengan memeriksa apakah pengguna memberikan \textit{session id} pada permintaan atau tidak (baris 13). Setelah itu, program akan membersihkan sesi-sesi di \textit{database} yang sudah kadaluwarsa (baris 14-16). Baris 17-18 memeriksa apakah \textit{session} yang dikirimkan dari permintaan masih \textit{valid} di \textit{database} atau tidak. Jika tidak, maka bagian ini akan mengembalikan respon yang menyatakan bahwa sesi tidak \textit{valid} dan permintaan tidak dapat dilanjutkan (baris 19-27). Jika \textit{valid}, maka bagian ini akan menginisialisasi beberapa variabel yang menampung \textit{privilege} dari pengguna yang aktif (baris 28-31).
 
 \subsection{Bagian \textit{Login}}
 \label{sec:bagianlogin}
-Bagian ini terletak di baris 34-89 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=login}'' pada permintaan POST. Bagian ini berfungsi untuk melakukan otentikasi pengguna terhadap \textit{server} KIRI \textit{Dashboard}. Bagian ini akan menentukan apakah pengguna memiliki hak akses terhadap KIRI \textit{Dashboard} apakah tidak.
+Bagian ini terletak di baris 34-89 dari ``handle.php'' (Kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=login}'' pada permintaan POST. Bagian ini berfungsi untuk melakukan otentikasi pengguna terhadap \textit{server} KIRI \textit{Dashboard}. Bagian ini akan menentukan apakah pengguna memiliki hak akses terhadap KIRI \textit{Dashboard} apakah tidak.
 
 Bagian ini diawali dengan memeriksa apakah pengguna mengirimkan \textit{userid} dan \textit{password} dengan ukuran yang sesuai apa tidak (baris 35-42). Setelah itu, program akan mengambil data informasi pengguna (berdasarkan \textit{userid}) ke \textit{database} sistem (baris 45-51). Bila data pengguna tidak ditemukan maka program akan mengembalikan pesan kesalahan (baris 49). Jika informasi pengguna ditemukan, maka selanjutnya \textit{password} yang dikirimkan pengguna akan dicek kecocokannya dengan \textit{password} yang tersimpan dalam \textit{database} (baris 54-55). Hasil kecocokan tersebut akan dicatat ke dalam data statistik \textit{server} (baris 56 atau 61). Bila \textit{password} cocok, maka server akan membangun sebuah \textit{session id} (baris 64-66) dan memberikan hak akses tertentu kepada pengguna (baris 68-78). Terakhir, \textit{server} akan membangun data JSON (baris 81-85) untuk dikirimkan ke pengguna (baris 88) sebagai pesan keberhasilan pengguna dalam melakukan otentikasi terhadap \textit{server}.
 
 \subsection{Bagian \textit{Logout}}
 \label{sec:bagianlogout}
-Bagian ini terletak di baris 89-97 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=logout}'' pada permintaan POST. Bagian ini berfungsi untuk menghentikan hubungan otentikasi dengan \textit{server} (menghilangkan hak akses). Hal tersebut bertujuan agar hak akses yang dimiliki pengguna tidak digunakan sembarangan oleh pengguna lain yang tidak berwenang.
+Bagian ini terletak di baris 89-97 dari ``handle.php'' (Kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=logout}'' pada permintaan POST. Bagian ini berfungsi untuk menghentikan hubungan otentikasi dengan \textit{server} (menghilangkan hak akses). Hal tersebut bertujuan agar hak akses yang dimiliki pengguna tidak digunakan sembarangan oleh pengguna lain yang tidak berwenang.
 
 Bagian ini diawali dengan memeriksa apakah pengguna memberikan \textit{session id} pada permintaan atau tidak (baris 90). Setelah itu, program akan membersihkan sesi-sesi (sesuai dengan \textit{session id} pengguna) yang terdapat dalam \textit{database} (baris 93-95). Terakhir, \textit{server} akan mengirimkan pesan dalam format JSON (baris 96) sebagai penanda bahwa pengguna berhasil melakukan \textit{logout}.
 
 \subsection{Bagian Menambahkan Rute}
 \label{sec:menambahkanrute}
-Bagian ini terletak di baris 97-117 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=addtrack}'' pada permintaan POST. Bagian ini berfungsi untuk menambahkan sebuah rute jalan yang dapat ditempuh oleh kendaraan umum tertentu (contoh: angkot).
+Bagian ini terletak di baris 97-117 dari ``handle.php'' (Kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=addtrack}'' pada permintaan POST. Bagian ini berfungsi untuk menambahkan sebuah rute jalan yang dapat ditempuh oleh kendaraan umum tertentu (contoh: angkot).
 
 Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses untuk menambahkan rute atau tidak (baris 98). Lalu memeriksa apakah pengguna mengirimkan data \textit{trackid}, \textit{trackname}, \textit{tracktype}, \textit{penalty}, dan \textit{internalinfo} pada permintaan atau tidak (baris 99-103). Setelah itu, program akan mengecek apakah rute jalan yang ingin ditambahkan pengguna sudah ada atau belum di \textit{database} (106-114). Bila rute jalan belum ada, maka rute jalan akan ditambahkan ke dalam \textit{database} (baris 109) dan \textit{server} akan mengirimkan pesan dalam format JSON (baris 116) sebagai penanda bahwa pengguna berhasil menambahkan rute jalan.
 
 \subsection{Bagian Mengubah Rute}
 \label{sec:mengubahrute}
-Bagian ini terletak di baris 117-146 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=updatetrack}'' pada permintaan POST. Bagian ini berfungsi untuk mengubah data sebuah rute jalan yang dapat ditempuh oleh kendaraan umum tertentu (contoh: angkot).
+Bagian ini terletak di baris 117-146 dari ``handle.php'' (Kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=updatetrack}'' pada permintaan POST. Bagian ini berfungsi untuk mengubah data sebuah rute jalan yang dapat ditempuh oleh kendaraan umum tertentu (contoh: angkot).
 
 Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses untuk mengubah rute atau tidak (baris 118). Lalu memeriksa apakah pengguna mengirimkan data \textit{trackid}, \textit{newtrackid}, \textit{trackname}, \textit{tracktype}, \textit{penalty}, \textit{pathloop}, \textit{transfernodes}  dan \textit{internalinfo} pada permintaan atau tidak (baris 119-126). Setelah itu, \textit{server} akan mengecek apakah rute yang ingin diubah pengguna sudah memenuhi aturan (\textit{trackid} harus sama dengan \textit{newtrackid}) atau tidak (129-143). Bila rute yang ingin diubah maka \textit{server} akan mengirimkan pesan dalam format JSON sebagai penanda bahwa pengguna berhasil mengubah rute rute jalan.
 
 \subsection{Bagian Melihat Daftar Rute}
 \label{sec:melihatdaftarrute}
-Bagian ini terletak di baris 146-172 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=listtracks}'' pada permintaan POST. Bagian ini berfungsi untuk memberikan daftar rute jalan yang terdapat dalam \textit{database} sistem KIRI.
+Bagian ini terletak di baris 146-172 dari ``handle.php'' (Kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=listtracks}'' pada permintaan POST. Bagian ini berfungsi untuk memberikan daftar rute jalan yang terdapat dalam \textit{database} sistem KIRI.
 
 Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap rute jalan atau tidak (baris 147). Setelah itu program akan mengambil data daftar rute jalan yang terdapat pada \textit{database} sistem KIRI (baris 149-154). Lalu program juga akan mengambil data daftar tipe rute jalan dari \textit{database} (baris 156-161). Data-data yang diperoleh program (rute jalan dan tipe rute jalan) akan diubah formatnya menjadi sebuah data JSON (baris 164-168). Terakhir, program akan mengirimkan data dalam format JSON tersebut ke pengguna (baris 171).
 
 \subsection{Bagian Melihat Informasi Rute secara Detail}
 \label{sec:melihatdaftarrutedetail}
-Bagian ini terletak di baris 172-200 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=getdetailstrack}'' pada permintaan POST. Bagian ini berfungsi untuk memberikan informasi detail tentang suatu rute jalan.
+Bagian ini terletak di baris 172-200 dari ``handle.php'' (Kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=getdetailstrack}'' pada permintaan POST. Bagian ini berfungsi untuk memberikan informasi detail tentang suatu rute jalan.
 
 Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap rute jalan atau tidak (baris 173). Lalu program akan memeriksa apakah pengguna memberikan \textit{trackid} pada permintaan atau tidak (baris 174). Selanjutnya program akan mengambil data dari \textit{database} sistem KIRI (baris 177-184). Data yang diperoleh dari \textit{database} tersebut akan diubah formatnya ke dalam format JSON (baris 186-196). Terakhir, program akan mengirimkan data dalam format JSON tersebut ke pengguna (baris 199).
 
 \subsection{Bagian Menghapus Data Geografis suatu Rute}
 \label{sec:hapusdatageografis}
-Bagian ini terletak di baris 200-209 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=cleargeodata}'' pada permintaan POST. Bagian ini berfungsi untuk menghapus data geografis suatu rute jalan yang terdapat dalam \textit{database} sistem KIRI.
+Bagian ini terletak di baris 200-209 dari ``handle.php'' (Kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=cleargeodata}'' pada permintaan POST. Bagian ini berfungsi untuk menghapus data geografis suatu rute jalan yang terdapat dalam \textit{database} sistem KIRI.
 
 Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap rute jalan atau tidak (baris 201). Lalu program akan memeriksa apakah pengguna memberikan \textit{trackid} pada permintaan atau tidak (baris 202). Program akan langsung menghapus data geografis rute jalan sesuai dengan \textit{trackid} permintaan pengguna jika \textit{trackid} tersebut terdapat dalam \textit{database} sistem KIRI (baris 204-205). Terakhir, program akan mengirimkan pesan keberhasilan dalam format JSON kepada pengguna (baris 208).
 
 \subsection{Bagian Impor Data KML}
 \label{sec:imporkml}
-Bagian ini terletak di baris 209-246 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=importkml}'' pada permintaan POST. Bagian ini berfungsi untuk menambahkan data geografis suatu rute dimana data yang ditambahkan berasal dari sebuah \textit{file} dengan format KML (\textit{Keyhole Markup Language}). KML adalah format \textit{file} yang digunakan untuk menampilkan data geografis dalam aplikasi pemetaan\cite{kml}. 
+Bagian ini terletak di baris 209-246 dari ``handle.php'' (Kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=importkml}'' pada permintaan POST. Bagian ini berfungsi untuk menambahkan data geografis suatu rute dimana data yang ditambahkan berasal dari sebuah \textit{file} dengan format KML (\textit{Keyhole Markup Language}). KML adalah format \textit{file} yang digunakan untuk menampilkan data geografis dalam aplikasi pemetaan\cite{kml}. 
 
-Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap rute jalan atau tidak (baris 210). Lalu program akan memeriksa apakah pengguna memberikan \textit{trackid} pada permintaan atau tidak (baris 211). Selanjutnya program akan memeriksa apakah \textit{file} pengguna memberikan \textit{file} dengan format sesuai atau tidak (baris 213-218). Pada baris 219-228 program akan mengambil data LineString yang terdapat pada \textit{file} dengan menggunakan teknik \textit{regular expression} (baris 224, referensi subbab \ref{sec:regex}). Baris 231-239 program akan membangun data LineString yang semula dalam format KML menjadi format WKT (subbab \ref{sec:wktformat}). Program akan menambahkan data LineString dalam WKT tersebut ke dalam \textit{database} sesuai dengan \textit{trackid} yang diberikan pengguna (baris 241-243). Terakhir, program akan mengirimkan pesan dalam format JSON sebagai penanda bahwa pengguna berhasil melakukan import data KML (baris 245).
+Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap rute jalan atau tidak (baris 210). Lalu program akan memeriksa apakah pengguna memberikan \textit{trackid} pada permintaan atau tidak (baris 211). Selanjutnya program akan memeriksa apakah \textit{file} pengguna memberikan \textit{file} dengan format sesuai atau tidak (baris 213-218). Pada baris 219-228 program akan mengambil data LineString yang terdapat pada \textit{file} dengan menggunakan teknik \textit{regular expression} (baris 224, referensi Subbab \ref{sec:regex}). Baris 231-239 program akan membangun data LineString yang semula dalam format KML menjadi format WKT (Subbab \ref{sec:wktformat}). Program akan menambahkan data LineString dalam WKT tersebut ke dalam \textit{database} sesuai dengan \textit{trackid} yang diberikan pengguna (baris 241-243). Terakhir, program akan mengirimkan pesan dalam format JSON sebagai penanda bahwa pengguna berhasil melakukan import data KML (baris 245).
 
 \subsection{Bagian Menghapus Rute}
 \label{sec:hapusrute}
-Bagian ini terletak di baris 246-261 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=deletetrack}'' pada permintaan POST. Bagian ini berfungsi untuk menghapus suatu rute jalan yang terdapat dalam sistem KIRI.
+Bagian ini terletak di baris 246-261 dari ``handle.php'' (Kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=deletetrack}'' pada permintaan POST. Bagian ini berfungsi untuk menghapus suatu rute jalan yang terdapat dalam sistem KIRI.
 
 Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap rute jalan atau tidak (baris 247). Lalu program akan memeriksa apakah pengguna memberikan \textit{trackid} pada permintaan atau tidak (baris 248). Program akan memeriksa apakah terdapat {trackid} yang sesuai dengan {trackid} yang ada pada \textit{database} KIRI (baris 250-259). Bila terdapat \textit{trackid} yang sesuai, maka program akan menghapus rute jalan tersebut. Terakhir, program akan mengirimkan pesan keberhasilan dalam format JSON kepada pengguna (baris 260).
 
 \subsection{Bagian Melihat Daftar API \textit{Keys}}
 \label{sec:lihatapikeys}
-Bagian ini terletak di baris 261-279 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=listapikeys}'' pada permintaan POST. Bagian ini berfungsi untuk memberikan daftar API \textit{keys} yang terdapat dalam database sistem KIRI.
+Bagian ini terletak di baris 261-279 dari ``handle.php'' (Kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=listapikeys}'' pada permintaan POST. Bagian ini berfungsi untuk memberikan daftar API \textit{keys} yang terdapat dalam database sistem KIRI.
 
 Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap penggunaan API atau tidak (baris 262). Setelah itu program akan mengambil data daftar API \textit{keys} yang terdapat pada \textit{database} sistem KIRI (baris 264-269). Data-data yang diperoleh program akan diubah formatnya menjadi sebuah data JSON (baris 272-275). Terakhir, program akan mengirimkan data dalam format JSON tersebut ke pengguna (baris 278).
 
 \subsection{Bagian Menambahkan API \textit{Key}}
 \label{sec:tambahapikey}
-Bagian ini terletak di baris 279-299 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=addapikey}'' pada permintaan POST. Bagian ini berfungsi untuk menambahkan sebuah data API \textit{key} ke dalam sistem KIRI.
+Bagian ini terletak di baris 279-299 dari ``handle.php'' (Kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=addapikey}'' pada permintaan POST. Bagian ini berfungsi untuk menambahkan sebuah data API \textit{key} ke dalam sistem KIRI.
 
 Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap API \textit{keys} atau tidak (baris 280). Lalu memeriksa apakah pengguna mengirimkan data \textit{domainfilter} dan \textit{description} pada permintaan atau tidak (baris 281-282). Setelah itu, program akan membangun sebuah API key secara acak (baris 283). Program akan menambahkan data API \textit{key} sesuai dengan data yang dikirimkan pengguna ke dalam \textit{database} KIRI (baris 286) dan mencatat proses penambahan tersebut ke dalam \textit{database} (baris 289). Terakhir, program akan membangun sebuah pesan keberhasilan dalam format JSON (baris 292-295) dan mengirimkan pesan tersebut kepada pengguna (baris 298).
 
 \subsection{Bagian Mengubah API \textit{Key}}
 \label{sec:ubahapikey}
-Bagian ini terletak di baris 299-317 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=updateapikey}'' pada permintaan POST. Bagian ini berfungsi untuk mengubah data sebuah API \textit{key} pada \textit{database} sistem KIRI.
+Bagian ini terletak di baris 299-317 dari ``handle.php'' (Kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=updateapikey}'' pada permintaan POST. Bagian ini berfungsi untuk mengubah data sebuah API \textit{key} pada \textit{database} sistem KIRI.
 
 Bagian ini diawali dengan memeriksa apakah pengguna memiliki hak akses terhadap API \textit{keys} atau tidak (baris 300). Lalu memeriksa apakah pengguna mengirimkan data \textit{apikey}, \textit{domainfilter}, dan \textit{description} pada permintaan atau tidak (baris 301-303). Setelah itu, program akan memeriksa apakah pengguna yang bersangkutan adalah pemilik API \textit{key} yang ingin diubah atau bukan (baris 305-311). Lalu program mengubah data API \textit{key} yang terdapat dalam database (baris 312) sesuai dengan permintaan pengguna. Terakhir, program akan mengirimkan pesan dalam format JSON sebagai penanda bahwa pengguna berhasil mengubah rute jalan.
 
 \subsection{Bagian \textit{Register}}
 \label{sec:bagianregister}
-Bagian ini terletak di baris 317-341 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=register}'' pada permintaan POST. Bagian ini berfungsi untuk melakukan pendaftaran sebagai pengguna KIRI \textit{Dashboard}. Pendaftaran ini berguna agar pengguna bisa mendapatkan hak akses terhadap fitur-fitur yang terdapat dalam KIRI \textit{Dashboard}.
+Bagian ini terletak di baris 317-341 dari ``handle.php'' (Kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=register}'' pada permintaan POST. Bagian ini berfungsi untuk melakukan pendaftaran sebagai pengguna KIRI \textit{Dashboard}. Pendaftaran ini berguna agar pengguna bisa mendapatkan hak akses terhadap fitur-fitur yang terdapat dalam KIRI \textit{Dashboard}.
 
 Bagian ini diawali dengan memeriksa apakah pengguna memberikan \textit{email}, \textit{fullname}, dan \textit{company} pada permintaan atau tidak (baris 318-320). Setelah itu, program akan memeriksa \textit{database} apakah data pengguna yang ingin dibuat sudah ada atau belum (baris 323-327). Bila belum ada, maka program akan membangun sebuah sandi secara acak untuk pengguna (baris 330). \textit{Hashing} akan dilakukan terhadap sandi acak tersebut dengan menggunakan PHP \textit{hashing framework}\cite{openwall} (baris 332). \textit{Hashing} adalah teknik untuk memetakan data dengan ukuran yang berbeda-beda menjadi data dengan ukuran yang tetap\cite{hashing}. Program akan menambahkan data pengguna beserta sandi yang telah dibangun ke dalam \textit{database} sistem KIRI (baris 333). Sandi yang telah dibangun program juga dikirimkan ke alamat \textit{email} pengguna (baris 335). Lalu program mencatat proses tersebut ke dalam statistik \textit{database} sistem KIRI. Terakhir, program akan mengirimkan pesan dalam format JSON sebagai penanda bahwa pengguna berhasil melakukan proses registrasi (baris 340).
 
 \subsection{Bagian Melihat Data Pribadi Pengguna}
 \label{sec:lihatdatadiri}
-Bagian ini terletak di baris 341-362 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=getprofile}'' pada permintaan POST. Bagian ini berfungsi untuk memberikan informasi mengenai data pribadi pengguna.
+Bagian ini terletak di baris 341-362 dari ``handle.php'' (Kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=getprofile}'' pada permintaan POST. Bagian ini berfungsi untuk memberikan informasi mengenai data pribadi pengguna.
 
 Bagian ini diawali dengan memeriksa apakah data pengguna dengan \textit{email} yang dimiliki pengguna pada saat sesi tersebut ada atau tidak (baris 344-345). Jika data pengguna ditemukan maka program akan mengambil dan membangun data pengguna (baris 346-351). Data pengguna yang dibangun tersebut kemudian diubah ke dalam format JSON (baris 355-359). Terakhir, program mengirimkan data dalam format JSON yang telah dibangun kepada pengguna (baris 361).
 
 \subsection{Bagian Mengubah Data Pribadi Pengguna}
 \label{sec:ubahdatadiri}
-Bagian ini terletak di baris 362-380 dari ``handle.php'' (kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=updateprofile}'' pada permintaan POST. Bagian ini berfungsi untuk mengubah data pribadi pengguna yang sudah terdaftar dalam sistem KIRI.
+Bagian ini terletak di baris 362-380 dari ``handle.php'' (Kode \ref{lst:handle.php}). Bagian ini akan dieksekusi jika terdapat parameter ``\texttt{mode=updateprofile}'' pada permintaan POST. Bagian ini berfungsi untuk mengubah data pribadi pengguna yang sudah terdaftar dalam sistem KIRI.
 
 Bagian ini diawali dengan memeriksa apakah pengguna memberikan \textit{password}, \textit{fullname}, dan \textit{company} pada permintaan atau tidak (baris 364-366). Bila pengguna memberikan \textit{password} dengan nilai \texttt{NULL} maka program akan membangun \textit{password} secara acak dan menambahkan \textit{password} tersebut ke dalam \textit{database} sistem KIRI sesuai dengan \textit{email} pengguna pada saat sesi tersebut (kode 369-374). Lalu program akan mengubah semua data pribadi pengguna sesuai dengan data yang diberikan oleh pengguna (baris 375-376). Terakhir, program mengirimkan pesan keberhasilan dalam format JSON kepada pengguna (baris 379).
 
@@ -303,7 +303,7 @@ Berdasarkan hasil analisa terhadap bagian tampilan sistem kini, didapatkan infor
 
 \section{Analisis \textit{Database} Sistem Kini}
 \label{sec:analisisdatabasesistemkini}
-Sistem KIRI menggunakan perangkat lunak MySQL sebagai sarana penyimpanan untuk mengolah data. Seperti yang dijelaskan pada subbab sebelumnya (subbab \ref{sec:analisissistemkini}) terdapat sebuah \textit{folder} yang menyimpan \textit{file-file} untuk membangun \textit{database} sistem KIRI, yaitu: \textit{folder} ``sql'' (Gambar \ref{fig:3_strukturkiri}). Berdasarkan hasil analisa dan wawancara dengan kontributor kode KIRI, berikut adalah penjelasan mengenai isi \textit{folder} ``sql'' (Gambar \ref{fig:4_struktursql}):
+Sistem KIRI menggunakan perangkat lunak MySQL sebagai sarana penyimpanan untuk mengolah data. Seperti yang dijelaskan pada subbab sebelumnya (Subbab \ref{sec:analisissistemkini}) terdapat sebuah \textit{folder} yang menyimpan \textit{file-file} untuk membangun \textit{database} sistem KIRI, yaitu: \textit{folder} ``sql'' (Gambar \ref{fig:3_strukturkiri}). Berdasarkan hasil analisa dan wawancara dengan kontributor kode KIRI, berikut adalah penjelasan mengenai isi \textit{folder} ``sql'' (Gambar \ref{fig:4_struktursql}):
 \begin{enumerate}
 	\item \textit{file} ``.gitignore'', merupakan \textit{file} yang menyimpan daftar \textit{file} yang tidak perlu dikirimkan ke tempat penyimpanan GitHub karena \textit{file-file} tersebut dibangkitkan oleh sistem.
 	\item \textit{file} ``tirtayasa\_structure.sql'', merupakan \textit{file} untuk membangun tabel-tabel serta kolom-kolom (pada setiap tabel) \textit{database} sistem KIRI.
@@ -345,7 +345,7 @@ Berdasarkan hasil analisa terhadap \textit{database} sistem kini (Gambar \ref{fi
 
 \section{Analisis Sistem Usulan}
 \label{sec:analisissistemusulan}
-Berdasarkan hasil analisa dan wawancara dengan kontributor kode pada subbab sebelumnya (subbab \ref{sec:analisissistemkini} dan subbab \ref{sec:analisisdatabasesistemkini}) didapatkan poin-poin bahwa:
+Berdasarkan hasil analisa dan wawancara dengan kontributor kode pada subbab sebelumnya (Subbab \ref{sec:analisissistemkini} dan Subbab \ref{sec:analisisdatabasesistemkini}) didapatkan poin-poin bahwa:
 \begin{enumerate}
 	\item KIRI \textit{Dashboard} terdiri dari dua bagian penting, yaitu bagian pertama adalah \textit{file} dan \textit{folder} yang bersifat statis, yaitu: ``index.html'', ``bukitjariangwt/'', dan ``images/'', serta bagian kedua adalah ``handle.php'' yang bertugas menangani permintaan-permintaan (dari ``index.html'') pada sisi \textit{server}.
 	\item KIRI \textit{Dashboard server side} (\textit{file} ``handle.php'') terbagi menjadi 16 bagian dalam menangani permintaan.

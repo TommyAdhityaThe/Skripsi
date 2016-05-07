@@ -123,7 +123,7 @@ Contoh di atas menunjukkan bagaimana JDBC API membantu aplikasi Java membuat kon
 
 \subsection{\textit{Interface} Connection}
 \label{sec:intercon}
-\textit{Interface} Connection adalah sebuah koneksi (\textit{session}) dengan \textit{database} spesifik\cite{javadocumentation}. Eksekusi SQL \textit{statements} (subbab \ref{sec:statement}) dan penerimaan hasil kembalian (subbab \ref{sec:resultset}) dari eksekusi tersebut dapat terjadi karena adanya koneksi dengan \textit{database} yang dibentuk oleh \textit{interface} Connection. Berikut adalah sebagian \textit{method} yang ada pada \textit{interface} Connection:
+\textit{Interface} Connection adalah sebuah koneksi (\textit{session}) dengan \textit{database} spesifik\cite{javadocumentation}. Eksekusi SQL \textit{statements} (Subbab \ref{sec:statement}) dan penerimaan hasil kembalian (Subbab \ref{sec:resultset}) dari eksekusi tersebut dapat terjadi karena adanya koneksi dengan \textit{database} yang dibentuk oleh \textit{interface} Connection. Berikut adalah sebagian \textit{method} yang ada pada \textit{interface} Connection:
 \begin{itemize}
 	\item \texttt{void close()}
 	
@@ -140,7 +140,7 @@ Kelas DriverManager adalah cara paling dasar untuk mengatur JDBC \textit{drivers
 \begin{itemize}
 	\item \texttt{public static Connection getConnection(String url, String user, String password)}
 	
-	\textit{Method} ini digunakan untuk membangun sebuah koneksi dengan \textit{database}. Umumnya method ini digunakan untuk membangun \textit{interface} Connection (subbab \ref{sec:intercon}).
+	\textit{Method} ini digunakan untuk membangun sebuah koneksi dengan \textit{database}. Umumnya method ini digunakan untuk membangun \textit{interface} Connection (Subbab \ref{sec:intercon}).
 	
 	Parameter:
 	\begin{enumerate}
@@ -165,7 +165,7 @@ Kelas DriverManager adalah cara paling dasar untuk mengatur JDBC \textit{drivers
 
 \subsection{\textit{Interface} ResultSet}
 \label{sec:resultset}
-\textit{Interface} ResultSet adalah sebuah tabel data yang merepresentasikan hasil dari sebuah eksekusi \textit{query} pada suatu \textit{database}\cite{javadocumentation} (subbab \ref{sec:statement}). Cara kerja \textit{interface} ResultSet adalah dengan sistem indeks. Pada awalnya indeks ResultSet menunjuk pada data ``bayangan'' sebelum data pertama. Setiap pemanggilan \textit{method} ``\texttt{next()}'' pada objek ResultSet akan menyebabkan nilai indeks semakin meningkat (bertambah 1). Berikut adalah contoh \textit{method} \textit{interface} ResultSet:
+\textit{Interface} ResultSet adalah sebuah tabel data yang merepresentasikan hasil dari sebuah eksekusi \textit{query} pada suatu \textit{database}\cite{javadocumentation} (Subbab \ref{sec:statement}). Cara kerja \textit{interface} ResultSet adalah dengan sistem indeks. Pada awalnya indeks ResultSet menunjuk pada data ``bayangan'' sebelum data pertama. Setiap pemanggilan \textit{method} ``\texttt{next()}'' pada objek ResultSet akan menyebabkan nilai indeks semakin meningkat (bertambah 1). Berikut adalah contoh \textit{method} \textit{interface} ResultSet:
 \begin{itemize}
 	\item \texttt{boolean next()}
 	
@@ -206,8 +206,8 @@ Play Framework adalah sekumpulan kerangka kode yang dapat digunakan untuk memban
 \label{sec:struktur_aplikasi}
 Ketika Play Framework pertama kali ter-\textit{install} pada komputer, Play Framework menyediakan \textit{default} direktori dengan struktur minimal (Gambar \ref{fig:2_strukturplay}). Berikut adalah penjelasan struktur minimal Play Framework:
 \begin{enumerate}
-	\item \textit{Folder} ``app'' merupakan \textit{folder} yang berisi pola arsitektur yang dimiliki Play Framework, yaitu ``models'' (tidak dibuat secara \textit{default}), ``views'', dan ``controllers'' yang akan dijelaskan lebih lanjut pada subbab selanjutnya (subbab \textit{Models}: \ref{sec:models}, subbab \textit{Views}: \ref{sec:views}, dan subbab \textit{Controllers}: \ref{sec:controllers}).
-	\item \textit{Folder} ``conf'' berisi \textit{file} ``application.conf'' yang menyimpan pengaturan-pengaturan seperti kumpulan \textit{log}, koneksi ke \textit{database}, jenis \textit{port} tempat \textit{server} bekerja, dll. \textit{Folder} ``conf'' juga berisi \textit{file} ``routes'' yang mengatur bagaimana HTTP \textit{requests} nantinya akan diproses lebih lanjut yang akan dijelaskan pada subbab selanjutnya (subbab \ref{sec:routes}).
+	\item \textit{Folder} ``app'' merupakan \textit{folder} yang berisi pola arsitektur yang dimiliki Play Framework, yaitu ``models'' (tidak dibuat secara \textit{default}), ``views'', dan ``controllers'' yang akan dijelaskan lebih lanjut pada subbab selanjutnya (Subbab \textit{Models}: \ref{sec:models}, Subbab \textit{Views}: \ref{sec:views}, dan Subbab \textit{Controllers}: \ref{sec:controllers}).
+	\item \textit{Folder} ``conf'' berisi \textit{file} ``application.conf'' yang menyimpan pengaturan-pengaturan seperti kumpulan \textit{log}, koneksi ke \textit{database}, jenis \textit{port} tempat \textit{server} bekerja, dll. \textit{Folder} ``conf'' juga berisi \textit{file} ``routes'' yang mengatur bagaimana HTTP \textit{requests} nantinya akan diproses lebih lanjut yang akan dijelaskan pada subbab selanjutnya (Subbab \ref{sec:routes}).
 	\item \textit{Folder} ``project'' terdapat \textit{file} ``build.properties'' dan ``plugins.sbt'', \textit{file} tersebut mendeskripsikan versi Play dan SBT yang digunakan pada aplikasi.
 	\item \textit{Folder} ``public'' merupakan \textit{folder} yang menyimpan data-data seperti gambar (\textit{folder} ``images''), kumpulan Javascript yang digunakan (\textit{folder} ``javascripts'', secara \textit{default} berisikan \textit{file} ``jquery-1.9.0.min.js'') dan data-data CSS (folder ``stylesheets'').
 	\item \textit{File} ``build.sbt'' mengatur \textit{dependencies} yang dibutuhkan dalam pembuatan aplikasi.
@@ -238,7 +238,7 @@ Berikut adalah isi kode \textit{default} \textit{routes}:
 
 Contoh di atas menunjukkan bagaimana \textit{routes} memetakan permintaan URL \textit{index} atau ``/'' (baris ke 2) dan permintaan URL ``/assets/*file'' (baris ke 5).
 
-Struktur \textit{routes} terdiri dari 3 bagian (Gambar \ref{fig:2_routes}), yaitu HTTP \textit{method}, URL \textit{path}, dan \textit{action method}. Struktur \textit{routes} seperti yang dijelaskan pada gambar \ref{fig:2_routes} juga sekaligus menjadi struktur minimal yang harus ada agar \textit{routes} dapat memetakan suatu HTTP URLs. HTTP \textit{method} berisikan protokol yang ingin dilakukan terhadap suatu HTTP \textit{request}. HTTP \textit{method} dapat berupa ``\texttt{GET}'', ``\texttt{POST}'', ``\texttt{DELETE}'', ``\texttt{PATCH}'', ``\texttt{HEAD}'' atau ``\texttt{PUT}''\cite{playframeworkweb}. URL \textit{path} merupakan direktori yang ingin dituju dalam \textit{server} aplikasi. URL \textit{path} dimulai dengan tanda ``/'' dan diikuti dengan nama direktori yang ingin dituju. Terakhir, \textit{action method} merupakan pemilihan kelas \textit{controller} yang ingin dituju. Struktur \textit{action method} terdiri dari 3 bagian (dipisahkan dengan karakter ``.''), yaitu pemilihan \textit{package} ``controllers'' yang ingin dituju, bagian kedua adalah pemilihan kelas ``controllers'' yang dipilih (contohnya: ``Products'' pada gambar \ref{fig:2_routes}), dan terakhir adalah pemilihan \textit{method} yang ada pada kelas ``controllers'' yang dipilih (contohnya: ``list()'').
+Struktur \textit{routes} terdiri dari 3 bagian (Gambar \ref{fig:2_routes}), yaitu HTTP \textit{method}, URL \textit{path}, dan \textit{action method}. Struktur \textit{routes} seperti yang dijelaskan pada Gambar \ref{fig:2_routes} juga sekaligus menjadi struktur minimal yang harus ada agar \textit{routes} dapat memetakan suatu HTTP URLs. HTTP \textit{method} berisikan protokol yang ingin dilakukan terhadap suatu HTTP \textit{request}. HTTP \textit{method} dapat berupa ``\texttt{GET}'', ``\texttt{POST}'', ``\texttt{DELETE}'', ``\texttt{PATCH}'', ``\texttt{HEAD}'' atau ``\texttt{PUT}''\cite{playframeworkweb}. URL \textit{path} merupakan direktori yang ingin dituju dalam \textit{server} aplikasi. URL \textit{path} dimulai dengan tanda ``/'' dan diikuti dengan nama direktori yang ingin dituju. Terakhir, \textit{action method} merupakan pemilihan kelas \textit{controller} yang ingin dituju. Struktur \textit{action method} terdiri dari 3 bagian (dipisahkan dengan karakter ``.''), yaitu pemilihan \textit{package} ``controllers'' yang ingin dituju, bagian kedua adalah pemilihan kelas ``controllers'' yang dipilih (contohnya: ``Products'' pada Gambar \ref{fig:2_routes}), dan terakhir adalah pemilihan \textit{method} yang ada pada kelas ``controllers'' yang dipilih (contohnya: ``list()'').
 
 \begin{figure}[htbp]
 	\centering
@@ -289,7 +289,7 @@ Baris 1 pada contoh kode di atas digunakan sebagai parameter penerima input dari
 
 \subsection{\textit{Controllers}}
 \label{sec:controllers}
-\textit{Controllers} merupakan bagian pada Play Framework yang terhubung langsung dengan \textit{routes} (subbab \ref{sec:routes}). Jika \textit{action method} yang dikirimkan oleh \textit{routes} sesuai dengan \textit{method} yang dimiliki suatu kelas \textit{controllers}, maka \textit{controllers} akan mengeksekusi fungsi logika yang terdapat pada \textit{method} dan mengembalikan nilai berupa objek dari kelas \textit{Result} (Gambar \ref{fig:2_controllers1}). Fungsi dari \textit{controllers} dalam arsitektur MVC adalah sebagai penghubung antara \textit{models} dan \textit{views}. 
+\textit{Controllers} merupakan bagian pada Play Framework yang terhubung langsung dengan \textit{routes} (Subbab \ref{sec:routes}). Jika \textit{action method} yang dikirimkan oleh \textit{routes} sesuai dengan \textit{method} yang dimiliki suatu kelas \textit{controllers}, maka \textit{controllers} akan mengeksekusi fungsi logika yang terdapat pada \textit{method} dan mengembalikan nilai berupa objek dari kelas \textit{Result} (Gambar \ref{fig:2_controllers1}). Fungsi dari \textit{controllers} dalam arsitektur MVC adalah sebagai penghubung antara \textit{models} dan \textit{views}. 
 
 \begin{figure}[htbp]
 	\centering	
@@ -346,13 +346,13 @@ Play Framework menyediakan sebuah \textit{plugin} yang dapat digunakan untuk men
 	Baris 1 kode program di atas menyatakan jenis \textit{driver} yang digunakan, yaitu MySQL. Baris 2 kode program menyatakan nama database yang digunakan, yaitu ``playdb''. Baris 3 dan 4 menyatakan \textit{username} dan \textit{password} yang dibutuhkan dalam otentikasi terhadap \textit{server database} untuk mendapatkan hak akses tertentu terhadap \textit{database}.
 \end{enumerate}
 
-	Salah satu aktivitas programming yang dibantu JDBC adalah menghubungkan aplikasi Java ke suatu sumber data seperti \textit{database} (subbab \ref{sec:jdbc}). Play Framework telah menyediakan kelas ``DB'' yang dapat memudahkan aplikasi Java membuat suatu koneksi dengan \textit{database}. Berikut adalah contoh kode yang diperlukan untuk menggunakan kelas ``DB'' dari Play Framework:
+	Salah satu aktivitas programming yang dibantu JDBC adalah menghubungkan aplikasi Java ke suatu sumber data seperti \textit{database} (Subbab \ref{sec:jdbc}). Play Framework telah menyediakan kelas ``DB'' yang dapat memudahkan aplikasi Java membuat suatu koneksi dengan \textit{database}. Berikut adalah contoh kode yang diperlukan untuk menggunakan kelas ``DB'' dari Play Framework:
 	\begin{lstlisting}
 	import play.db.*;
 
 	Connection connection = DB.getConnection();
 	\end{lstlisting}
-	Contoh kode di atas menyederhanakan penulisan kode milik JDBC (contoh kode pada subbab \ref{sec:jdbc} baris 3-6). 
+	Contoh kode di atas menyederhanakan penulisan kode milik JDBC (contoh kode pada Subbab \ref{sec:jdbc} baris 3-6). 
 	
 \subsection{\textit{Logging}}
 \label{sec:logger}
@@ -376,7 +376,7 @@ Baris 1 contoh kode di atas adalah untuk melakukan impor kelas Logger milik Play
 JSON (\textit{JavaScript Object Notation}) adalah sebuah format pertukaran data ringan\cite{json}. JSON dapat dibangun dalam 2 buah struktur:
 \begin{enumerate}
 	\item Sekumpulan pasangan antara nama dengan nilai. Umumnya dikenal dengan sebutan objek. Sebuah objek dalam JSON dimulai dengan karakter ``\texttt{\{}'' dan diakhiri dengan karakter ``\texttt{\}}''. Di antara karakter ``\texttt{\{}'' dan ``\texttt{\}}'' dapat disisipkan sekumpulan pasangan ``\texttt{nama:nilai}'' yang dipisahkan dengan karakter ``\texttt{,}''.
-	\item Sekumpulan data terstruktur. Umumnya dikenal dengan sebutan \textit{array}. Sebuah \textit{array} dalam JSON dimulai dengan karakter ``\texttt{[}'' dan diakhiri dengan karakter ``\texttt{]}''. Di antara karakter ``\texttt{[}'' dan ``\texttt{]}'' dapat disisipkan sekumpulan data (dapat berupa nilai, objek atau \textit{array}) yang dipisahkan dengan karakter ``\texttt{,}''. Setiap data dalam \textit{array} tidak harus sama jenisnya.
+	\item Sekumpulan data terstruktur. Umumnya dikenal dengan sebutan \textit{array}. Sebuah \textit{array} dalam JSON dimulai dengan karakter ``\texttt{[}'' dan diakhiri dengan karakter ``\texttt{]}''. Di antara karakter ``\texttt{[}'' dan ``\texttt{]}'' dapat disisipkan sekumpulan data (dapat berupa nilai, objek atau \textit{array}) yang dipisahkan dengan karakter ``\texttt{,}''.
 \end{enumerate}
 
 Nilai dalam JSON dapat berupa \textit{string} (sekumpulan karakter yang diapit dengan 2 tanda kutip ganda, contoh: ``\texttt{karakter}''), angka, \texttt{true}, \texttt{false}, atau \texttt{null}.
@@ -393,7 +393,7 @@ Contoh kode di atas adalah sebuah objek (baris 1-4) yang memiliki 2 buah pasanga
 
 \section{Regular Expressions}
 \label{sec:regex}
-Regular Expressions (disebut juga dengan Regex) adalah metode penulisan untuk mendeskripsikan sebuah pola pencarian tertentu dengan tujuan menemukan sebagian isi teks dalam keseluruhan isi teks\cite{regex}. Untuk melakukan pola pencarian, terdapat 2 tipe karakter dalam Regex, yaitu: karakter biasa dan karakter spesial. Karakter biasa dapat berupa huruf, angka, dan simbol. Karakter spesial adalah simbol yang memiliki fungsi khusus dalam Regular Expressions, sebagian diantaranya yang digunakan dalam penelitian ini adalah: 
+Regular Expressions (disebut juga dengan Regex) adalah metode penulisan untuk mendeskripsikan sebuah pola pencarian tertentu dengan tujuan menemukan sebagian isi teks dalam keseluruhan isi teks\cite{regex}. Untuk melakukan pola pencarian, terdapat 2 tipe karakter dalam Regex, yaitu: karakter biasa dan karakter spesial. Karakter biasa dapat berupa huruf, angka, dan simbol. Karakter spesial adalah simbol yang memiliki fungsi khusus dalam Regex, sebagian diantaranya yang digunakan dalam penelitian ini adalah: 
 \begin{enumerate}
 	\item \texttt{[]} (kurung siku)\\
 	Digunakan untuk mengelompokkan sejumlah karakter. Karakter yang berada dalam tanda kurung siku hanya dapat dipilih tepat 1 saja. Contohnya: ``gr[ae]y'', maka teks yang dapat ditemukan oleh Regex tersebut adalah ``gray'' atau ``grey''.
