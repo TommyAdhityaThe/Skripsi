@@ -261,9 +261,8 @@
 
 \newcommand{\appline}{
 	\ifdefstring{\vmode}{final}{\renewcommand{\vlineno}{no}}{}
-	\ifdefstring{\vlineno}{yes}{\linenumbers \def\linenumberfont{\normalfont\tiny\sffamily}}{}
+	\ifdefstring{\vlineno}{yes}{\linenumbers \def\linenumberfont{\normalfont\tiny\sffamily} \lstset{xleftmargin=0.3cm,numbers=left, stepnumber=1, numbersep=5pt}}{}
 	\ifdefstring{\vlineno}{no}{\lstset{numbers=left, stepnumber=1, numbersep=5pt}}{}
-	
 }
 
 \newcommand{\appmargin}{

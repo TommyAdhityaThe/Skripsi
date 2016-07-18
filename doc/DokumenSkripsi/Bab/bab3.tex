@@ -1,5 +1,6 @@
 \chapter{Analisis}
 \label{chap:analisis}
+Pada bab ini akan dijelaskan mengenai analisis kode sistem kini, analisis tampilan sistem kini, analisis \textit{database} sistem kini, analisis sistem usulan, dan analisis \textit{libraries} tambahan.
 
 \section{Analisis Kode Sistem Kini}
 \label{sec:analisissistemkini}
@@ -11,7 +12,7 @@ Berdasarkan hasil analisa serta wawancara dengan kontributor kode KIRI, berikut 
 	\item \textit{Folder} ``public\_html'' merupakan \textit{folder} yang berisi \textit{file-file} untuk membangun KIRI \textit{Front End}.
 	\item \textit{Folder} ``public\_html\_dev'' merupakan \textit{folder} yang berisi \textit{file-file} untuk membangun KIRI \textit{Dashboard}.
 	\item \textit{Folder} ``res'' merupakan \textit{folder} yang berisi \textit{file-file} yang bersifat publik seperti gambar, data XML, dll yang digunakan sebagai pendukung sistem KIRI.
-	\item \textit{Folder} ``sql'' merupakan \textit{folder} yang menyimpan \textit{file-file} untuk membangun \textit{database} sistem KIRI.
+	\item \textit{Folder} ``sql'' merupakan \textit{folder} yang menyimpan \textit{file-file} untuk membangun \textit{database} sistem KIRI dan mengisi data-data dari hasil ekspor ke sistem KIRI.
 	\item \textit{File} ``.buildpath'' dan ``.project'' merupakan \textit{file} yang menyimpan konfigurasi untuk Eclipse.
 	\item \textit{File} ``.gitignore'' merupakan \textit{file} yang menyimpan daftar \textit{file} yang tidak perlu dikirimkan ke tempat penyimpanan GitHub karena \textit{file-file} tersebut dibangkitkan oleh sistem. GitHub adalah sebuah tempat penyimpanan \textit{online} yang dikhususkan untuk menyimpan isi kode suatu perangkat lunak\cite{github}.
 	\item \textit{File} ``.gitmodules'' merupakan \textit{file} yang menyimpan alamat kode eksternal yang digunakan dalam sistem KIRI.
@@ -63,7 +64,7 @@ Penelitian ini berfokus pada pembahasan KIRI \textit{Dashboard}, untuk itu bagia
 
 Pada direktori ``public\_html\_dev/bukitjarian'' (Gambar \ref{fig:3_bukit_jarian}) terdapat bermacam-macam \textit{file} dan \textit{folder}. Berdasarkan wawancara dengan kontributor kode, terdapat dua bagian \textit{file} dan \textit{folder} yang berperan penting dalam membangun KIRI \textit{Dashboard}:
 \begin{enumerate}
-	\item ``index.html'', ``bukitjariangwt/'', dan ``images/''. \textit{File} dan \textit{folder} ini dibangun dengan menggunakan perangkat lunak GWT. GWT (\textit{Google Web Toolkit}) adalah perangkat lunak yang digunakan untuk membangun dan melakukan optimasi suatu aplikasi berbasis web\cite{gwt}. Dengan GWT, pengguna tidak perlu ahli dalam menggunakan bahasa pemrograman berbasis web seperti JavaScript. GWT menggunakan bahasa Java dalam pembuatannya dan akan melakukan konversi kode Java tersebut menjadi HTML dan JavaScript. Hasil konversi menggunakan GWT akan mengalami \textit{obfuscate} (pengacakan) sehingga sulit untuk dianalisa. Namun demikian, \textit{file-file} ini bersifat statis dan tidak memerlukan operasi khusus di \textit{server}, sehingga dapat disalin (\textit{copy}) apa adanya. 
+	\item ``index.html'', ``bukitjariangwt/'', dan ``images/''. \textit{File} dan \textit{folder} ini dibangun dengan menggunakan perangkat lunak GWT (dahulu bernama \textit{Google Web Toolkit}). GWT adalah perangkat lunak yang digunakan untuk membangun dan melakukan optimasi suatu aplikasi berbasis web\cite{gwt}. Dengan GWT, pengguna tidak perlu ahli dalam menggunakan bahasa pemrograman berbasis web seperti JavaScript. GWT menggunakan bahasa Java dalam pembuatannya dan akan melakukan konversi kode Java tersebut menjadi HTML dan JavaScript. Hasil konversi menggunakan GWT akan mengalami \textit{obfuscate} (pengacakan) sehingga sulit untuk dianalisa. Namun demikian, \textit{file-file} ini bersifat statis dan tidak memerlukan operasi khusus di \textit{server}, sehingga dapat disalin (\textit{copy}) apa adanya. 
 	\item ``handle.php'' merupakan kode pada sisi \textit{server} yang bertugas untuk melayani permintaan-permintaan dari \textit{browser} yang dieksekusi oleh ``index.html''.
 \end{enumerate}
 
@@ -307,13 +308,13 @@ Sistem KIRI menggunakan perangkat lunak MySQL sebagai sarana penyimpanan untuk m
 \begin{enumerate}
 	\item \textit{file} ``.gitignore'', merupakan \textit{file} yang menyimpan daftar \textit{file} yang tidak perlu dikirimkan ke tempat penyimpanan GitHub karena \textit{file-file} tersebut dibangkitkan oleh sistem.
 	\item \textit{file} ``tirtayasa\_structure.sql'', merupakan \textit{file} untuk membangun tabel-tabel serta kolom-kolom (pada setiap tabel) \textit{database} sistem KIRI.
-	\item \textit{file} ``tirtayasa.sql'', merupakan \textit{file} untuk membangun isi dari kolom-kolom setiap tabel, yaitu \textit{record-record} awal.
+	\item \textit{file} ``tirtayasa.sql'', merupakan \textit{file} untuk membangun isi dari kolom-kolom setiap tabel, yaitu \textit{record-record} dari hasil ekspor.
 \end{enumerate}
 
 Berdasarkan hasil analisa terhadap \textit{database} sistem kini (Gambar \ref{fig:4_struktursql}), berikut adalah penjelasan fungsi seluruh tabel yang digunakan oleh sistem kini:
 \begin{enumerate}
 	\item \textbf{statistics}\\
-	Berfungsi untuk melakukan pencatatan mengenai siapa saja yang telah menggunakan sistem kini. Digunakan pada bagian menambahkan API \textit{keys}, \textit{login}, dan \textit{register}. 
+	Berfungsi untuk menyimpan data mengenai siapa saja yang telah menggunakan sistem kini. Digunakan pada bagian menambahkan API \textit{keys}, \textit{login}, dan \textit{register}. 
 	\item \textbf{apikeys}\\
 	Berfungsi untuk menyimpan daftar API \textit{keys} beserta informasi kepemilikannya. Digunakan untuk mengelola API \textit{keys} (melihat, menambahkan, dan mengubah). 
 	\item \textbf{users}\\
@@ -374,7 +375,7 @@ Pada bagian ini akan dibuat sebuah kelas yang akan menangani permintaan-perminta
 \begin{figure}[htbp]
 	\centering
 		\includegraphics[scale=0.47]{Gambar/3_classdiagram_kasar.png}
-	\caption{Diagram Kelas Analisis}
+	\caption{Diagram kelas sistem usulan (tahap analisis)}
 	\label{fig:3_classdiagram_kasar}
 \end{figure}
 

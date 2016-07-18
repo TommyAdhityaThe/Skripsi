@@ -189,7 +189,8 @@ public class TracksManager {
 			hayStack.append(line.trim());
 		}
 		br.close();
-		Pattern patt = Pattern.compile("(?i)<LineString>.*?<coordinates>(.*?)</coordinates>.*?</LineString>");
+		Pattern patt = Pattern.compile(
+			"(?i)<LineString>.*?<coordinates>(.*?)</coordinates>.*?</LineString>");
 		Matcher match = patt.matcher(hayStack.toString());
 		int numMatches = 0;
 		while (match.find()) {
@@ -197,7 +198,8 @@ public class TracksManager {
 		}
 		if (numMatches != 1) {
 			Utils.dieNice(
-					"The KML file must contain exactly one <coordinate> tag inside one <LineString> tag. But I found "
+					"The KML file must contain exactly one <coordinate> 
+					tag inside one <LineString> tag. But I found "
 							+ numMatches + " occurences");
 		}
 		match.reset();

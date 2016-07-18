@@ -1,12 +1,13 @@
 \chapter{Implementasi dan Pengujian}
 \label{chap:implementasipengujian}
+Bab ini terdiri atas dua bagian, yaitu implementasi perangkat lunak dan pengujian perangkat lunak. Bagian implementasi berisi penjelasan mengenai lingkungan implementasi (digunakan juga sebagai lingkungan pengujian) dan hasil implementasi. Sedangkan bagian pengujian berisi hasil pengujian fungsional dan eksperimental terhadap perangkat lunak yang telah dibangun.
 
 \section{Implementasi}
 \label{sec:implementasi}
 
-\subsection{Lingkungan Implementasi}
+\subsection{Lingkungan Implementasi dan Pengujian}
 \label{sec:lingkunganimplementasi}
-Impelementasi dilakukan dengan menggunakan laptop peneliti. Berikut adalah spesifikasi laptop peneliti:
+Impelementasi dilakukan dengan menggunakan sebuah laptop. Berikut adalah spesifikasi laptop yang digunakan:
 \begin{enumerate}
 	\item Processor: Intel(R) Core(TM)2 Duo 2.40 GHz
 	\item RAM: 2048 MB
@@ -282,7 +283,7 @@ Pengujian eksperimental yang dilakukan adalah pengujian terhadap waktu eksekusi.
 
 \begin{table}[H]
 	\centering
-	\caption{Tabel Pengujian Eksperimental Sistem Kini (dalam mili sekon)}
+	\caption{Tabel Pengujian Eksperimental Sistem Kini (dalam mili detik)}
 		\begin{tabular}{|p{0.37cm}| p{7cm}| p{1cm}| p{1cm}| p{1cm}| p{1cm}| p{1cm}| p{1cm}|} \hline
 		No & Aksi & 1 & 2 & 3 & 4 & 5 & rata-rata \\ \hline
 		1. & Menjalankan aplikasi (halaman \textit{login}) & 1298	&	1382	&	1312	&	1308	&	1322	&	1324.4 \\ \hline
@@ -307,7 +308,7 @@ Pengujian eksperimental yang dilakukan adalah pengujian terhadap waktu eksekusi.
 
 \begin{table}[H]
 	\centering
-	\caption{Tabel Pengujian Eksperimental Sistem Usulan (dalam mili sekon)}
+	\caption{Tabel Pengujian Eksperimental Sistem Usulan (dalam mili detik)}
 		\begin{tabular}{|p{0.37cm}| p{7cm}| p{1cm}| p{1cm}| p{1cm}| p{1cm}| p{1cm}| p{1cm}|} \hline
 		No & Aksi & 1 & 2 & 3 & 4 & 5 & rata-rata \\ \hline
 		1. & Menjalankan aplikasi (halaman \textit{login}) & 1170	&	1220	&	1180	&	1210	&	1212	&	1198.4 \\ \hline
@@ -330,42 +331,17 @@ Pengujian eksperimental yang dilakukan adalah pengujian terhadap waktu eksekusi.
 	\label{table:hasileksperimental2}
 \end{table}
 
-% \begin{table}[H]
-% 	\centering
-% 	\caption{Tabel Perbandingan Sistem Kini dan Sistem Usulan (dalam mili sekon)}
-% 		\begin{tabular}{|p{0.37cm}| p{7cm}| p{2.4cm}| p{2.4cm}|} \hline
-% 		No & Aksi & Sistem Kini & Sistem Usulan \\ \hline
-% 		1. & Menjalankan aplikasi (halaman \textit{login}) & 1324.4 & 1198.4\\ \hline
-%  		2. & \textit{Register} & 4678.2 & 9179\\ \hline
-% 		3. & \textit{Login} & 183.8 & 193.6\\ \hline
-% 		4. & Melihat data pribadi pengguna & 33 & 28\\ \hline
-% 		5. & Mengubah data pribadi pengguna & 128.4 & 225.4\\ \hline
-% 		6. & Melihat daftar API \textit{keys} & 33 & 23.6\\ \hline
-% 		7. & Menambahkan API \textit{key}& 140  & 61.2\\ \hline
-% 		8. & Mengubah API \textit{key} & 58.2 & 55.6\\ \hline
-% 		9. & Melihat daftar rute & 32.6 & 25.4\\ \hline
-% 		10. & Melihat informasi rute secara detail & 41 & 38.6\\ \hline
-% 		11. & Menambahkan rute 	& 154.4 & 130.8\\ \hline
-% 		12. & Mengubah rute & 150.2 & 130.4\\ \hline
-% 		13. & Impor data KML 	& 241.8 & 221.8\\ \hline
-% 		14. & Menghapus data geografis suatu rute 	& 143.2 & 98.8\\ \hline
-% 		15. & Menghapus rute & 181 & 163.8\\ \hline
-% 		16. & \textit{Logout} & 84.6 & 72.8\\ \hline
-% 		\end{tabular}
-% 	\label{table:hasileksperimental3}
-% \end{table}
-
 \begin{figure}[htbp]
 	\centering
 		\includegraphics[scale=0.6]{Gambar/5_pengujianwaktu_1.png}
-	\caption{Grafik rata-rata waktu eksekusi 1 (dalam mili sekon)} 
+	\caption{Grafik rata-rata waktu eksekusi 1 (dalam mili detik)} 
 	\label{fig:5_pengujianwaktu_1}
 \end{figure}
 
 \begin{figure}[htbp]
 	\centering
 		\includegraphics[scale=0.7]{Gambar/5_pengujianwaktu_2.png}
-	\caption{Grafik rata-rata waktu eksekusi 2 (dalam mili sekon)} 
+	\caption{Grafik rata-rata waktu eksekusi 2 (dalam mili detik)} 
 	\label{fig:5_pengujianwaktu_2}
 \end{figure}
 
@@ -374,6 +350,6 @@ Berdasarkan hasil pengamatan terhadap Gambar \ref{fig:5_pengujianwaktu_1} dan Ga
 	\item \textit{Login} dan mengubah data pribadi pengguna\\
 	Pada bagian \textit{login} dan mengubah data pribadi pengguna menggunakan algoritma bcrypt dalam melakukan \textit{hashing} terhadap sandi. Pada algoritma bcrypt, terdapat sebuah nilai (berupa angka) untuk menentukan tingkat kompleksitas proses \textit{hashing}\cite{jbcrypt}. Semakin tinggi angka yang diberikan maka kompleksitas proses \textit{hashing} semakin tinggi dan hasilnya juga semakin sulit untuk diretas. Pada sistem kini ditemukan bahwa nilai yang diberikan adalah 8 (baris 54 dan 370 Kode \ref{lst:handle.php}) dan pada sistem usulan adalah 10\cite{jbcrypt}. Oleh karena itu, peneliti menduga bahwa perbedaan nilai tersebut adalah penyebab bagian \textit{login} dan mengubah data pribadi pengguna pada sistem usulan menjadi lebih lambat dibandingkan bagian sistem kini (kompleksitas proses \textit{hashing} sistem usulan lebih tinggi).
 	\item \textit{Register}\\
-	Berdasarkan analisis terhadap kode sistem usulan, peneliti mendapatkan informasi bahwa struktur kode bagian ini umumnya sama dengan struktur kode bagian lainnya, kecuali struktur kode pada metode pengiriman \textit{email}. Pada sistem kini pengiriman \textit{email} dilakukan dengan menggunakan PHPMailer (baris 317 Kode \ref{lst:utils.php}) dan pada sistem usulan pengiriman \textit{email} dilakukan dengan menggunakan JavaMail API (baris 114 Kode \ref{lst:authenticationmanager.java}).  Peneliti menduga terdapat perbedaan protokol internet dalam pengiriman \textit{email} pada PHPMailer dan JavaMail API yang menyebabkan perbedaan waktu yang cukup lama (4500.8 mili sekon). 
+	Berdasarkan analisis terhadap kode sistem usulan, peneliti mendapatkan informasi bahwa struktur kode bagian ini umumnya sama dengan struktur kode bagian lainnya, kecuali struktur kode pada metode pengiriman \textit{email}. Pada sistem kini pengiriman \textit{email} dilakukan dengan menggunakan PHPMailer (baris 317 Kode \ref{lst:utils.php}) dan pada sistem usulan pengiriman \textit{email} dilakukan dengan menggunakan JavaMail API (baris 114 Kode \ref{lst:authenticationmanager.java}).  Peneliti menduga terdapat perbedaan protokol internet dalam pengiriman \textit{email} pada PHPMailer dan JavaMail API yang menyebabkan perbedaan waktu yang cukup lama (4500.8 mili detik). 
 \end{enumerate}
 

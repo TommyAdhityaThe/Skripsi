@@ -56,15 +56,23 @@ public class AuthenticationManager {
 	}
 
 	public ObjectNode login(String userid, String password)
-			throws UniqueStatusError, SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+			throws UniqueStatusError, SQLException, 
+			NoSuchAlgorithmException, UnsupportedEncodingException {
 		if (userid.length() > 128) {
-			this.returnInvalidCredentials("User ID length is more than allowed (" + userid.length() + ")");
+			this.returnInvalidCredentials(
+				"User ID length is more than allowed (" + 
+				userid.length() + 
+				")");
 		}
 		if (password.length() > 32) {
-			this.returnInvalidCredentials("Password length is more than allowed (" + password.length() + ")");
+			this.returnInvalidCredentials(
+				"Password length is more than allowed (" + 
+				password.length() + 
+				")");
 		}
 		java.sql.Connection connection = DB.getConnection();
-		PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM users WHERE email=?;");
+		PreparedStatement pstmt = connection.prepareStatement(
+				"SELECT * FROM users WHERE email=?;");
 		pstmt.setString(1, userid);
 		ResultSet result = pstmt.executeQuery();
 		if (!result.next()) {
@@ -81,7 +89,8 @@ public class AuthenticationManager {
 		int privilegeRoute = result.getInt(5);
 		int privilegeApiUsage = result.getInt(6);
 		String sessionid = this.generateSessionID();
-		pstmt = connection.prepareStatement("INSERT INTO sessions (sessionId, email) VALUES (?,?);");
+		pstmt = connection.prepareStatement(
+				"INSERT INTO sessions (sessionId, email) VALUES (?,?);");
 		pstmt.setString(1, sessionid);
 		pstmt.setString(2, userid);
 		pstmt.executeUpdate();
@@ -147,16 +156,13 @@ public class AuthenticationManager {
 		return Utils.generateRandom("abcdefghiklmnopqrstuvwxyz0123456789", 8);
 	}
 
-	private void returnInvalidCredentials(String logMessage) throws UniqueStatusError {
+	private void returnInvalidCredentials(String logMessage) 
+	throws UniqueStatusError {
 		String ipAddress = Http.Context.current().request().remoteAddress();
 		this.logError("Login failed (IP=" + ipAddress + "): " + logMessage);
 		throw new UniqueStatusError(Constant.ERROR_CREDENTIAL_FAIL);
 	}
 
-	/*
-	 * masih belum beres di akhir Logger.error("time=" + time + ";message=" +
-	 * message + ";???????????????????????\n"); ??????????????????????????:
-	 */
 	private void logError(String message) {
 		Date date = new Date();
 		String time = date.toString();

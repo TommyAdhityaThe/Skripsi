@@ -134,7 +134,8 @@ public class Application extends Controller {
 		}
 	}
 
-	private ObjectNode login(String userid, String password) throws UniqueStatusError, IOException, SQLException,
+	private ObjectNode login(String userid, String password) throws 
+			UniqueStatusError, IOException, SQLException, 
 			NoSuchAlgorithmException, UnsupportedEncodingException {
 		AuthenticationManager manager = new AuthenticationManager();
 		return manager.login(userid, password);

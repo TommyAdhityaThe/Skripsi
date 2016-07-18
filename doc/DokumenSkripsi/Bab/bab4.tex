@@ -1,9 +1,10 @@
 \chapter{Perancangan}
 \label{chap:perancangan}
+Pada bab ini akan dijelaskan mengenai perancangan aplikasi yang akan dibangun meliputi perancangan kelas, \textit{routes}, \textit{controllers}, \textit{models}, \textit{folder} ``public/'', dan perancangan antarmuka.
 
 \section{Perancangan Kelas}
 \label{sec:diagramkelas}
-Seperti yang telah dijelaskan pada bab analisis, bahwa untuk memodelkan KIRI \textit{Dashboard} dalam Play Framework membutuhkan \textit{routes}, \textit{controllers}, \textit{models}, dan \textit{folder} ``public/''. Berdasarkan hasil pengembangan diagram kelas analisis (Gambar \ref{fig:3_classdiagram_kasar}), dibuatlah diagram kelas rinci untuk memenuhi kebutuhan dalam membangun aplikasi sistem usulan (Gambar \ref{fig:4_classdiagramatribut} dan Gambar \ref{fig:4_classdiagramrelasi}). Deskripsi kelas beserta fungsi dari diagram kelas akan dijelaskan pada subbab selanjutnya.
+Seperti yang telah dijelaskan pada bab analisis, bahwa untuk memodelkan KIRI \textit{Dashboard} dalam Play Framework membutuhkan \textit{routes}, \textit{controllers}, \textit{models}, dan \textit{folder} ``public/''. Berdasarkan hasil pengembangan diagram kelas tahap analisis (Gambar \ref{fig:3_classdiagram_kasar}), dibuatlah diagram kelas rinci untuk memenuhi kebutuhan dalam membangun aplikasi sistem usulan (Gambar \ref{fig:4_classdiagramatribut} dan Gambar \ref{fig:4_classdiagramrelasi}). Deskripsi kelas beserta fungsi dari diagram kelas akan dijelaskan pada subbab selanjutnya.
 
 \begin{figure}[htbp]
 	\centering
@@ -30,7 +31,7 @@ Seperti yang telah dijelaskan pada bab analisis, bahwa untuk memodelkan KIRI \te
 	GET     /*other	         		 	     controllers.Application.pagenotfound(other: String)
 \end{lstlisting}
 
-Baris ke 3 kode di atas adalah untuk penanganan bagian tampilan sistem usulan. Baris ke 2 kode di atas adalah untuk menangani permintaan ke sisi \textit{server} dari bagian tampilan berdasarkan hasil bab analisis (Subbab \ref{sec:analisistampilansistemkini}). Baris ke 1 adalah untuk penanganan jika ada permintaan ke ``/'' maka akan di arahkan ke bagian tampilan sistem usulan (Subbab \ref{sec:controllerssrancangan}). Baris ke 4 adalah penanganan seluruh \textit{file} statis yang digunakan untuk membangun bagian tampilan sistem usulan. Baris ke 5 adalah penanganan seluruh permintaan URL yang tidak memiliki fungsi pada sistem usulan.
+Baris ke 3 kode di atas adalah untuk penanganan bagian tampilan sistem usulan. Baris ke 2 kode di atas adalah untuk menangani permintaan ke sisi \textit{server} dari bagian tampilan berdasarkan hasil bab analisis (Subbab \ref{sec:analisistampilansistemkini}). Baris ke 1 adalah untuk penanganan jika ada permintaan ke ``/'' maka akan diarahkan ke bagian tampilan sistem usulan (Subbab \ref{sec:controllerssrancangan}). Baris ke 4 adalah penanganan seluruh \textit{file} statis yang digunakan untuk membangun bagian tampilan sistem usulan. Baris ke 5 adalah penanganan seluruh permintaan URL yang tidak memiliki fungsi pada sistem usulan.
 
 \section{\textit{Controllers}}
 \label{sec:controllerssrancangan}
@@ -413,7 +414,7 @@ Kelas ini merupakan kelas untuk mengelola seluruh rute angkutan umum sistem KIRI
 
 \subsection{UniqueStatusError}
 \label{sec:uniquestatuserror}
-Kelas ini merupakan kelas untuk melemparkan 2 jenis pesan kesalahan pada sistem KIRI, yaitu: ``\texttt{credentialfail}'' dan ``\texttt{sessionexpired}''. Berikut adalah sebuah konstanta yang digunakan pada kelas ini:
+Kelas ini merupakan kelas untuk melemparkan 2 jenis pesan kesalahan pada sistem KIRI, yaitu: ``\texttt{credentialfail}'' dan ``\texttt{sessionexpired}''. Berikut adalah sebuah atribut yang digunakan pada kelas ini:
 \begin{itemize}
 	\item \texttt{private String status}: pesan kesalahan.
 \end{itemize}
@@ -432,7 +433,7 @@ Berikut adalah seluruh \textit{method} yang digunakan pada kelas ini:
 
 \subsection{User}
 \label{sec:user}
-Kelas ini merupakan kelas untuk mengelola data-data pribadi pengguna sistem KIRI \textit{Dashboard}. Kelas ini untuk menangani permintaan: pemeriksaaan \textit{login}, melihat data pribadi pengguna, dan mengubah data pribadi pengguna. Konstruktor pada kelas ini memiliki fungsi yang sama dengan bagian pemeriksaan \textit{login} sistem kini. Berikut adalah seluruh konstanta yang digunakan pada kelas ini:
+Kelas ini merupakan kelas untuk mengelola data-data pribadi pengguna sistem KIRI \textit{Dashboard}. Kelas ini untuk menangani permintaan: pemeriksaaan \textit{login}, melihat data pribadi pengguna, dan mengubah data pribadi pengguna. Konstruktor pada kelas ini memiliki fungsi yang sama dengan bagian pemeriksaan \textit{login} sistem kini. Berikut adalah seluruh atribut yang digunakan pada kelas ini:
 \begin{itemize}
 	\item \texttt{private String sessionID}: data sesi yang dibangun saat melakukan \textit{login}.
 	\item \texttt{private String activeUserID}: alamat \textit{email} pengguna.

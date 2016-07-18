@@ -1,18 +1,19 @@
 \chapter{Dasar Teori}
 \label{chap:dasar_teori}
+Pada bab ini akan dijelaskan dasar-dasar teori mengenai MySQL Spatial Extensions, JDBC, Play Framework, JSON, dan Regular Expressions.
 
 \section{MySQL Spatial Extensions}
 \label{sec:mysql_spatial_ex}
-	Suatu \textit{geographic feature}\cite{mysqlspatial} adalah sesuatu yang ada di bumi yang memiliki lokasi sebagai penunjuk letak keberadaannya. Geometri adalah cabang ilmu matematika yang digunakan untuk memodelkan suatu \textit{geographic feature}. Dengan geometri, suatu \textit{geographic feature} dapat dinyatakan sebagai sebuah titik, garis, ruang, ataupun bentuk lainnya. Suatu ``\textit{feature}'' yang dimaksud dalam istilah \textit{geographic feature} dapat berupa:
+	\textit{Geographic feature}\cite{mysqlspatial} adalah sesuatu yang ada di bumi yang memiliki lokasi sebagai penunjuk letak keberadaannya. Geometri adalah cabang ilmu matematika yang digunakan untuk memodelkan \textit{geographic feature}. Dengan geometri, \textit{geographic feature} dapat dinyatakan sebagai sebuah titik, garis, ruang, ataupun bentuk lainnya. Sebuah ``\textit{feature}'' yang dimaksud dalam istilah \textit{geographic feature} dapat berupa:
 	\begin{enumerate}
 		\item \textbf{\textit{An entity}}, contohnya adalah gunung, kolam, kota, dll.
 		\item \textbf{\textit{A space}}, contohnya adalah daerah, cuaca, dll.
 		\item \textbf{\textit{A definable location}}, contohnya adalah persimpangan jalan, yaitu suatu tempat khusus dimana terdapat 2 buah jalan yang saling berpotongan.
 	\end{enumerate}
 	
-	MySQL adalah salah satu perangkat lunak yang digunakan untuk mengatur data-data (\textit{database}) suatu situs web. Bentuk MySQL adalah sekumpulan tabel yang umumnya memiliki hubungan antar satu dengan yang lainnya. Setiap tabel pada MySQL memiliki kolom dan baris. Kolom pada MySQL menyatakan daftar jenis baris yang ingin dibuat dan baris menyatakan banyaknya data yang ada dalam tabel.
+	MySQL adalah salah satu perangkat lunak yang digunakan untuk mengatur sekumpulan data terstruktur (\textit{database}) suatu aplikasi komputer (\textit{desktop}, situs web, dll)\cite{mysqlspatial}. Bentuk MySQL adalah sekumpulan tabel yang umumnya memiliki hubungan antar satu dengan yang lainnya. Setiap tabel pada MySQL memiliki kolom dan baris. Kolom pada MySQL menyatakan daftar jenis baris yang ingin dibuat dan baris menyatakan banyaknya data yang ada dalam tabel.
 	
-	Penamaan suatu kolom dalam MySQL membutuhkan penentuan tipe data yang akan digunakan dalam kolom tersebut. Dalam MySQL terdapat tipe-tipe data yang umum digunakan seperti \textit{Varchar} untuk menyimpan karakter atau kata, \textit{Int} untuk menyimpan angka, \textit{Boolean} untuk menyimpan nilai ``\texttt{true}'' atau ``\texttt{false}'', dan tipe data lainnya. MySQL Spatial Extensions adalah perluasan dari tipe-tipe data yang disediakan MySQL untuk menyatakan nilai geometri dari suatu \textit{geographic feature}.
+	Penamaan suatu kolom dalam MySQL membutuhkan penentuan tipe data yang akan digunakan dalam kolom tersebut. Dalam MySQL terdapat tipe-tipe data yang umum digunakan seperti \textit{Varchar} untuk menyimpan karakter atau kata, \textit{Int} untuk menyimpan angka, dan tipe data lainnya. MySQL Spatial Extensions adalah perluasan dari tipe-tipe data yang disediakan MySQL untuk menyatakan nilai geometri dari \textit{geographic feature}.
 	
 	Berdasarkan kemampuan penyimpanan nilai geometri, tipe data \textit{spatial} dapat dikelompokan ke dalam 2 jenis:
 \begin{enumerate}
@@ -31,6 +32,8 @@
 		\item \textbf{\textit{GeometryCollection}}
 	\end{itemize}
 \end{enumerate}
+
+	Berikut akan dijelaskan mengenai tipe data \textit{spatial} yang digunakan dalam penelitian ini, yaitu \textit{Point} (Subbab \ref{sec:point}) dan \textit{LineString} (Subbab \ref{sec:linestring}). Selain itu, dalam melakukan penulisan tipe data \textit{spatial} untuk merepresentasikan \textit{geographic feature} diperlukan aturan khusus yang akan dijelaskan pada subbab selanjutnya (Subbab \ref{sec:wktformat}).
 
 \subsection{\textit{Point}}
 \label{sec:point}
@@ -56,7 +59,7 @@
 
 \subsection{Format Well-Known Text (WKT)}
 \label{sec:wktformat}
-Format Well-Known Text (WKT) adalah salah satu aturan penulisan tipe data \textit{spatial} untuk merepresentasikan suatu \textit{geographic feature}\cite{mysqlspatial}. WKT merepresentasikan nilai geometri yang dimodelkan untuk pertukaran data geometri dalam ASCII \textit{form}. Berikut adalah contoh format WKT:
+Format Well-Known Text (WKT) adalah salah satu aturan penulisan tipe data \textit{spatial} untuk merepresentasikan \textit{geographic feature}\cite{mysqlspatial}. WKT merepresentasikan nilai geometri yang dimodelkan untuk pertukaran data geometri dalam ASCII \textit{form}. Berikut adalah contoh format WKT:
 
 \begin{lstlisting}
 	POINT(107.6049079 -6.874735)
