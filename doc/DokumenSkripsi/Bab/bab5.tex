@@ -19,7 +19,7 @@ Impelementasi dilakukan dengan menggunakan sebuah laptop. Berikut adalah spesifi
 
 \subsection{Hasil Implementasi}
 \label{sec:hasilimplementasi}
-Hasil implementasi dari penelitian ini adalah aplikasi berbasis \textit{web} yang menggunakan Play Framework. Aplikasi dapat diakses ke jaringan lokal milik peneliti melalui URL \url{http://localhost/bukitjarian/}. Aplikasi KIRI \textit{Dashboard} terbagi ke dalam 16 bagian.
+Hasil implementasi dari penelitian ini adalah aplikasi berbasis \textit{web} yang menggunakan Play Framework. Aplikasi dapat diakses melalui jaringan lokal dengan URL \url{http://localhost/bukitjarian/}. Aplikasi KIRI \textit{Dashboard} terbagi ke dalam 16 bagian.
 \begin{enumerate}
 	\item \textbf{Bagian \textit{Register}}\\
 	Bagian ini merupakan bagian untuk mendaftarkan pengguna baru ke dalam sistem KIRI. Pengguna dapat mengisi alamat \textit{email}, nama lengkap, dan nama perusahaan pada formulir registrasi (Gambar \ref{fig:5_register_1}). Jika pendaftaran berhasil (Gambar \ref{fig:5_register_2}), pengguna dapat langsung mengecek kotak masuk \textit{email} yang didaftarkan (Gambar \ref{fig:5_register_3}).
@@ -252,7 +252,7 @@ Hasil implementasi dari penelitian ini adalah aplikasi berbasis \textit{web} yan
 \label{sec:pengujianfungsional}
 Pengujian fungsional dilakukan untuk mengetahui apakah sistem usulan sudah dapat menjalankan seluruh fungsi yang dimiliki oleh sistem kini. Pengujian ini dilakukan pada sistem operasi Windows. Pengujian ini dilakukan terhadap 16 bagian sistem usulan, detail hasilnya dapat dilihat pada Tabel \ref{table:hasilfungsional}.
 
-\begin{table}[H]
+\begin{table}[htbp]
 	\centering
 	\caption{Tabel Pengujian Fungsional}
 		\begin{tabular}{|p{0.37cm}| p{3.5cm}| p{7cm}| p{2.5cm}|} \hline
@@ -279,9 +279,9 @@ Pengujian fungsional dilakukan untuk mengetahui apakah sistem usulan sudah dapat
 
 \subsection{Pengujian Eksperimental}
 \label{sec:pengujianeksperimental}
-Pengujian eksperimental yang dilakukan adalah pengujian terhadap waktu eksekusi. Pengujian dilakukan dengan membandingkan sistem kini dan sistem usulan. Pengujian dilakukan terhadap 16 bagian sistem dimana setiap bagian diuji sebanyak 5 kali percobaan, detail hasil pengujian dapat dilihat pada Tabel \ref{table:hasileksperimental1}, Tabel \ref{table:hasileksperimental2}, Gambar \ref{fig:5_pengujianwaktu_1}, dan Gambar \ref{fig:5_pengujianwaktu_2}.
+Pengujian eksperimental yang dilakukan adalah pengujian terhadap waktu eksekusi. Pengujian dilakukan dengan membandingkan sistem kini dan sistem usulan. Sistem kini dan sistem usulan dijalankan di jaringan lokal laptop (spesifikasi Subbab \ref{sec:lingkunganimplementasi}). Pengujian dilakukan terhadap 16 bagian sistem dimana setiap bagian diuji sebanyak 5 kali percobaan, detail hasil pengujian dapat dilihat pada Tabel \ref{table:hasileksperimental1}, Tabel \ref{table:hasileksperimental2}, Gambar \ref{fig:5_pengujianwaktu_1}, dan Gambar \ref{fig:5_pengujianwaktu_2}.
 
-\begin{table}[H]
+\begin{table}[htbp]
 	\centering
 	\caption{Tabel Pengujian Eksperimental Sistem Kini (dalam mili detik)}
 		\begin{tabular}{|p{0.37cm}| p{7cm}| p{1cm}| p{1cm}| p{1cm}| p{1cm}| p{1cm}| p{1cm}|} \hline
@@ -306,7 +306,7 @@ Pengujian eksperimental yang dilakukan adalah pengujian terhadap waktu eksekusi.
 	\label{table:hasileksperimental1}
 \end{table}
 
-\begin{table}[H]
+\begin{table}[htbp]
 	\centering
 	\caption{Tabel Pengujian Eksperimental Sistem Usulan (dalam mili detik)}
 		\begin{tabular}{|p{0.37cm}| p{7cm}| p{1cm}| p{1cm}| p{1cm}| p{1cm}| p{1cm}| p{1cm}|} \hline
@@ -345,11 +345,11 @@ Pengujian eksperimental yang dilakukan adalah pengujian terhadap waktu eksekusi.
 	\label{fig:5_pengujianwaktu_2}
 \end{figure}
 
-Berdasarkan hasil pengamatan terhadap Gambar \ref{fig:5_pengujianwaktu_1} dan Gambar \ref{fig:5_pengujianwaktu_2}, didapatkan informasi bahwa seluruh bagian sistem usulan memiliki waktu eksekusi lebih cepat dibandingkan dengan sistem kini, kecuali pada bagian \textit{register}, \textit{login}, dan mengubah data pribadi pengguna. Dikarenakan terdapat perbedaan hasil pada 3 bagian, yaitu: bagian \textit{register}, \textit{login}, dan mengubah data pribadi pengguna, maka peneliti melakukan analisis terhadap kode sistem kini dan sistem usulan pada 3 bagian tersebut. Berikut adalah hasil analisis terhadap 3 bagian tersebut:
+Berdasarkan hasil pengamatan terhadap Gambar \ref{fig:5_pengujianwaktu_1} dan Gambar \ref{fig:5_pengujianwaktu_2}, didapatkan informasi bahwa seluruh bagian sistem usulan memiliki waktu eksekusi lebih cepat dibandingkan dengan sistem kini, kecuali pada bagian \textit{register}, \textit{login}, dan mengubah data pribadi pengguna. Dikarenakan terdapat perbedaan hasil pada 3 bagian, yaitu: bagian \textit{register}, \textit{login}, dan mengubah data pribadi pengguna, maka dilakukan analisis terhadap kode sistem kini dan sistem usulan pada 3 bagian tersebut. Berikut adalah hasil analisis terhadap 3 bagian tersebut:
 \begin{enumerate}
 	\item \textit{Login} dan mengubah data pribadi pengguna\\
-	Pada bagian \textit{login} dan mengubah data pribadi pengguna menggunakan algoritma bcrypt dalam melakukan \textit{hashing} terhadap sandi. Pada algoritma bcrypt, terdapat sebuah nilai (berupa angka) untuk menentukan tingkat kompleksitas proses \textit{hashing}\cite{jbcrypt}. Semakin tinggi angka yang diberikan maka kompleksitas proses \textit{hashing} semakin tinggi dan hasilnya juga semakin sulit untuk diretas. Pada sistem kini ditemukan bahwa nilai yang diberikan adalah 8 (baris 54 dan 370 Kode \ref{lst:handle.php}) dan pada sistem usulan adalah 10\cite{jbcrypt}. Oleh karena itu, peneliti menduga bahwa perbedaan nilai tersebut adalah penyebab bagian \textit{login} dan mengubah data pribadi pengguna pada sistem usulan menjadi lebih lambat dibandingkan bagian sistem kini (kompleksitas proses \textit{hashing} sistem usulan lebih tinggi).
+	Pada bagian \textit{login} dan mengubah data pribadi pengguna menggunakan algoritma bcrypt dalam melakukan \textit{hashing} terhadap sandi. Pada algoritma bcrypt, terdapat sebuah nilai (berupa angka) untuk menentukan tingkat kompleksitas proses \textit{hashing}\cite{jbcrypt}. Semakin tinggi angka yang diberikan maka kompleksitas proses \textit{hashing} semakin tinggi dan hasilnya juga semakin sulit untuk diretas. Pada sistem kini ditemukan bahwa nilai yang diberikan adalah 8 (baris 54 dan 370 Kode \ref{lst:handle.php}) dan pada sistem usulan adalah 10\cite{jbcrypt}. Oleh karena itu, diduga bahwa perbedaan nilai tersebut adalah penyebab bagian \textit{login} dan mengubah data pribadi pengguna pada sistem usulan menjadi lebih lambat dibandingkan bagian sistem kini (kompleksitas proses \textit{hashing} sistem usulan lebih tinggi).
 	\item \textit{Register}\\
-	Berdasarkan analisis terhadap kode sistem usulan, peneliti mendapatkan informasi bahwa struktur kode bagian ini umumnya sama dengan struktur kode bagian lainnya, kecuali struktur kode pada metode pengiriman \textit{email}. Pada sistem kini pengiriman \textit{email} dilakukan dengan menggunakan PHPMailer (baris 317 Kode \ref{lst:utils.php}) dan pada sistem usulan pengiriman \textit{email} dilakukan dengan menggunakan JavaMail API (baris 114 Kode \ref{lst:authenticationmanager.java}).  Peneliti menduga terdapat perbedaan protokol internet dalam pengiriman \textit{email} pada PHPMailer dan JavaMail API yang menyebabkan perbedaan waktu yang cukup lama (4500.8 mili detik). 
+	Berdasarkan analisis terhadap kode sistem usulan, didapatkan informasi bahwa struktur kode bagian ini umumnya sama dengan struktur kode bagian lainnya, kecuali struktur kode pada metode pengiriman \textit{email}. Pada sistem kini pengiriman \textit{email} dilakukan dengan menggunakan PHPMailer (baris 317 Kode \ref{lst:utils.php}) dan pada sistem usulan pengiriman \textit{email} dilakukan dengan menggunakan JavaMail API (baris 114 Kode \ref{lst:authenticationmanager.java}). Terdapat perbedaan protokol internet dalam pengiriman \textit{email} pada PHPMailer dan JavaMail API adalah dugaan jawaban yang menyebabkan perbedaan waktu yang cukup lama (4500.8 mili detik). 
 \end{enumerate}
 
